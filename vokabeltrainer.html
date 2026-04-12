@@ -9,11 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&family=Libre+Baskerville:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Petit+Formal+Script&family=Dancing+Script:wght@400;700&family=Parisienne&family=Martel:wght@400;700&family=Lora:ital@0;1&family=Montserrat:wght@400;600&family=Oswald:wght@400;600&family=Raleway:wght@400;600&family=Abril+Fatface&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
+  /* Content — always neutral, never changes */
   --bg:#f5f3ef; --bg2:#ffffff;
   --surface:rgba(0,0,0,0.05); --surface2:rgba(0,0,0,0.09);
   --accent:#a80000; --text:#1a1a1a;
   --text2:rgba(26,26,26,0.65); --text3:rgba(26,26,26,0.38);
   --border:rgba(0,0,0,0.12);
+  /* Header — set dynamically by applyTheme() */
+  --hdr-bg:#ffffff; --hdr-bg2:#f5f3ef;
+  --hdr-accent:#a80000; --hdr-text:#1a1a1a;
+  --hdr-text2:rgba(26,26,26,0.65); --hdr-text3:rgba(26,26,26,0.38);
+  --hdr-border:rgba(0,0,0,0.12);
+  --hdr-surface:rgba(0,0,0,0.05); --hdr-surface2:rgba(0,0,0,0.09);
+  --hdr-font:'Playfair Display',serif;
+  /* Shared */
   --radius:16px; --radius-sm:10px;
   --font-display:'Playfair Display',serif;
   --font-foreign:'Lora',Georgia,serif;
@@ -24,22 +33,22 @@
 body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .5s,color .3s;}
 
 /* HEADER */
-.app-header{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);padding:calc(var(--safe-top) + 10px) 18px 0;transition:background .5s;}
+.app-header{position:sticky;top:0;z-index:100;background:var(--hdr-bg2);border-bottom:1px solid var(--hdr-border);backdrop-filter:blur(12px);padding:calc(var(--safe-top) + 10px) 18px 0;transition:background .5s;}
 .school-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .school-logo-hdr{width:34px;height:34px;border-radius:7px;object-fit:contain;display:none;flex-shrink:0;}
 .school-logo-hdr.visible{display:block;}
-.school-name-hdr{font-size:12px;letter-spacing:.4px;color:var(--text2);flex:1;font-family:var(--font-ui);}
-.lang-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:var(--font-ui);}
+.school-name-hdr{font-size:12px;letter-spacing:.4px;color:var(--hdr-text2);flex:1;font-family:var(--font-ui);}
+.lang-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--hdr-accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:var(--font-ui);}
 .lang-badge:active{transform:scale(.95);}
-.app-title{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.3px;margin-bottom:6px;transition:all .4s;}
+.app-title{font-family:var(--hdr-font);font-size:24px;font-weight:700;color:var(--hdr-text);letter-spacing:-.3px;margin-bottom:6px;transition:all .4s;}
 
 /* TABS */
-.tabs{display:flex;overflow:hidden;}
+.tabs{display:flex;overflow:hidden;background:var(--hdr-bg2);}
 .burger-btn{flex-shrink:0;width:44px;padding:9px 0 10px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
-.burger-btn span{display:block;width:18px;height:2px;background:var(--text3);border-radius:2px;transition:background .15s;}
-.burger-btn:hover span,.burger-btn.menu-open span{background:var(--text);}
-.tab{flex:1;padding:9px 4px 10px;font-size:12px;font-weight:600;color:var(--text3);border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-ui);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-align:center;}
-.tab.active{color:var(--text);border-bottom-color:var(--accent);}
+.burger-btn span{display:block;width:18px;height:2px;background:var(--hdr-text3);border-radius:2px;transition:background .15s;}
+.burger-btn:hover span,.burger-btn.menu-open span{background:var(--hdr-text);}
+.tab{flex:1;padding:9px 4px 10px;font-size:12px;font-weight:600;color:var(--hdr-text3);border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-ui);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-align:center;}
+.tab.active{color:var(--hdr-text);border-bottom-color:var(--hdr-accent);}
 /* SETTINGS DRAWER */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;}
 .drawer-overlay.hidden{display:none;}
@@ -51,9 +60,9 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-heigh
 .drawer-body{padding:0 16px;}
 
 /* MAIN */
-main{padding:18px 16px calc(var(--safe-bottom) + 80px);max-width:680px;margin:0 auto;}
-.screen{display:none;animation:fadeUp .25s ease;}
-.screen.active{display:block;}
+main{padding:18px 16px calc(var(--safe-bottom) + 24px);max-width:680px;margin:0 auto;}
+.screen{display:none;}
+.screen.active{display:block;animation:fadeUp .25s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* CARDS */
@@ -207,6 +216,18 @@ input[type=file]{display:none;}
 .chip-btn.w.sel{background:#b91c1c;color:#fff;border-color:#b91c1c;}
 .meaning-chip.rc{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.06);}
 .meaning-chip.rw{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.06);}
+.drawer-tab{flex:1;padding:10px 8px;border:none;background:transparent;font-size:12px;font-weight:600;font-family:var(--font-ui);cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.drawer-tab.active{color:var(--text);border-bottom-color:var(--accent);}
+.quiz-mnemonic{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:12px 14px;font-size:14px;font-style:italic;color:#78350f;margin-bottom:12px;line-height:1.6;display:none;}
+.quiz-mnemonic.visible{display:block;}
+.quiz-mnemonic::before{content:'💡 ';font-style:normal;}
+.quiz-btn.hint{background:#fffbeb;color:#92400e;border:1.5px solid #fde68a;font-size:13px;}
+.vok-mnemonic-toggle{background:none;border:none;font-size:12px;color:var(--text3);cursor:pointer;padding:2px 0;font-family:var(--font-ui);text-decoration:underline;margin-bottom:4px;}
+.vok-mnemonic-field{display:none;margin-top:4px;}
+.vok-mnemonic-field.open{display:block;}
+.quiz-btn.mark{background:rgba(251,191,36,.15);color:#92400e;border:1.5px solid rgba(251,191,36,.4);font-size:18px;flex:0 0 52px;}
+.quiz-btn.mark.active{background:rgba(251,191,36,.9);color:#1a1a1a;border-color:#f59e0b;}
+.quiz-repeat-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(251,191,36,.15);border:1.5px solid rgba(251,191,36,.4);font-size:13px;font-weight:600;color:#92400e;margin-bottom:12px;font-family:var(--font-ui);}
 </style>
 </head>
 <body>
@@ -236,7 +257,7 @@ input[type=file]{display:none;}
   <div class="school-bar">
     <img class="school-logo-hdr" id="schoolLogoHdr" alt="Logo">
     <div class="school-name-hdr" id="schoolNameHdr">Vokabeltrainer</div>
-    <div class="lang-badge" onclick="openLangSwitcher()" id="langBadge">🇬🇧 Englisch</div>
+    <div class="lang-badge" onclick="openLangSwitcher()" id="langBadge">Sprache wählen</div>
   </div>
   <div class="app-title" id="appTitle">English Vocab</div>
   <div class="tabs">
@@ -245,9 +266,7 @@ input[type=file]{display:none;}
     </button>
     <button class="tab active" onclick="switchTab('kapitel',this)">Kapitel</button>
     <button class="tab" onclick="switchTab('abfragen',this)">Abfragen</button>
-    <button class="tab" onclick="switchTab('scannen',this)">Scannen</button>
     <button class="tab" onclick="switchTab('statistik',this)">Statistik</button>
-    <button class="tab" onclick="switchTab('transfer',this)">↕ Transfer</button>
   </div>
 </div>
 
@@ -255,8 +274,27 @@ input[type=file]{display:none;}
 
 <!-- KAPITEL -->
 <div id="tab-kapitel" class="screen active">
-  <p class="sec-label">Meine Kapitel</p>
+  <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+    <input type="text" id="kapitelSearch" placeholder="🔍 Vokabeln suchen…" oninput="renderKapitel()" style="flex:1;margin-bottom:0">
+    <select id="kapitelKlasseFilter" onchange="renderKapitel()" style="width:auto;flex-shrink:0;margin-bottom:0;padding:11px 10px">
+      <option value="">Alle Klassen</option>
+    </select>
+    <select id="kapitelGruppeFilter" onchange="renderKapitel()" style="width:auto;flex-shrink:0;margin-bottom:0;padding:11px 10px">
+      <option value="">Alle Gruppen</option>
+    </select>
+    <select id="kapitelSort" onchange="renderKapitel()" style="width:auto;flex-shrink:0;margin-bottom:0;padding:11px 10px">
+      <option value="nr">Nr. ↑</option>
+      <option value="name">A–Z</option>
+      <option value="name-desc">Z–A</option>
+      <option value="count-desc">Meiste Vokabeln</option>
+      <option value="count-asc">Wenigste Vokabeln</option>
+      <option value="date-desc">Neueste zuerst</option>
+      <option value="date-asc">Älteste zuerst</option>
+      <option value="diff">Schwächste zuerst</option>
+    </select>
+  </div>
   <div id="kapitelListe"></div>
+  <div id="searchResults" style="display:none"></div>
   <button class="big-btn secondary" onclick="openKapitelModal()">＋ Neues Kapitel anlegen</button>
 </div>
 
@@ -294,6 +332,10 @@ input[type=file]{display:none;}
       <button class="dir-btn" id="focusWeak" onclick="setFocus('weak')">⚠ Schwache zuerst</button>
     </div>
     <div id="abfragenInfo" style="margin-top:6px;font-size:13px;color:var(--text3);text-align:center;margin-bottom:16px;font-style:italic"></div>
+    <div id="repeatPoolInfo" style="display:none;margin-bottom:10px">
+      <div class="quiz-repeat-badge" id="repeatPoolBadge"></div>
+      <button class="big-btn primary" style="background:#f59e0b;color:#1a1a1a;margin-bottom:0" onclick="startRepeatMarked()">🔖 Wiederholung starten</button>
+    </div>
     <button class="big-btn primary" onclick="startAbfragen()">▶ Abfragen starten</button>
   </div>
   <div id="abfragen-quiz" style="display:none">
@@ -309,6 +351,15 @@ input[type=file]{display:none;}
       <div class="quiz-hint" id="quizHint"></div>
     </div>
     <div class="quiz-answer" id="quizAnswer"></div>
+    <div class="quiz-mnemonic" id="quizMnemonic"></div>
+    <!-- Eselsbrücke hinzufügen/bearbeiten -->
+    <div id="quizMnemonicEdit" style="display:none;margin-bottom:12px">
+      <textarea id="quizMnemonicInput" placeholder="Eselsbrücke eingeben…" style="min-height:60px;font-size:13px;width:100%;margin-bottom:6px"></textarea>
+      <div style="display:flex;gap:8px">
+        <button class="big-btn primary" style="margin-bottom:0;flex:1;padding:10px" onclick="saveMnemonic()">💾 Speichern</button>
+        <button class="big-btn secondary" style="margin-bottom:0;flex:1;padding:10px" onclick="cancelMnemonicEdit()">Abbrechen</button>
+      </div>
+    </div>
     <!-- Multi-meaning rating (Latin) -->
     <div id="quizMeaningRateArea" style="display:none">
       <div id="quizMeaningList" style="margin-bottom:12px"></div>
@@ -316,8 +367,16 @@ input[type=file]{display:none;}
     <div class="quiz-btn-row" id="quizShowRow">
       <button class="quiz-btn show" onclick="showAnswer()">👁 Antwort zeigen</button>
     </div>
+    <div class="quiz-btn-row" id="quizHintRow" style="display:none">
+      <button class="quiz-btn hint" id="quizHintBtn" onclick="toggleMnemonic()">💡 Eselsbrücke</button>
+      <button class="quiz-btn hint" id="quizEditMnemonicBtn" onclick="startMnemonicEdit()" style="flex:0 0 44px;font-size:16px" title="Bearbeiten">✏</button>
+    </div>
+    <div class="quiz-btn-row" id="quizAddMnemonicRow" style="display:none">
+      <button class="quiz-btn hint" onclick="startMnemonicEdit()" style="width:100%">+ Eselsbrücke hinzufügen</button>
+    </div>
     <div class="quiz-btn-row" id="quizRateRow" style="display:none">
       <button class="quiz-btn wrong" onclick="rateCard(false)">✗ Nochmal</button>
+      <button class="quiz-btn mark" id="quizMarkBtn" onclick="toggleMark()" title="Markieren">🔖</button>
       <button class="quiz-btn correct" onclick="rateCard(true)">✓ Gewusst</button>
     </div>
     <button class="big-btn secondary" style="margin-top:6px" onclick="stopQuiz()">✕ Abbrechen</button>
@@ -334,162 +393,16 @@ input[type=file]{display:none;}
       <div class="quiz-result-sub" id="resultSub"></div>
     </div>
     <button class="big-btn primary" onclick="startAbfragen()">🔄 Nochmal</button>
+    <button class="big-btn primary" id="repeatMarkedBtn" style="display:none;background:#f59e0b;color:#1a1a1a" onclick="startRepeatMarked()">🔖 Markierte + Falsche wiederholen</button>
     <button class="big-btn secondary" onclick="showSetup()">← Einstellungen</button>
   </div>
 </div>
 
-<!-- SCANNEN -->
-<div id="tab-scannen" class="screen">
-
-  <!-- SCHRITT 1: Sprache & Kapitel -->
-  <p class="sec-label">1 · Sprache &amp; Kapitel</p>
-  <div class="card"><div class="card-body">
-    <div class="field" style="margin-bottom:10px">
-      <label>Sprache der Vokabeln</label>
-      <div class="seg-ctrl" id="scanLangCtrl">
-        <button class="seg-btn active" onclick="setScanLang('en',this)">🇬🇧 Englisch</button>
-        <button class="seg-btn" onclick="setScanLang('la',this)">🏛 Latein</button>
-        <button class="seg-btn" onclick="setScanLang('fr',this)">🇫🇷 Französisch</button>
-      </div>
-    </div>
-    <div class="field" style="margin-bottom:6px">
-      <label>Kapitel zuweisen</label>
-      <select id="scanKapitel"><option value="">— Kapitel wählen —</option><option value="__neu__">+ Neues Kapitel erstellen</option></select>
-    </div>
-    <div class="field" id="scanNeuesKapitelField" style="display:none">
-      <label>Neuer Kapitelname</label>
-      <input type="text" id="scanNeuesKapitelName" placeholder="z. B. Kapitel 5 – Schule">
-    </div>
-  </div></div>
-
-  <!-- SCHRITT 2: Prompt für externe KI -->
-  <p class="sec-label">2 · Prompt für externe KI-App</p>
-  <div class="card"><div class="card-body">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.6">Foto in ChatGPT, Claude.ai o.ä. hochladen und diesen Prompt verwenden. Die KI-Ausgabe dann als <strong>.txt</strong> speichern und unten importieren.</p>
-    <div id="promptBox" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:12px;font-family:monospace;line-height:1.7;color:var(--text);white-space:pre-wrap;margin-bottom:10px;user-select:all"></div>
-    <button class="big-btn secondary" onclick="copyPrompt()">📋 Prompt kopieren</button>
-  </div></div>
-
-  <!-- SCHRITT 3: TXT-Import -->
-  <p class="sec-label">3 · KI-Ausgabe als .txt importieren</p>
-  <div class="card"><div class="card-body">
-    <div class="foto-drop" onclick="document.getElementById('txtInput').click()" style="padding:20px">
-      <div style="font-size:32px;margin-bottom:6px">📄</div>
-      <p style="font-size:13px;color:var(--text2)">Textdatei auswählen (.txt)</p>
-    </div>
-    <input type="file" id="txtInput" accept=".txt,text/plain" onchange="importTxt(this)">
-    <p style="font-size:11px;color:var(--text3);margin-top:4px">Format: <code style="background:var(--surface2);padding:1px 4px;border-radius:3px">Wort = Übersetzung</code> — eine Zeile pro Vokabel</p>
-  </div></div>
-
-  <!-- SCHRITT 4: Direkt fotografieren (mit API-Key) -->
-  <p class="sec-label">4 · Direkt scannen (API-Key erforderlich)</p>
-  <div class="card"><div class="card-body">
-    <div class="foto-drop" onclick="document.getElementById('fotoInput').click()">
-      <div style="font-size:32px;margin-bottom:6px">📸</div>
-      <p style="font-size:14px;color:var(--text2)">Foto aufnehmen oder aus Bibliothek wählen</p>
-    </div>
-    <img id="fotoPreview" class="foto-preview" alt="Vorschau">
-    <input type="file" id="fotoInput" accept="image/*" capture="environment" onchange="handleFoto(this)">
-    <div class="analyse-spinner" id="analyseSpinner">
-      <div class="dot-loader"><span></span><span></span><span></span></div>
-      <p style="margin-top:10px">KI analysiert Vokabeln…</p>
-    </div>
-    <button class="big-btn primary" id="analyseBtn" onclick="analysiereVokabeln()" style="display:none">🔍 Vokabeln analysieren</button>
-    <p id="apiKeyHint" style="font-size:11px;color:var(--text3);margin-top:6px;display:none">⚠ Kein API-Key hinterlegt – bitte in den Einstellungen eintragen.</p>
-  </div></div>
-
-  <!-- SCHRITT 5: Manuell -->
-  <p class="sec-label">5 · Manuell eingeben</p>
-  <div class="card"><div class="card-body">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Eine Vokabel pro Zeile, Wort und Übersetzung mit <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">=</code> trennen:</p>
-    <textarea id="manualInput" placeholder="house = das Haus&#10;school = die Schule&#10;to run = laufen" style="min-height:100px;font-family:monospace;font-size:13px"></textarea>
-    <button class="big-btn secondary" style="margin-top:8px" onclick="importManual()">↑ Vokabeln übernehmen</button>
-  </div></div>
-
-  <!-- Ergebnis -->
-  <div id="analyseResultCard" style="display:none">
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">✏ Vokabeln prüfen &amp; speichern</span>
-        <button class="icon-btn" onclick="addAnalyseVok()">+ Zeile</button>
-      </div>
-      <div class="card-body"><div id="analyseVokListe"></div></div>
-    </div>
-    <button class="big-btn success" onclick="speichereAnalyse()">💾 Vokabeln speichern</button>
-  </div>
-</div>
 
 <!-- STATISTIK -->
 <div id="tab-statistik" class="screen">
   <p class="sec-label">Überblick</p>
   <div id="statistikContent"></div>
-</div>
-
-<!-- TRANSFER -->
-<div id="tab-transfer" class="screen">
-
-  <!-- EXPORT -->
-  <p class="sec-label">Export</p>
-  <div class="card"><div class="card-body">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Alle Vokabeln als <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">.txt</code> exportieren. Format: <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">Wort = Übersetzung</code>, Kapitel als Überschriften.</p>
-
-    <p class="sec-label" style="margin-top:0">Gesamtexport</p>
-    <button class="big-btn secondary" onclick="exportAll()">↓ Alle Sprachen (eine Datei)</button>
-
-    <p class="sec-label">Nach Sprache</p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('en')">🇬🇧 Englisch</button>
-      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('la')">🏛 Latein</button>
-      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('fr')">🇫🇷 Französisch</button>
-    </div>
-
-    <p class="sec-label">Einzelnes Kapitel</p>
-    <div class="field" style="margin-bottom:8px">
-      <select id="exportKapSelect"></select>
-    </div>
-    <button class="big-btn secondary" onclick="exportKapitel()">↓ Kapitel exportieren</button>
-
-    <p class="sec-label">App-Daten (Vollbackup)</p>
-    <button class="big-btn secondary" onclick="exportBackup()">↓ Backup als JSON</button>
-  </div></div>
-
-  <!-- IMPORT -->
-  <p class="sec-label">Import</p>
-  <div class="card"><div class="card-body">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Importiere eine zuvor exportierte <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">.txt</code>-Datei oder ein <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">.json</code>-Backup.</p>
-
-    <p class="sec-label" style="margin-top:0">TXT-Import (Vokabeln)</p>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">Kapitel-Überschriften werden erkannt (<code style="background:var(--surface2);padding:1px 4px;border-radius:3px"># Kapitelname</code>). Ohne Überschrift wird das gewählte Standardkapitel verwendet.</p>
-
-    <div class="field">
-      <label>Sprache für importierte Vokabeln</label>
-      <div class="seg-ctrl" id="importLangCtrl">
-        <button class="seg-btn active" onclick="setImportLang('en',this)">🇬🇧 Englisch</button>
-        <button class="seg-btn" onclick="setImportLang('la',this)">🏛 Latein</button>
-        <button class="seg-btn" onclick="setImportLang('fr',this)">🇫🇷 Französisch</button>
-      </div>
-    </div>
-    <div class="field" style="margin-bottom:10px">
-      <label>Standardkapitel (falls keine Überschrift)</label>
-      <select id="importKapSelect">
-        <option value="__neu__">+ Neues Kapitel anlegen</option>
-      </select>
-    </div>
-    <div class="foto-drop" onclick="document.getElementById('importTxtFile').click()" style="padding:18px;margin-bottom:8px">
-      <div style="font-size:28px;margin-bottom:4px">📄</div>
-      <p style="font-size:13px;color:var(--text2)">.txt-Datei wählen</p>
-    </div>
-    <input type="file" id="importTxtFile" accept=".txt,text/plain" onchange="importTxtFull(this)">
-
-    <p class="sec-label">JSON-Backup wiederherstellen</p>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">Stellt alle Kapitel und Vokabeln aus einem Backup wieder her. Bestehende Daten werden <strong>zusammengeführt</strong>, nicht überschrieben.</p>
-    <div class="foto-drop" onclick="document.getElementById('importJsonFile').click()" style="padding:18px">
-      <div style="font-size:28px;margin-bottom:4px">🗂</div>
-      <p style="font-size:13px;color:var(--text2)">.json-Backup wählen</p>
-    </div>
-    <input type="file" id="importJsonFile" accept=".json,application/json" onchange="importBackup(this)">
-  </div></div>
-
 </div>
 
 </main>
@@ -504,6 +417,15 @@ input[type=file]{display:none;}
   </div>
   <div class="drawer-body">
 
+  <!-- DRAWER TABS -->
+  <div style="display:flex;border-bottom:1px solid var(--border);margin:0 -16px 16px;overflow-x:auto">
+    <button class="drawer-tab active" id="dtab-einst" onclick="switchDrawerTab('einst',this)">Einstellungen</button>
+    <button class="drawer-tab" id="dtab-scan" onclick="switchDrawerTab('scan',this)">📷 Scannen</button>
+    <button class="drawer-tab" id="dtab-transfer" onclick="switchDrawerTab('transfer',this)">↕ Transfer</button>
+  </div>
+
+  <!-- DRAWER PANEL: EINSTELLUNGEN -->
+  <div id="dpanel-einst">
   <p class="sec-label">Schule</p>
   <div class="card"><div class="card-body">
     <div class="field">
@@ -665,9 +587,147 @@ input[type=file]{display:none;}
   <div style="padding:8px 0 4px">
     <button class="big-btn primary" onclick="closeDrawer()">✓ Speichern &amp; Schließen</button>
   </div>
+  </div><!-- /dpanel-einst -->
+
+  <!-- DRAWER PANEL: SCANNEN -->
+  <div id="dpanel-scan" style="display:none">
+  <p class="sec-label" style="margin-top:0">1 · Sprache &amp; Kapitel</p>
+  <div class="card"><div class="card-body">
+    <div class="field" style="margin-bottom:10px">
+      <label>Sprache der Vokabeln</label>
+      <div class="seg-ctrl" id="scanLangCtrl">
+        <button class="seg-btn active" onclick="setScanLang('en',this)">🇬🇧 Englisch</button>
+        <button class="seg-btn" onclick="setScanLang('la',this)">🏛 Latein</button>
+        <button class="seg-btn" onclick="setScanLang('fr',this)">🇫🇷 Französisch</button>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:6px">
+      <label>Kapitel zuweisen</label>
+      <select id="scanKapitel"><option value="">— Kapitel wählen —</option><option value="__neu__">+ Neues Kapitel erstellen</option></select>
+    </div>
+    <div class="field" id="scanNeuesKapitelField" style="display:none">
+      <label>Neuer Kapitelname</label>
+      <input type="text" id="scanNeuesKapitelName" placeholder="z. B. Kapitel 5 – Schule">
+    </div>
+  </div></div>
+
+  <p class="sec-label">2 · Prompt für externe KI-App</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.5">Foto in ChatGPT oder Claude.ai hochladen und diesen Prompt einfügen. Ausgabe als .txt speichern und unten importieren.</p>
+    <div id="promptBox" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:12px;font-family:monospace;line-height:1.7;color:var(--text);white-space:pre-wrap;margin-bottom:10px;user-select:all"></div>
+    <button class="big-btn secondary" onclick="copyPrompt()">📋 Prompt kopieren</button>
+  </div></div>
+
+  <p class="sec-label">3 · KI-Ausgabe als .txt importieren</p>
+  <div class="card"><div class="card-body">
+    <div class="foto-drop" onclick="document.getElementById('txtInput').click()" style="padding:18px;margin-bottom:8px">
+      <div style="font-size:28px;margin-bottom:4px">📄</div>
+      <p style="font-size:13px;color:var(--text2)">.txt-Datei wählen</p>
+    </div>
+    <input type="file" id="txtInput" accept=".txt,text/plain" onchange="importTxt(this)">
+    <p style="font-size:11px;color:var(--text3);margin-top:4px">Format: <code style="background:var(--surface2);padding:1px 4px;border-radius:3px">Wort = Übersetzung</code></p>
+  </div></div>
+
+  <p class="sec-label">4 · Direkt scannen (API-Key erforderlich)</p>
+  <div class="card"><div class="card-body">
+    <div class="foto-drop" onclick="document.getElementById('fotoInput').click()">
+      <div style="font-size:28px;margin-bottom:6px">📸</div>
+      <p style="font-size:14px;color:var(--text2)">Foto aufnehmen oder aus Bibliothek</p>
+    </div>
+    <img id="fotoPreview" class="foto-preview" alt="Vorschau">
+    <input type="file" id="fotoInput" accept="image/*" capture="environment" onchange="handleFoto(this)">
+    <div class="analyse-spinner" id="analyseSpinner">
+      <div class="dot-loader"><span></span><span></span><span></span></div>
+      <p style="margin-top:10px">KI analysiert Vokabeln…</p>
+    </div>
+    <button class="big-btn primary" id="analyseBtn" onclick="analysiereVokabeln()" style="display:none">🔍 Vokabeln analysieren</button>
+  </div></div>
+
+  <p class="sec-label">5 · Manuell eingeben</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Eine Vokabel pro Zeile: <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">Wort = Übersetzung</code></p>
+    <textarea id="manualInput" placeholder="house = das Haus&#10;school = die Schule" style="min-height:90px;font-family:monospace;font-size:13px"></textarea>
+    <button class="big-btn secondary" style="margin-top:8px" onclick="importManual()">↑ Übernehmen</button>
+  </div></div>
+
+  <div id="analyseResultCard" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">✏ Vokabeln prüfen &amp; speichern</span>
+        <button class="icon-btn" onclick="addAnalyseVok()">+ Zeile</button>
+      </div>
+      <div class="card-body"><div id="analyseVokListe"></div></div>
+    </div>
+    <button class="big-btn success" onclick="speichereAnalyse()">💾 Vokabeln speichern</button>
+  </div>
+  </div><!-- /dpanel-scan -->
+
+  <!-- DRAWER PANEL: TRANSFER -->
+  <div id="dpanel-transfer" style="display:none">
+  <p class="sec-label" style="margin-top:0">Export</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.5">Vokabeln als .txt exportieren. Format: <code style="background:var(--surface2);padding:1px 4px;border-radius:3px">Wort = Übersetzung</code>, Kapitel als Überschriften.</p>
+    <button class="big-btn secondary" onclick="exportAll()">↓ Alle Sprachen (eine Datei)</button>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('en')">🇬🇧 Englisch</button>
+      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('la')">🏛 Latein</button>
+      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('fr')">🇫🇷 Französisch</button>
+    </div>
+    <div class="field" style="margin-bottom:8px"><select id="exportKapSelect"></select></div>
+    <button class="big-btn secondary" onclick="exportKapitel()">↓ Kapitel exportieren</button>
+    <button class="big-btn secondary" onclick="exportBackup()">↓ Vollbackup als JSON</button>
+  </div></div>
+
+  <p class="sec-label">Import</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.5">TXT-Dateien oder JSON-Backup importieren. Kapitel-Überschriften (<code style="background:var(--surface2);padding:1px 4px;border-radius:3px"># Name</code>) werden erkannt.</p>
+    <div class="field">
+      <label>Sprache für importierte Vokabeln</label>
+      <div class="seg-ctrl" id="importLangCtrl">
+        <button class="seg-btn active" onclick="setImportLang('en',this)">🇬🇧 Englisch</button>
+        <button class="seg-btn" onclick="setImportLang('la',this)">🏛 Latein</button>
+        <button class="seg-btn" onclick="setImportLang('fr',this)">🇫🇷 Französisch</button>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:10px">
+      <label>Standardkapitel</label>
+      <select id="importKapSelect"><option value="__neu__">+ Neues Kapitel anlegen</option></select>
+    </div>
+    <div class="foto-drop" onclick="document.getElementById('importTxtFile').click()" style="padding:16px;margin-bottom:8px">
+      <div style="font-size:24px;margin-bottom:4px">📄</div>
+      <p style="font-size:13px;color:var(--text2)">.txt-Datei importieren</p>
+    </div>
+    <input type="file" id="importTxtFile" accept=".txt,text/plain" onchange="importTxtFull(this)">
+    <div class="foto-drop" onclick="document.getElementById('importJsonFile').click()" style="padding:16px">
+      <div style="font-size:24px;margin-bottom:4px">🗂</div>
+      <p style="font-size:13px;color:var(--text2)">.json-Backup wiederherstellen</p>
+    </div>
+    <input type="file" id="importJsonFile" accept=".json,application/json" onchange="importBackup(this)">
+  </div></div>
+  </div><!-- /dpanel-transfer -->
 
   </div><!-- /drawer-body -->
 </div><!-- /drawer -->
+
+<!-- MODAL: Gruppen -->
+<div class="modal-overlay hidden" id="modalGruppe">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Gruppen / Kurse verwalten</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Gruppen sind sprachspezifisch, z.B. „Englisch 7a", „Latein G21".</p>
+    <div id="gruppenListe" style="margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+      <select id="neueGruppeLang" style="width:auto;flex-shrink:0;margin-bottom:0;padding:10px 10px">
+        <option value="en">🇬🇧</option>
+        <option value="la">🏛</option>
+        <option value="fr">🇫🇷</option>
+      </select>
+      <input type="text" id="neueGruppeName" placeholder="z. B. Englisch 7a" style="flex:1;margin-bottom:0">
+      <button class="icon-btn" onclick="addGruppe()" style="flex-shrink:0;padding:0 16px">+</button>
+    </div>
+    <button class="big-btn secondary" onclick="closeModal('modalGruppe')">Schließen</button>
+  </div>
+</div>
 
 <!-- MODAL: Kapitel -->
 <div class="modal-overlay hidden" id="modalKapitel">
@@ -676,14 +736,32 @@ input[type=file]{display:none;}
     <div class="modal-title" id="modalKapitelTitle">Neues Kapitel</div>
     <div class="field"><label>Kapitelname</label><input type="text" id="mKapName" placeholder="z. B. Kapitel 3 – Familie"></div>
     <div class="field"><label>Sprache</label>
-      <select id="mKapLang">
+      <select id="mKapLang" onchange="populateGruppeSelect('')">
         <option value="en">🇬🇧 Englisch</option>
         <option value="la">🏛 Latein</option>
         <option value="fr">🇫🇷 Französisch</option>
       </select>
     </div>
     <div class="field"><label>Buch / Quelle</label><input type="text" id="mKapBuch" placeholder="z. B. English G21 A2"></div>
+    <div class="field">
+      <label>Gruppe / Kurs</label>
+      <div style="display:flex;gap:8px">
+        <select id="mKapGruppe" style="flex:1"><option value="">– keine –</option></select>
+        <button class="icon-btn" onclick="openGruppeModal()" title="Gruppen verwalten" style="flex-shrink:0;padding:0 14px">⚙</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Klasse / Jahrgangsstufe</label>
+      <div style="display:flex;gap:8px">
+        <select id="mKapKlasse" style="flex:1"><option value="">– keine –</option></select>
+        <button class="icon-btn" onclick="openKlasseModal()" title="Klassen verwalten" style="flex-shrink:0;padding:0 14px">⚙</button>
+      </div>
+    </div>
     <input type="hidden" id="mKapEditId" value="">
+    <div class="field" style="margin-bottom:8px">
+      <label>Lfd. Nummer</label>
+      <input type="number" id="mKapNr" min="1" step="1" placeholder="wird automatisch vergeben" style="width:120px">
+    </div>
     <hr>
     <p class="sec-label">Vokabeln eingeben</p>
     <div id="mVokListe"></div>
@@ -701,6 +779,21 @@ input[type=file]{display:none;}
     <div class="modal-title" id="detailTitle"></div>
     <div id="detailContent"></div>
     <button class="big-btn secondary" onclick="closeModal('modalDetail')">Schließen</button>
+  </div>
+</div>
+
+<!-- MODAL: Klassen -->
+<div class="modal-overlay hidden" id="modalKlasse">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Klassen verwalten</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Klassen / Jahrgangsstufen anlegen und verwalten.</p>
+    <div id="klassenListe" style="margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <input type="text" id="neueKlasseName" placeholder="z. B. 7b oder Jg. 9" style="flex:1;margin-bottom:0">
+      <button class="icon-btn" onclick="addKlasse()" style="flex-shrink:0;padding:0 16px">+ Hinzufügen</button>
+    </div>
+    <button class="big-btn secondary" onclick="closeModal('modalKlasse')">Schließen</button>
   </div>
 </div>
 
@@ -728,7 +821,7 @@ const PRESETS = {
 const LANG_ICONS={en:'🇬🇧',la:'🏛',fr:'🇫🇷'};
 const LANG_LABELS={en:'Englisch',la:'Latein',fr:'Französisch'};
 
-let state={kapitel:[],stats:{sessions:0,totalCorrect:0,totalWrong:0},activeLang:'en'};
+let state={kapitel:[],stats:{sessions:0,totalCorrect:0,totalWrong:0},activeLang:'en',klassen:[],gruppen:[]};
 let settings={
   schulName:'',schulLogo:'',schulFont:"'Playfair Display',serif",schulColor:'#1a1a1a',apiKey:'',
   en:{name:'English Vocab',font:"'Playfair Display',serif",accent:'#a80000',bg:'#f5f3ef',bg2:'#ffffff',text:'#1a1a1a'},
@@ -746,7 +839,7 @@ function load(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   load();applyTheme();updateHeader();populateUI();
-  renderKapitel();renderKapitelAuswahl();renderScanKapitelSelect();renderStatistik();updateAbfrageInfo();
+  renderKapitel();renderKlassenFilter();renderGruppenFilter();renderKapitelAuswahl();renderScanKapitelSelect();renderStatistik();updateAbfrageInfo();
   ['en','la','fr'].forEach(l=>prevFont(l));updateLogoUI();
   setTimeout(updatePrompt, 50);
 });
@@ -760,21 +853,31 @@ function hexA(hex,a){
 }
 function applyTheme(){
   const l=state.activeLang,s=settings[l],r=document.documentElement.style;
-  r.setProperty('--bg',s.bg);r.setProperty('--bg2',s.bg2);r.setProperty('--accent',s.accent);r.setProperty('--text',s.text);
-  r.setProperty('--font-display',s.font);
-  r.setProperty('--text2',hexA(s.text,.65));r.setProperty('--text3',hexA(s.text,.38));
-  r.setProperty('--surface',hexA(s.text,.06));r.setProperty('--surface2',hexA(s.text,.11));
-  r.setProperty('--border',hexA(s.text,.13));
+  // Only header variables change with language
+  r.setProperty('--hdr-bg', s.bg2||'#ffffff');
+  r.setProperty('--hdr-bg2', s.bg||'#f5f3ef');
+  r.setProperty('--hdr-accent', s.accent||'#a80000');
+  r.setProperty('--hdr-text', s.text||'#1a1a1a');
+  r.setProperty('--hdr-font', s.font||"'Playfair Display',serif");
+  r.setProperty('--hdr-text2', hexA(s.text||'#1a1a1a',.65));
+  r.setProperty('--hdr-text3', hexA(s.text||'#1a1a1a',.38));
+  r.setProperty('--hdr-border', hexA(s.text||'#1a1a1a',.13));
+  r.setProperty('--hdr-surface', hexA(s.text||'#1a1a1a',.05));
+  r.setProperty('--hdr-surface2', hexA(s.text||'#1a1a1a',.10));
+  // --font-display also used by updateHeader for app-title inline style
+  r.setProperty('--font-display', s.font||"'Playfair Display',serif");
 }
 function updateHeader(){
   const l=state.activeLang,s=settings[l];
-  document.getElementById('appTitle').textContent=s.name||'Vokabeltrainer';
-  document.getElementById('appTitle').style.fontFamily=s.font;
-  document.getElementById('langBadge').textContent=LANG_ICONS[l]+' '+(s.name||LANG_LABELS[l]);
-  const schoolEl = document.getElementById('schoolNameHdr');
+  const titleEl=document.getElementById('appTitle');
+  titleEl.textContent=s.name||'Vokabeltrainer';
+  titleEl.style.fontFamily=s.font;
+  titleEl.style.color='var(--hdr-text)';
+  document.getElementById('langBadge').textContent='Sprache wählen';
+  const schoolEl=document.getElementById('schoolNameHdr');
   schoolEl.textContent=settings.schulName||'Vokabeltrainer';
   schoolEl.style.fontFamily=settings.schulFont||'inherit';
-  schoolEl.style.color=settings.schulColor||'var(--text2)';
+  schoolEl.style.color=settings.schulColor||'var(--hdr-text2)';
   const img=document.getElementById('schoolLogoHdr');
   if(settings.schulLogo){img.src=settings.schulLogo;img.classList.add('visible');}else img.classList.remove('visible');
   ['en','la','fr'].forEach(lang=>{const el=document.getElementById('lname-'+lang);if(el)el.textContent=settings[lang].name||LANG_LABELS[lang];});
@@ -841,12 +944,23 @@ function openLangSwitcher(){
 function setActiveLang(l){
   state.activeLang=l;save();applyTheme();updateHeader();
   document.getElementById('langSwitcher').classList.add('hidden');
-  renderKapitel();renderKapitelAuswahl();toast(LANG_ICONS[l]+' '+(settings[l].name||LANG_LABELS[l]));
+  renderKapitel();renderGruppenFilter();renderKapitelAuswahl();toast(LANG_ICONS[l]+' '+(settings[l].name||LANG_LABELS[l]));
 }
 
 // ── DRAWER ──
+function switchDrawerTab(id,btn){
+  ['einst','scan','transfer'].forEach(t=>{
+    const p=document.getElementById('dpanel-'+t);
+    const b=document.getElementById('dtab-'+t);
+    if(p)p.style.display=t===id?'block':'none';
+    if(b)b.classList.toggle('active',t===id);
+  });
+  if(id==='scan'){renderScanKapitelSelect();updatePrompt();}
+  if(id==='transfer')renderTransferSelects();
+}
 function openDrawer(){
   populateUI();['en','la','fr'].forEach(l=>prevFont(l));prevSchulFont();
+  switchDrawerTab('einst',document.getElementById('dtab-einst'));
   document.getElementById('drawerOverlay').classList.remove('hidden');
   document.getElementById('settingsDrawer').classList.remove('hidden');
   document.getElementById('burgerBtn').classList.add('menu-open');
@@ -862,27 +976,137 @@ function closeDrawer(){
 function switchTab(id,btn){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
+  const screen=document.getElementById('tab-'+id);
+  if(screen)screen.classList.add('active');
   if(btn?.classList)btn.classList.add('active');
   if(id==='abfragen'){renderKapitelAuswahl();updateAbfrageInfo();}
   if(id==='statistik')renderStatistik();
-  if(id==='scannen'){renderScanKapitelSelect();updatePrompt();}
-  if(id==='transfer')renderTransferSelects();
 }
 
 // ── KAPITEL ──
+function renderKlassenFilter(){
+  const sel=document.getElementById('kapitelKlasseFilter');
+  if(!sel)return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Alle Klassen</option>'+
+    (state.klassen||[]).map(k=>`<option value="${esc(k)}"${cur===k?' selected':''}>${esc(k)}</option>`).join('');
+}
+function renderGruppenFilter(){
+  const sel=document.getElementById('kapitelGruppeFilter');
+  if(!sel)return;
+  const cur=sel.value;
+  const lang=state.activeLang;
+  const gruppen=(state.gruppen||[]).filter(g=>g.lang===lang);
+  sel.innerHTML='<option value="">Alle Gruppen</option>'+
+    gruppen.map(g=>`<option value="${esc(g.name)}"${cur===g.name?' selected':''}>${esc(g.name)}</option>`).join('');
+}
 function renderKapitel(){
-  const el=document.getElementById('kapitelListe'),lang=state.activeLang;
-  const kaps=state.kapitel.filter(k=>k.lang===lang);
-  if(!kaps.length){el.innerHTML=`<div class="empty"><div class="ei">📚</div><p>Keine Kapitel für ${LANG_ICONS[lang]} ${LANG_LABELS[lang]}.<br>Scanne eine Seite oder lege manuell an.</p></div>`;return;}
-  el.innerHTML=kaps.map(k=>{
-    const total=(k.vokabeln||[]).length,weak=(k.vokabeln||[]).filter(v=>(v.difficulty||0)>=1).length;
-    return`<div class="kapitel-item" onclick="showKapitelDetail('${k.id}')">
-      <div class="kapitel-icon">${LANG_ICONS[k.lang]}</div>
-      <div class="kapitel-info"><div class="kapitel-name">${k.name}</div>
-      <div class="kapitel-meta">${total} Vokabeln${weak?' · ⚠ '+weak+' schwach':''}${k.buch?' · '+k.buch:''}</div></div>
-      <button class="edit-btn" onclick="event.stopPropagation();openEditKapitel('${k.id}')">✏</button>
-    </div>`;}).join('');
+  const lang=state.activeLang;
+  const query=(document.getElementById('kapitelSearch')||{}).value||'';
+  const klasseFilter=(document.getElementById('kapitelKlasseFilter')||{}).value||'';
+  const gruppeFilter=(document.getElementById('kapitelGruppeFilter')||{}).value||'';
+  const isSearch=query.trim().length>1;
+  const listEl=document.getElementById('kapitelListe');
+  const searchEl=document.getElementById('searchResults');
+
+  if(isSearch){
+    listEl.style.display='none';
+    searchEl.style.display='block';
+    const q=query.toLowerCase().trim();
+    const results=[];
+    state.kapitel.filter(k=>k.lang===lang).forEach(k=>{
+      (k.vokabeln||[]).forEach(v=>{
+        if(v.fremd.toLowerCase().includes(q)||v.deutsch.toLowerCase().includes(q)){
+          results.push({kapName:k.name,kapLang:k.lang,fremd:v.fremd,deutsch:v.deutsch,difficulty:v.difficulty||0});
+        }
+      });
+    });
+    if(!results.length){
+      searchEl.innerHTML='<div class="empty"><div class="ei">🔍</div><p>Keine Treffer für „'+esc(query)+'"</p></div>';
+      return;
+    }
+    searchEl.innerHTML='<p class="sec-label">'+results.length+' Treffer</p>'+
+      results.map(r=>{
+        const dc=['diff-0','diff-1','diff-2'][Math.min(r.difficulty,2)];
+        return`<div class="vok-row" style="background:var(--surface);padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:6px;border:1px solid var(--border)">
+          <div class="vok-difficulty ${dc}"></div>
+          <div class="vok-left">${esc(r.fremd)}</div>
+          <div class="vok-right">${esc(r.deutsch)}</div>
+          <span style="font-size:11px;color:var(--text3);flex-shrink:0;margin-left:4px">${esc(r.kapName)}</span>
+        </div>`;
+      }).join('');
+    return;
+  }
+
+  listEl.style.display='block';
+  searchEl.style.display='none';
+  let kaps=state.kapitel.filter(k=>k.lang===lang);
+  if(klasseFilter)kaps=kaps.filter(k=>(k.klasse||'')===klasseFilter);
+  if(gruppeFilter)kaps=kaps.filter(k=>(k.gruppe||'')===gruppeFilter);
+
+  // Sort — default by nr, manual selection overrides temporarily
+  const sortVal=(document.getElementById('kapitelSort')||{}).value||'nr';
+  const sortFn=(a,b)=>{
+    const av=a.vokabeln||[],bv=b.vokabeln||[];
+    switch(sortVal){
+      case 'name':      return a.name.localeCompare(b.name);
+      case 'name-desc': return b.name.localeCompare(a.name);
+      case 'count-desc': return bv.length-av.length;
+      case 'count-asc':  return av.length-bv.length;
+      case 'date-desc':  return new Date(b.erstellt||0)-new Date(a.erstellt||0);
+      case 'date-asc':   return new Date(a.erstellt||0)-new Date(b.erstellt||0);
+      case 'diff': {
+        const aw=av.filter(v=>(v.difficulty||0)>=1).length/Math.max(av.length,1);
+        const bw=bv.filter(v=>(v.difficulty||0)>=1).length/Math.max(bv.length,1);
+        return bw-aw;
+      }
+      default: return (a.nr||9999)-(b.nr||9999); // 'nr' and fallback
+    }
+  };
+
+  if(!kaps.length){
+    listEl.innerHTML=`<div class="empty"><div class="ei">📚</div><p>Keine Kapitel für ${LANG_ICONS[lang]} ${LANG_LABELS[lang]}.<br>Scanne eine Seite oder lege manuell an.</p></div>`;
+    return;
+  }
+
+  // 3-level grouping: Klasse → Gruppe → Kapitel
+  // Collect all klassen present (sorted)
+  const klassenSet=new Set(kaps.map(k=>k.klasse||''));
+  const klassenSorted=[...(state.klassen||[]).filter(k=>klassenSet.has(k)),...(klassenSet.has('')?['']:[])];
+  // Add any klassen in data but not in state.klassen
+  kaps.forEach(k=>{if(k.klasse&&!(state.klassen||[]).includes(k.klasse)&&!klassenSorted.includes(k.klasse))klassenSorted.unshift(k.klasse);});
+
+  let html='';
+  klassenSorted.forEach(kl=>{
+    const kapsInKlasse=kaps.filter(k=>(k.klasse||'')===kl);
+    if(!kapsInKlasse.length)return;
+    if(kl)html+=`<p class="sec-label" style="margin-top:20px;font-size:12px;letter-spacing:1px">📚 Klasse ${esc(kl)}</p>`;
+
+    // Group by gruppe within this klasse
+    const gruppenSet=new Set(kapsInKlasse.map(k=>k.gruppe||''));
+    const gruppenSorted=[...(state.gruppen||[]).filter(g=>g.lang===lang&&gruppenSet.has(g.name)).map(g=>g.name),...(gruppenSet.has('')?['']:[])];
+    // Add any gruppe in data but not in state.gruppen
+    kapsInKlasse.forEach(k=>{if(k.gruppe&&!gruppenSorted.includes(k.gruppe))gruppenSorted.unshift(k.gruppe);});
+
+    gruppenSorted.forEach(gr=>{
+      const kapsInGruppe=kapsInKlasse.filter(k=>(k.gruppe||'')===gr).sort(sortFn);
+      if(!kapsInGruppe.length)return;
+      if(gr)html+=`<p class="sec-label" style="margin-top:12px;font-size:11px;color:var(--text2);padding-left:4px;border-left:3px solid var(--border)">  ${esc(gr)}</p>`;
+      kapsInGruppe.forEach(k=>{
+        const total=(k.vokabeln||[]).length,weak=(k.vokabeln||[]).filter(v=>(v.difficulty||0)>=1).length;
+        const meanings=k.lang==='la'?(k.vokabeln||[]).reduce((s,v)=>s+getMeanings(v.deutsch).length,0):total;
+        html+=`<div class="kapitel-item" onclick="showKapitelDetail('${k.id}')">
+          <div class="kapitel-icon">${LANG_ICONS[k.lang]}</div>
+          <div class="kapitel-info">
+            <div class="kapitel-name">${esc(k.name)}</div>
+            <div class="kapitel-meta">${total} Vokabeln${k.lang==='la'&&meanings!==total?' · '+meanings+' Bed.':''}${weak?' · ⚠ '+weak+' schwach':''}${k.buch?' · '+esc(k.buch):''}</div>
+          </div>
+          <button class="edit-btn" onclick="event.stopPropagation();openEditKapitel('${k.id}')">✏</button>
+        </div>`;
+      });
+    });
+  });
+  listEl.innerHTML=html;
 }
 
 function showKapitelDetail(id){
@@ -899,36 +1123,99 @@ function showKapitelDetail(id){
   document.getElementById('detailContent').innerHTML=html;openModal('modalDetail');
 }
 
+function populateKlasseSelect(selectedKlasse){
+  const sel=document.getElementById('mKapKlasse');
+  if(!sel)return;
+  sel.innerHTML='<option value="">– keine –</option>'+
+    (state.klassen||[]).map(k=>`<option value="${esc(k)}"${k===selectedKlasse?' selected':''}>${esc(k)}</option>`).join('');
+}
 function openKapitelModal(){
   document.getElementById('modalKapitelTitle').textContent='Neues Kapitel';
-  document.getElementById('mKapName').value='';document.getElementById('mKapLang').value=state.activeLang;
-  document.getElementById('mKapBuch').value='';document.getElementById('mKapEditId').value='';
-  document.getElementById('delKapBtn').style.display='none';tempVoks=[];renderModalVoks();openModal('modalKapitel');
+  document.getElementById('mKapName').value='';
+  document.getElementById('mKapLang').value=state.activeLang;
+  document.getElementById('mKapBuch').value='';
+  document.getElementById('mKapEditId').value='';
+  document.getElementById('delKapBtn').style.display='none';
+  populateKlasseSelect('');
+  populateGruppeSelect('');
+  tempVoks=[];renderModalVoks();openModal('modalKapitel');
 }
 function openEditKapitel(id){
   const k=state.kapitel.find(k=>k.id===id);if(!k)return;
   document.getElementById('modalKapitelTitle').textContent='Kapitel bearbeiten';
   document.getElementById('mKapName').value=k.name;document.getElementById('mKapLang').value=k.lang;
   document.getElementById('mKapBuch').value=k.buch||'';document.getElementById('mKapEditId').value=id;
-  document.getElementById('delKapBtn').style.display='flex';tempVoks=(k.vokabeln||[]).map(v=>({...v}));renderModalVoks();openModal('modalKapitel');
+  document.getElementById('delKapBtn').style.display='flex';
+  populateKlasseSelect(k.klasse||'');
+  populateGruppeSelect(k.gruppe||'');
+  tempVoks=(k.vokabeln||[]).map(v=>({...v}));renderModalVoks();openModal('modalKapitel');
 }
 function renderModalVoks(){
   const el=document.getElementById('mVokListe');
   if(!tempVoks.length){el.innerHTML='<p style="color:var(--text3);font-size:12px;margin-bottom:8px">Noch keine Vokabeln.</p>';return;}
-  el.innerHTML=tempVoks.map((v,i)=>`<div class="vok-edit-row">
-    <input type="text" value="${esc(v.fremd||'')}" placeholder="Fremdsprache" oninput="tempVoks[${i}].fremd=this.value" style="font-weight:700">
-    <input type="text" value="${esc(v.deutsch||'')}" placeholder="Deutsch" oninput="tempVoks[${i}].deutsch=this.value">
-    <button class="vok-del" onclick="removeTempVok(${i})">×</button>
+  el.innerHTML=tempVoks.map((v,i)=>`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+    <div class="vok-edit-row" style="margin-bottom:4px">
+      <input type='text' value='${esc(v.fremd||'')}' placeholder='Fremdsprache' oninput='tempVoks[${i}].fremd=this.value' style='font-weight:700'>
+      <input type='text' value='${esc(v.deutsch||'')}' placeholder='Deutsch' oninput='tempVoks[${i}].deutsch=this.value'>
+      <button class='vok-del' onclick='removeTempVok(${i})'>×</button>
+    </div>
+    <button class='vok-mnemonic-toggle' onclick='toggleVokMnemonic(${i})'>
+      ${v.esel?'💡 Eselsbrücke bearbeiten':'+ Eselsbrücke hinzufügen'}
+    </button>
+    <div class='vok-mnemonic-field${v.esel?' open':''}' id='eselField${i}'>
+      <textarea placeholder='Eselsbrücke, Merkhilfe, Beispiel…' oninput='tempVoks[${i}].esel=this.value' style='min-height:50px;font-size:13px'>${esc(v.esel||'')}</textarea>
+    </div>
   </div>`).join('');
+}
+function toggleVokMnemonic(i){
+  const field=document.getElementById('eselField'+i);
+  if(field)field.classList.toggle('open');
 }
 function addVokRow(){tempVoks.push({fremd:'',deutsch:'',difficulty:0,correct:0,wrong:0});renderModalVoks();}
 function removeTempVok(i){tempVoks.splice(i,1);renderModalVoks();}
+function nextKapitelNr(){
+  const nrs=state.kapitel.map(k=>k.nr||0).filter(n=>n>0);
+  return nrs.length?Math.max(...nrs)+1:1;
+}
+function openKapitelModal(){
+  document.getElementById('modalKapitelTitle').textContent='Neues Kapitel';
+  document.getElementById('mKapName').value='';
+  document.getElementById('mKapLang').value=state.activeLang;
+  document.getElementById('mKapBuch').value='';
+  document.getElementById('mKapEditId').value='';
+  document.getElementById('mKapNr').value=nextKapitelNr();
+  document.getElementById('delKapBtn').style.display='none';
+  populateKlasseSelect('');
+  populateGruppeSelect('');
+  tempVoks=[];renderModalVoks();openModal('modalKapitel');
+}
+function openEditKapitel(id){
+  const k=state.kapitel.find(k=>k.id===id);if(!k)return;
+  document.getElementById('modalKapitelTitle').textContent='Kapitel bearbeiten';
+  document.getElementById('mKapName').value=k.name;
+  document.getElementById('mKapLang').value=k.lang;
+  document.getElementById('mKapBuch').value=k.buch||'';
+  document.getElementById('mKapEditId').value=id;
+  document.getElementById('mKapNr').value=k.nr||'';
+  document.getElementById('delKapBtn').style.display='flex';
+  populateKlasseSelect(k.klasse||'');
+  populateGruppeSelect(k.gruppe||'');
+  tempVoks=(k.vokabeln||[]).map(v=>({...v}));renderModalVoks();openModal('modalKapitel');
+}
 function saveKapitel(){
   const name=document.getElementById('mKapName').value.trim();if(!name){toast('Bitte Kapitelname eingeben');return;}
   const editId=document.getElementById('mKapEditId').value,valid=tempVoks.filter(v=>v.fremd&&v.deutsch);
-  if(editId){const k=state.kapitel.find(k=>k.id===editId);if(k){k.name=name;k.lang=gv('mKapLang');k.buch=gv('mKapBuch');k.vokabeln=valid;toast('Gespeichert!');}}
-  else{state.kapitel.push({id:'k'+Date.now(),name,lang:gv('mKapLang'),buch:gv('mKapBuch'),vokabeln:valid.map(v=>({...v,difficulty:0,correct:0,wrong:0})),erstellt:new Date().toISOString()});toast('Kapitel angelegt!');}
-  save();renderKapitel();renderKapitelAuswahl();renderScanKapitelSelect();closeModal('modalKapitel');
+  const klasse=gv('mKapKlasse')||'';
+  const gruppe=gv('mKapGruppe')||'';
+  const nr=parseInt(document.getElementById('mKapNr').value)||nextKapitelNr();
+  if(editId){
+    const k=state.kapitel.find(k=>k.id===editId);
+    if(k){k.name=name;k.lang=gv('mKapLang');k.buch=gv('mKapBuch');k.klasse=klasse;k.gruppe=gruppe;k.nr=nr;k.vokabeln=valid;toast('Gespeichert!');}
+  } else {
+    state.kapitel.push({id:'k'+Date.now(),name,lang:gv('mKapLang'),buch:gv('mKapBuch'),klasse,gruppe,nr,vokabeln:valid.map(v=>({...v,difficulty:0,correct:0,wrong:0})),erstellt:new Date().toISOString()});
+    toast('Kapitel angelegt!');
+  }
+  save();renderKapitel();renderKlassenFilter();renderGruppenFilter();renderKapitelAuswahl();renderScanKapitelSelect();closeModal('modalKapitel');
 }
 function deleteKapitel(){
   const id=gv('mKapEditId'),k=state.kapitel.find(k=>k.id===id);
@@ -1173,7 +1460,7 @@ function speichereAnalyse(){
 // ── ABFRAGEN ──
 function renderKapitelAuswahl(){
   const el=document.getElementById('kapitelAuswahl');
-  const kaps=state.kapitel.filter(k=>k.lang===state.activeLang);
+  const kaps=state.kapitel.filter(k=>k.lang===state.activeLang).slice().sort((a,b)=>(a.nr||9999)-(b.nr||9999));
   if(!kaps.length){el.innerHTML='<p style="color:var(--text3);font-size:13px;margin-bottom:12px">Keine Kapitel vorhanden.</p>';return;}
   el.innerHTML=kaps.map(k=>{const sel=selectedKapitel.has(k.id);return`<div class="kapitel-check-row${sel?' selected':''}" onclick="toggleKapitelSelect('${k.id}',this)">
     <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation()">
@@ -1185,13 +1472,13 @@ function toggleKapitelSelect(id,row){
   else{selectedKapitel.add(id);row.classList.add('selected');row.querySelector('input').checked=true;}
   updateAbfrageInfo();
 }
-function setDir(v){abfrageSettings.dir=v;document.getElementById('dirDE').classList.toggle('active',v==='de');document.getElementById('dirFS').classList.toggle('active',v==='fs');}
-function setOrder(v){abfrageSettings.order=v;document.getElementById('orderSeq').classList.toggle('active',v==='seq');document.getElementById('orderRnd').classList.toggle('active',v==='rnd');}
-function setFocus(v){abfrageSettings.focus=v;document.getElementById('focusAll').classList.toggle('active',v==='all');document.getElementById('focusWeak').classList.toggle('active',v==='weak');}
+function setDir(v){abfrageSettings.dir=v;document.getElementById('dirDE')?.classList.toggle('active',v==='de');document.getElementById('dirFS')?.classList.toggle('active',v==='fs');}
+function setOrder(v){abfrageSettings.order=v;document.getElementById('orderSeq')?.classList.toggle('active',v==='seq');document.getElementById('orderRnd')?.classList.toggle('active',v==='rnd');}
+function setFocus(v){abfrageSettings.focus=v;document.getElementById('focusAll')?.classList.toggle('active',v==='all');document.getElementById('focusWeak')?.classList.toggle('active',v==='weak');}
 function setMode(v){
   abfrageSettings.mode=v;
-  document.getElementById('modeSelf').classList.toggle('active',v==='self');
-  document.getElementById('modePartner').classList.toggle('active',v==='partner');
+  document.getElementById('modeSelf')?.classList.toggle('active',v==='self');
+  document.getElementById('modePartner')?.classList.toggle('active',v==='partner');
 }
 function getQuizVoks(){let voks=[];state.kapitel.filter(k=>selectedKapitel.has(k.id)).forEach(k=>{(k.vokabeln||[]).forEach(v=>voks.push({...v,kapId:k.id,lang:k.lang}));});return voks;}
 function updateAbfrageInfo(){
@@ -1206,11 +1493,57 @@ function startAbfragen(){
   let voks=getQuizVoks();if(!voks.length){toast('Bitte Kapitel wählen');return;}
   if(abfrageSettings.focus==='weak'){voks.sort((a,b)=>(b.difficulty||0)-(a.difficulty||0));voks=[...voks,...voks.filter(v=>(v.difficulty||0)>=2)];}
   if(abfrageSettings.order==='rnd')voks=voks.sort(()=>Math.random()-.5);
-  quizState={voks,idx:0,correct:0,wrong:0,meaningRatings:[]};
+  quizState={voks,idx:0,correct:0,wrong:0,meaningRatings:[],marked:new Set(),wrongVoks:[]};
   document.getElementById('abfragen-setup').style.display='none';
   document.getElementById('abfragen-quiz').style.display='block';
   document.getElementById('abfragen-result').style.display='none';
   renderQuizCard();
+}
+function startRepeatMarked(){
+  // Build repeat pool: marked + wrong from last session
+  const pool=quizState?[
+    ...quizState.voks.filter((_,i)=>quizState.marked&&quizState.marked.has(i)),
+    ...(quizState.wrongVoks||[])
+  ]:[];
+  // Deduplicate by fremd
+  const seen=new Set();
+  const voks=pool.filter(v=>{if(seen.has(v.fremd))return false;seen.add(v.fremd);return true;});
+  if(!voks.length){toast('Keine Vokabeln in der Wiederholungsliste');return;}
+  if(abfrageSettings.order==='rnd')voks.sort(()=>Math.random()-.5);
+  quizState={voks,idx:0,correct:0,wrong:0,meaningRatings:[],marked:new Set(),wrongVoks:[],isRepeat:true};
+  document.getElementById('abfragen-setup').style.display='none';
+  document.getElementById('abfragen-quiz').style.display='block';
+  document.getElementById('abfragen-result').style.display='none';
+  renderQuizCard();
+}
+function toggleMark(){
+  const q=quizState;
+  if(!q)return;
+  const btn=document.getElementById('quizMarkBtn');
+  if(q.marked.has(q.idx)){
+    q.marked.delete(q.idx);
+    if(btn)btn.classList.remove('active');
+  } else {
+    q.marked.add(q.idx);
+    if(btn)btn.classList.add('active');
+  }
+}
+function updateRepeatPoolUI(){
+  // called from showSetup — show pool size if anything waiting
+  const q=quizState;
+  const poolInfo=document.getElementById('repeatPoolInfo');
+  const poolBadge=document.getElementById('repeatPoolBadge');
+  if(!poolInfo)return;
+  if(!q){poolInfo.style.display='none';return;}
+  const markedCount=(q.marked&&q.marked.size)||0;
+  const wrongCount=(q.wrongVoks&&q.wrongVoks.length)||0;
+  const total=new Set([...(q.marked?[...q.marked].map(i=>q.voks[i]?.fremd):[]),...(q.wrongVoks||[]).map(v=>v.fremd)].filter(Boolean)).size;
+  if(total>0){
+    poolInfo.style.display='block';
+    poolBadge.textContent='🔖 '+markedCount+' markiert  ✗ '+wrongCount+' falsch  = '+total+' Vokabeln';
+  } else {
+    poolInfo.style.display='none';
+  }
 }
 function renderQuizCard(){
   const q=quizState,v=q.voks[q.idx],total=q.voks.length;
@@ -1218,10 +1551,14 @@ function renderQuizCard(){
   // Mode bar
   const bar=document.getElementById('quizModeBar');
   if(bar){
-    bar.textContent=isPartner?'👥 Abfrage zu zweit':'🧑‍🎓 Selbstprüfung';
-    bar.style.background=isPartner?'rgba(74,222,128,.15)':'var(--surface2)';
-    bar.style.color=isPartner?'#16a34a':'var(--text2)';
+    const isRepeat=q.isRepeat;
+    bar.textContent=isRepeat?'🔖 Wiederholung':isPartner?'👥 Abfrage zu zweit':'🧑‍🎓 Selbstprüfung';
+    bar.style.background=isRepeat?'rgba(251,191,36,.15)':isPartner?'rgba(74,222,128,.15)':'var(--surface2)';
+    bar.style.color=isRepeat?'#92400e':isPartner?'#16a34a':'var(--text2)';
   }
+  // Restore mark button state
+  const markBtn=document.getElementById('quizMarkBtn');
+  if(markBtn)markBtn.className='quiz-btn mark'+(q.marked&&q.marked.has(q.idx)?' active':'');
   document.getElementById('quizBar').style.width=(q.idx/total*100)+'%';
   document.getElementById('quizCounter').textContent=(q.idx+1)+' / '+total;
   const ll={en:'Englisch',la:'Latein',fr:'Französisch'}[v.lang]||'';
@@ -1239,6 +1576,13 @@ function renderQuizCard(){
   answerEl.classList.remove('visible');
   meaningArea.style.display='none';
   rateRow.style.display='none';
+  const mnemonicEl=document.getElementById('quizMnemonic');
+  const hintRow=document.getElementById('quizHintRow');
+  const addRow=document.getElementById('quizAddMnemonicRow');
+  const editArea=document.getElementById('quizMnemonicEdit');
+  if(mnemonicEl){mnemonicEl.textContent='';mnemonicEl.classList.remove('visible');}
+  if(editArea)editArea.style.display='none';
+  _updateMnemonicButtons(v);
   q.meaningRatings=meanings.map(()=>null);
   if(abfrageSettings.dir==='de'){
     document.getElementById('quizLang').textContent='Deutsch → '+ll;
@@ -1297,6 +1641,62 @@ function _revealAnswer(v,isLatin,meanings){
     rateRow.style.display='flex';
   }
 }
+function startMnemonicEdit(){
+  const v=quizState.voks[quizState.idx];
+  const editArea=document.getElementById('quizMnemonicEdit');
+  const inp=document.getElementById('quizMnemonicInput');
+  // Hide mnemonic display while editing
+  document.getElementById('quizMnemonic').classList.remove('visible');
+  inp.value=v.esel||'';
+  editArea.style.display='block';
+  inp.focus();
+}
+function saveMnemonic(){
+  const q=quizState,v=q.voks[q.idx];
+  const text=document.getElementById('quizMnemonicInput').value.trim();
+  // Save to the actual vokabel in kapitel data
+  const kap=state.kapitel.find(k=>k.id===v.kapId);
+  if(kap){
+    const ov=kap.vokabeln.find(vv=>vv.fremd===v.fremd);
+    if(ov)ov.esel=text;
+  }
+  // Also update the in-memory quiz vok
+  v.esel=text;
+  save();
+  document.getElementById('quizMnemonicEdit').style.display='none';
+  // Update UI
+  _updateMnemonicButtons(v);
+  if(text){
+    document.getElementById('quizMnemonic').textContent=text;
+    document.getElementById('quizMnemonic').classList.add('visible');
+  }
+  toast(text?'Eselsbrücke gespeichert':'Eselsbrücke entfernt');
+}
+function cancelMnemonicEdit(){
+  document.getElementById('quizMnemonicEdit').style.display='none';
+}
+function _updateMnemonicButtons(v){
+  const hintRow=document.getElementById('quizHintRow');
+  const addRow=document.getElementById('quizAddMnemonicRow');
+  if(v.esel){
+    if(hintRow)hintRow.style.display='flex';
+    if(addRow)addRow.style.display='none';
+  } else {
+    if(hintRow)hintRow.style.display='none';
+    if(addRow)addRow.style.display='flex';
+  }
+}
+function toggleMnemonic(){
+  const v=quizState.voks[quizState.idx];
+  const el=document.getElementById('quizMnemonic');
+  if(!el||!v.esel)return;
+  if(el.classList.contains('visible')){
+    el.classList.remove('visible');
+  } else {
+    el.textContent=v.esel;
+    el.classList.add('visible');
+  }
+}
 function showAnswer(){
   const q=quizState,v=q.voks[q.idx];
   const isLatin=v.lang==='la';
@@ -1341,7 +1741,7 @@ function rateCard(correct){
   const q=quizState,v=q.voks[q.idx];
   const kap=state.kapitel.find(k=>k.id===v.kapId);
   if(kap){const ov=kap.vokabeln.find(vv=>vv.fremd===v.fremd);if(ov){ov.correct=(ov.correct||0)+(correct?1:0);ov.wrong=(ov.wrong||0)+(correct?0:1);ov.difficulty=correct?Math.max(0,(ov.difficulty||0)-1):Math.min(2,(ov.difficulty||0)+1);}}
-  if(correct)q.correct++;else q.wrong++;
+  if(correct)q.correct++;else{q.wrong++;if(q.wrongVoks)q.wrongVoks.push({...v});}
   q.idx++;
   if(q.idx>=q.voks.length){save();showResult();}else renderQuizCard();
 }
@@ -1352,10 +1752,25 @@ function showResult(){
   document.getElementById('resultIcon').textContent=pct>=90?'🏆':pct>=70?'👍':pct>=50?'📖':'💪';
   document.getElementById('resultTitle').textContent=pct>=90?'Ausgezeichnet!':pct>=70?'Gut gemacht!':pct>=50?'Weiter üben!':'Nicht aufgeben!';
   document.getElementById('resultCorrect').textContent=q.correct;document.getElementById('resultWrong').textContent=q.wrong;document.getElementById('resultTotal').textContent=q.voks.length;
-  document.getElementById('resultSub').textContent=pct+'% richtig · '+(q.wrong>0?q.wrong+' Vokabeln als schwierig markiert – werden öfter wiederholt.':'Alle Vokabeln gewusst!');
+  document.getElementById('resultSub').textContent=pct+'% richtig · '+(q.wrong>0?q.wrong+' falsch':q.marked&&q.marked.size?'':'Alle Vokabeln gewusst!');
+  // Show repeat button if there are marked or wrong voks
+  const markedCount=(q.marked&&q.marked.size)||0;
+  const wrongCount=(q.wrongVoks&&q.wrongVoks.length)||0;
+  const repeatBtn=document.getElementById('repeatMarkedBtn');
+  if(repeatBtn){
+    const total=new Set([...(q.marked?[...q.marked].map(i=>q.voks[i]?.fremd):[]),...(q.wrongVoks||[]).map(v=>v.fremd)].filter(Boolean)).size;
+    repeatBtn.style.display=total>0?'flex':'none';
+    if(total>0)repeatBtn.textContent='🔖 Wiederholen: '+total+' Vokabeln ('+markedCount+' markiert + '+wrongCount+' falsch)';
+  }
 }
 function stopQuiz(){save();showSetup();}
-function showSetup(){document.getElementById('abfragen-setup').style.display='block';document.getElementById('abfragen-quiz').style.display='none';document.getElementById('abfragen-result').style.display='none';renderKapitelAuswahl();}
+function showSetup(){
+  document.getElementById('abfragen-setup').style.display='block';
+  document.getElementById('abfragen-quiz').style.display='none';
+  document.getElementById('abfragen-result').style.display='none';
+  renderKapitelAuswahl();
+  updateRepeatPoolUI();
+}
 
 // ── STATISTIK ──
 function renderStatistik(){
@@ -1379,7 +1794,81 @@ function renderStatistik(){
   ${wl.length?`<p class="sec-label" style="margin-top:20px">⚠ Schwache Vokabeln</p>`+wl.map(v=>`<div class="vok-row" style="background:var(--surface);padding:10px 12px;border-radius:8px;margin-bottom:6px"><div class="vok-difficulty diff-2"></div><div class="vok-left">${esc(v.fremd)}</div><div class="vok-right">${esc(v.deutsch)}</div><span style="font-size:11px;color:var(--text3)">${LANG_ICONS[v.kl]}</span></div>`).join(''):''}`;
 }
 
-// ── IMPORT / EXPORT ──
+// ── GRUPPEN ──
+function openGruppeModal(){renderGruppenModal();openModal('modalGruppe');}
+function renderGruppenModal(){
+  const el=document.getElementById('gruppenListe');if(!el)return;
+  const gr=state.gruppen||[];
+  if(!gr.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);margin-bottom:8px">Noch keine Gruppen angelegt.</p>';return;}
+  el.innerHTML=gr.map((g,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:16px">${LANG_ICONS[g.lang]||''}</span>
+      <span style="flex:1;font-size:14px;font-weight:600">${esc(g.name)}</span>
+      <span style="font-size:12px;color:var(--text3)">${state.kapitel.filter(k=>(k.gruppe||'')===g.name&&k.lang===g.lang).length} Kapitel</span>
+      <button class="vok-del" onclick="deleteGruppe(${i})">×</button>
+    </div>`).join('');
+}
+function addGruppe(){
+  const name=(document.getElementById('neueGruppeName').value||'').trim();
+  const lang=document.getElementById('neueGruppeLang').value||'en';
+  if(!name){toast('Bitte Namen eingeben');return;}
+  if(!state.gruppen)state.gruppen=[];
+  if(state.gruppen.some(g=>g.name===name&&g.lang===lang)){toast('Gruppe existiert bereits');return;}
+  state.gruppen.push({name,lang});
+  document.getElementById('neueGruppeName').value='';
+  save();renderGruppenModal();renderGruppenFilter();populateGruppeSelect('');
+  toast('Gruppe angelegt');
+}
+function deleteGruppe(i){
+  const g=state.gruppen[i];
+  if(!confirm(`Gruppe „${g.name}" löschen?`))return;
+  state.kapitel.forEach(k=>{if((k.gruppe||'')===g.name&&k.lang===g.lang)k.gruppe='';});
+  state.gruppen.splice(i,1);
+  save();renderGruppenModal();renderGruppenFilter();renderKapitel();toast('Gruppe gelöscht');
+}
+function populateGruppeSelect(selectedGruppe){
+  const sel=document.getElementById('mKapGruppe');if(!sel)return;
+  const lang=gv('mKapLang')||state.activeLang;
+  const gr=(state.gruppen||[]).filter(g=>g.lang===lang);
+  sel.innerHTML='<option value="">– keine –</option>'+
+    gr.map(g=>`<option value="${esc(g.name)}"${g.name===selectedGruppe?' selected':''}>${esc(g.name)}</option>`).join('');
+}
+function openKlasseModal(){
+  renderKlassenModal();
+  openModal('modalKlasse');
+}
+function renderKlassenModal(){
+  const el=document.getElementById('klassenListe');
+  if(!el)return;
+  const kl=state.klassen||[];
+  if(!kl.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);margin-bottom:8px">Noch keine Klassen angelegt.</p>';return;}
+  el.innerHTML=kl.map((k,i)=>`
+    <div class="firma-row" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="flex:1;font-size:14px;font-weight:600">${esc(k)}</span>
+      <span style="font-size:12px;color:var(--text3)">${state.kapitel.filter(kap=>(kap.klasse||'')===k).length} Kapitel</span>
+      <button class="vok-del" onclick="deleteKlasse(${i})">×</button>
+    </div>`).join('');
+}
+function addKlasse(){
+  const inp=document.getElementById('neueKlasseName');
+  const name=(inp.value||'').trim();
+  if(!name){toast('Bitte Klassenname eingeben');return;}
+  if(!state.klassen)state.klassen=[];
+  if(state.klassen.includes(name)){toast('Klasse existiert bereits');return;}
+  state.klassen.push(name);
+  state.klassen.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  inp.value='';
+  save();renderKlassenModal();renderKlassenFilter();populateKlasseSelect('');
+  toast('Klasse angelegt');
+}
+function deleteKlasse(i){
+  const name=state.klassen[i];
+  if(!confirm('Klasse "'+name+'" löschen? Kapitel dieser Klasse bleiben erhalten.'))return;
+  state.kapitel.forEach(k=>{if((k.klasse||'')===name)k.klasse='';});
+  state.klassen.splice(i,1);
+  save();renderKlassenModal();renderKlassenFilter();renderKapitel();
+  toast('Klasse gelöscht');
+}
 let importLang='en';
 
 function setImportLang(l,btn){
@@ -1404,10 +1893,19 @@ function renderTransferSelects(){
 }
 
 function buildTxtContent(kapitel){
-  // Returns txt string with # headers per kapitel
   return kapitel.map(k=>{
-    const lines=['# '+k.name+' ['+k.lang+']'];
-    (k.vokabeln||[]).forEach(v=>lines.push(v.fremd+' = '+v.deutsch));
+    // Header encodes all metadata
+    let header='# '+k.name+' ['+k.lang+']';
+    if(k.nr)header+=' [nr:'+k.nr+']';
+    if(k.klasse)header+=' [klasse:'+k.klasse+']';
+    if(k.gruppe)header+=' [gruppe:'+k.gruppe+']';
+    if(k.buch)header+=' [buch:'+k.buch+']';
+    const lines=[header];
+    (k.vokabeln||[]).forEach(v=>{
+      let line=v.fremd+' = '+v.deutsch;
+      if(v.esel)line+=' [esel:'+v.esel.replace(/\n/g,' ')+']';
+      lines.push(line);
+    });
     return lines.join('\n');
   }).join('\n\n');
 }
@@ -1456,7 +1954,7 @@ function exportKapitel(){
 }
 
 function exportBackup(){
-  const backup={kapitel:state.kapitel,stats:state.stats,exportiert:new Date().toISOString()};
+  const backup={kapitel:state.kapitel,stats:state.stats,klassen:state.klassen||[],gruppen:state.gruppen||[],exportiert:new Date().toISOString()};
   downloadJson(backup,'vokabeltrainer_backup.json');
   toast('Backup exportiert!');
 }
@@ -1467,40 +1965,57 @@ function importTxtFull(input){
   reader.onload=e=>{
     const text=e.target.result;
     const lines=text.split('\n').map(l=>l.trim()).filter(l=>l);
-    let currentKapName=null;
     let currentKapId=null;
     let addedTotal=0;
     const selVal=document.getElementById('importKapSelect').value;
 
+    // Helper: ensure klasse/gruppe exist in state
+    function ensureKlasse(kl){if(kl&&!(state.klassen||[]).includes(kl)){state.klassen=state.klassen||[];state.klassen.push(kl);state.klassen.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));}}
+    function ensureGruppe(gr,lang){if(gr&&!(state.gruppen||[]).some(g=>g.name===gr&&g.lang===lang)){state.gruppen=state.gruppen||[];state.gruppen.push({name:gr,lang});}}
+
     lines.forEach(line=>{
-      // Detect header: # Name [lang] or # Name
       if(line.startsWith('#')){
         const headerText=line.replace(/^#+\s*/,'');
-        // Extract optional [lang] tag
-        const langMatch=headerText.match(/\[([a-z]{2})\]\s*$/i);
-        const parsedLang=langMatch?langMatch[1].toLowerCase():importLang;
-        const kapName=headerText.replace(/\[[a-z]{2}\]\s*$/i,'').trim();
+        // Extract [tag:value] metadata
+        const extract=(tag)=>{const m=headerText.match(new RegExp('\\['+tag+':([^\\]]+)\\]'));return m?m[1].trim():'';};
+        const parsedLang=(headerText.match(/\[([a-z]{2})\]/i)||[])[1]||importLang;
+        const klasse=extract('klasse');
+        const gruppe=extract('gruppe');
+        const buch=extract('buch');
+        const nr=parseInt(extract('nr'))||0;
+        // Strip all [tag] tokens to get clean name
+        const kapName=headerText.replace(/\[[^\]]+\]/g,'').trim();
+        // Ensure klasse/gruppe exist
+        ensureKlasse(klasse);
+        ensureGruppe(gruppe,parsedLang);
         // Find or create kapitel
         let kap=state.kapitel.find(k=>k.name.toLowerCase()===kapName.toLowerCase()&&k.lang===parsedLang);
         if(!kap){
           kap={id:'k'+Date.now()+Math.random().toString(36).slice(2),name:kapName,lang:parsedLang,vokabeln:[],erstellt:new Date().toISOString()};
           state.kapitel.push(kap);
         }
+        // Update metadata (merge, don't overwrite with empty)
+        if(klasse)kap.klasse=klasse;
+        if(gruppe)kap.gruppe=gruppe;
+        if(buch)kap.buch=buch;
+        if(nr)kap.nr=nr;
         currentKapId=kap.id;
-        currentKapName=kapName;
         return;
       }
-      // Detect vokabel line
+      // Vokabel line: fremd = deutsch [esel:...]
       const eqIdx=line.indexOf('=');
       if(eqIdx<1)return;
       const fremd=line.slice(0,eqIdx).trim();
-      const deutsch=line.slice(eqIdx+1).trim();
+      let rest=line.slice(eqIdx+1).trim();
+      // Extract esel if present
+      const eselMatch=rest.match(/\[esel:(.+)\]$/);
+      const esel=eselMatch?eselMatch[1].trim():'';
+      const deutsch=rest.replace(/\[esel:[^\]]+\]$/,'').trim();
       if(!fremd||!deutsch)return;
       // Determine target kapitel
       let kapId=currentKapId;
       if(!kapId){
         if(selVal==='__neu__'){
-          // Create default kapitel named after file
           const defName='Import '+new Date().toLocaleDateString('de-DE');
           let kap=state.kapitel.find(k=>k.name===defName&&k.lang===importLang);
           if(!kap){kap={id:'k'+Date.now()+Math.random().toString(36).slice(2),name:defName,lang:importLang,vokabeln:[],erstellt:new Date().toISOString()};state.kapitel.push(kap);}
@@ -1514,11 +2029,11 @@ function importTxtFull(input){
       const exists=(kap.vokabeln||[]).some(v=>v.fremd.toLowerCase()===fremd.toLowerCase());
       if(!exists){
         kap.vokabeln=kap.vokabeln||[];
-        kap.vokabeln.push({fremd,deutsch,difficulty:0,correct:0,wrong:0});
+        kap.vokabeln.push({fremd,deutsch,esel,difficulty:0,correct:0,wrong:0});
         addedTotal++;
       }
     });
-    save();renderKapitel();renderTransferSelects();
+    save();renderKapitel();renderKlassenFilter();renderGruppenFilter();renderTransferSelects();
     toast(addedTotal+' Vokabeln importiert!');
   };
   reader.readAsText(file,'UTF-8');
@@ -1532,6 +2047,22 @@ function importBackup(input){
     try{
       const data=JSON.parse(e.target.result);
       if(!data.kapitel||!Array.isArray(data.kapitel)){toast('Ungültiges Backup-Format');return;}
+      // Restore klassen
+      if(Array.isArray(data.klassen)){
+        data.klassen.forEach(kl=>{
+          if(kl&&!(state.klassen||[]).includes(kl)){state.klassen=state.klassen||[];state.klassen.push(kl);}
+        });
+        state.klassen=(state.klassen||[]).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+      }
+      // Restore gruppen
+      if(Array.isArray(data.gruppen)){
+        data.gruppen.forEach(g=>{
+          if(g&&g.name&&g.lang&&!(state.gruppen||[]).some(x=>x.name===g.name&&x.lang===g.lang)){
+            state.gruppen=state.gruppen||[];state.gruppen.push(g);
+          }
+        });
+      }
+      // Restore kapitel
       let added=0,merged=0;
       data.kapitel.forEach(importedKap=>{
         let existing=state.kapitel.find(k=>k.name===importedKap.name&&k.lang===importedKap.lang);
@@ -1539,6 +2070,11 @@ function importBackup(input){
           state.kapitel.push({...importedKap,id:'k'+Date.now()+Math.random().toString(36).slice(2)});
           added++;
         } else {
+          // Update metadata
+          if(importedKap.klasse)existing.klasse=importedKap.klasse;
+          if(importedKap.gruppe)existing.gruppe=importedKap.gruppe;
+          if(importedKap.buch)existing.buch=importedKap.buch;
+          if(importedKap.nr)existing.nr=importedKap.nr;
           // Merge vokabeln
           const exFremd=new Set((existing.vokabeln||[]).map(v=>v.fremd.toLowerCase()));
           (importedKap.vokabeln||[]).forEach(v=>{
@@ -1546,7 +2082,7 @@ function importBackup(input){
           });
         }
       });
-      save();renderKapitel();renderTransferSelects();
+      save();renderKapitel();renderKlassenFilter();renderGruppenFilter();renderTransferSelects();
       toast(added+' Kapitel neu, '+merged+' Vokabeln zusammengeführt');
     }catch(err){toast('Fehler beim Lesen der Datei');}
   };
