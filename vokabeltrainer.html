@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Vokabeltrainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&family=Libre+Baskerville:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Petit+Formal+Script&family=Dancing+Script:wght@400;700&family=Parisienne&family=Martel:wght@400;700&family=Lora:ital@0;1&family=Montserrat:wght@400;600&family=Oswald:wght@400;600&family=Raleway:wght@400;600&family=Abril+Fatface&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f5f3ef; --bg2:#ffffff;
+  --surface:rgba(0,0,0,0.05); --surface2:rgba(0,0,0,0.09);
+  --accent:#a80000; --text:#1a1a1a;
+  --text2:rgba(26,26,26,0.65); --text3:rgba(26,26,26,0.38);
+  --border:rgba(0,0,0,0.12);
+  --radius:16px; --radius-sm:10px;
+  --font-display:'Playfair Display',serif; --font-body:'Lora',serif;
+  --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .5s,color .3s;}
+
+/* HEADER */
+.app-header{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);padding:calc(var(--safe-top) + 10px) 18px 0;transition:background .5s;}
+.school-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.school-logo-hdr{width:34px;height:34px;border-radius:7px;object-fit:contain;display:none;flex-shrink:0;}
+.school-logo-hdr.visible{display:block;}
+.school-name-hdr{font-size:12px;letter-spacing:.4px;color:var(--text2);flex:1;font-family:var(--font-display);}
+.lang-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--accent);color:#111;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:var(--font-display);}
+.lang-badge:active{transform:scale(.95);}
+.app-title{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--accent);letter-spacing:-.3px;margin-bottom:6px;transition:all .4s;}
+
+/* TABS */
+.tabs{display:flex;overflow:hidden;}
+.burger-btn{flex-shrink:0;width:44px;padding:9px 0 10px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
+.burger-btn span{display:block;width:18px;height:2px;background:var(--text3);border-radius:2px;transition:background .15s;}
+.burger-btn:hover span,.burger-btn.menu-open span{background:var(--accent);}
+.tab{flex:1;padding:9px 4px 10px;font-size:12px;font-weight:600;color:var(--text3);border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-display);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-align:center;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+/* SETTINGS DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;}
+.drawer-overlay.hidden{display:none;}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:340px;background:var(--bg2);z-index:251;overflow-y:auto;box-shadow:4px 0 24px rgba(0,0,0,.18);padding:calc(var(--safe-top) + 16px) 0 calc(var(--safe-bottom) + 20px);}
+.drawer.hidden{display:none;}
+.drawer-header{padding:10px 20px 16px;border-bottom:1px solid var(--border);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+.drawer-title{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent);}
+.drawer-close{background:var(--surface2);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);flex-shrink:0;line-height:1;}
+.drawer-body{padding:0 16px;}
+
+/* MAIN */
+main{padding:18px 16px calc(var(--safe-bottom) + 80px);max-width:680px;margin:0 auto;}
+.screen{display:none;animation:fadeUp .25s ease;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;}
+.card-header{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:var(--font-display);font-size:16px;color:var(--text);font-weight:700;}
+.card-body{padding:14px 16px;}
+.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);margin:20px 0 9px;font-family:var(--font-display);}
+.sec-label:first-child{margin-top:0;}
+
+/* FORMS */
+.field{margin-bottom:12px;}
+.field label{font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.7px;}
+input[type=text],input[type=email],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:var(--font-body);background:var(--surface2);color:var(--text);outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+textarea{min-height:70px;resize:vertical;}
+select option{background:#222;color:#fff;}
+input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface2);cursor:pointer;}
+
+/* BUTTONS */
+.big-btn{width:100%;padding:14px;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:var(--font-display);border:none;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;}
+.big-btn:active{transform:scale(.98);}
+.big-btn.primary{background:var(--accent);color:#111;}
+.big-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.big-btn.success{background:#2d6a4f;color:#fff;}
+.big-btn.danger{background:#7f1d1d;color:#fca5a5;}
+.icon-btn{padding:7px 13px;border-radius:20px;font-size:12px;font-weight:700;font-family:var(--font-display);border:none;cursor:pointer;background:var(--accent);color:#111;}
+.add-btn{width:100%;padding:10px;border:2px dashed var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text3);font-size:13px;font-family:var(--font-body);cursor:pointer;margin-bottom:10px;}
+
+/* KAPITEL */
+.kapitel-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .15s;}
+.kapitel-item:hover{background:var(--surface2);}
+.kapitel-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--surface2);}
+.kapitel-info{flex:1;min-width:0;}
+.kapitel-name{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--text);}
+.kapitel-meta{font-size:12px;color:var(--text2);margin-top:2px;}
+.edit-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 9px;font-size:14px;cursor:pointer;flex-shrink:0;color:var(--text);}
+
+/* VOK ROWS */
+.vok-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);}
+.vok-row:last-child{border-bottom:none;}
+.vok-left{flex:1;font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-display);}
+.vok-right{flex:1;font-size:14px;color:var(--text2);}
+.vok-del{color:#f87171;background:none;border:none;font-size:18px;cursor:pointer;padding:0 4px;}
+.vok-difficulty{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.diff-0{background:#4ade80;} .diff-1{background:#fbbf24;} .diff-2{background:#f87171;}
+.vok-edit-row{display:flex;gap:6px;align-items:center;margin-bottom:7px;}
+.vok-edit-row input{flex:1;padding:9px 10px;font-size:13px;}
+
+/* FOTO */
+.foto-drop{border:2px dashed var(--border);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:12px;background:var(--surface);}
+.foto-drop:hover{border-color:var(--accent);}
+.foto-preview{width:100%;border-radius:var(--radius-sm);margin-bottom:12px;max-height:200px;object-fit:contain;display:none;}
+.analyse-spinner{text-align:center;padding:20px;font-size:14px;color:var(--text2);display:none;}
+.dot-loader{display:inline-flex;gap:5px;vertical-align:middle;}
+.dot-loader span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:dotB 1.2s infinite;}
+.dot-loader span:nth-child(2){animation-delay:.2s;} .dot-loader span:nth-child(3){animation-delay:.4s;}
+@keyframes dotB{0%,80%,100%{transform:scale(.8);opacity:.5}40%{transform:scale(1.2);opacity:1}}
+
+/* KAPITEL CHECK */
+.kapitel-check-row{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;cursor:pointer;transition:all .15s;}
+.kapitel-check-row.selected{border-color:var(--accent);background:var(--surface2);}
+.kapitel-check-row input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent);flex-shrink:0;}
+.kapitel-check-name{font-weight:700;font-size:14px;font-family:var(--font-display);}
+.kapitel-check-meta{font-size:12px;color:var(--text2);}
+
+/* CONTROLS */
+.seg-ctrl{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px;margin-bottom:13px;}
+.seg-btn{flex:1;padding:8px 4px;border:none;background:transparent;border-radius:7px;font-size:11px;font-weight:700;font-family:var(--font-display);cursor:pointer;color:var(--text2);transition:all .15s;text-align:center;}
+.seg-btn.active{background:var(--accent);color:#111;}
+.dir-row{display:flex;gap:8px;margin-bottom:13px;}
+.dir-btn{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:12px;font-family:var(--font-display);font-weight:700;cursor:pointer;text-align:center;color:var(--text2);transition:all .15s;}
+.dir-btn.active{border-color:var(--accent);color:var(--accent);background:var(--surface2);}
+
+/* QUIZ */
+.quiz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 20px;text-align:center;margin-bottom:16px;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.quiz-lang{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;}
+.quiz-word{font-family:var(--font-display);font-size:34px;font-weight:700;color:var(--accent);margin-bottom:8px;line-height:1.2;}
+.quiz-hint{font-size:13px;color:var(--text3);font-style:italic;}
+.quiz-answer{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-family:var(--font-display);font-size:22px;font-weight:700;text-align:center;margin-bottom:12px;display:none;color:var(--text);}
+.quiz-answer.visible{display:block;}
+.quiz-btn-row{display:flex;gap:10px;margin-bottom:8px;}
+.quiz-btn{flex:1;padding:14px;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:var(--font-display);border:none;cursor:pointer;transition:all .15s;}
+.quiz-btn:active{transform:scale(.97);}
+.quiz-btn.correct{background:rgba(74,222,128,.2);color:#4ade80;border:1.5px solid rgba(74,222,128,.4);}
+.quiz-btn.wrong{background:rgba(248,113,113,.2);color:#f87171;border:1.5px solid rgba(248,113,113,.4);}
+.quiz-btn.show{background:var(--accent);color:#111;}
+.quiz-progress{background:var(--surface2);border-radius:4px;height:5px;margin-bottom:16px;overflow:hidden;}
+.quiz-progress-bar{height:100%;background:var(--accent);border-radius:4px;transition:width .4s ease;}
+.quiz-counter{font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px;letter-spacing:.5px;}
+.quiz-result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;margin-bottom:16px;}
+.quiz-result-title{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:8px;color:var(--accent);}
+.quiz-result-sub{font-size:14px;color:var(--text2);line-height:1.7;}
+.stat-row{display:flex;justify-content:space-around;margin:16px 0;}
+.stat-box{text-align:center;}
+.stat-num{font-family:var(--font-display);font-size:30px;font-weight:700;}
+.stat-num.green{color:#4ade80;} .stat-num.red{color:#f87171;}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-top:2px;}
+
+/* SETTINGS */
+.lang-panel{background:var(--surface2);border-radius:var(--radius-sm);padding:16px;margin-bottom:14px;border:1px solid var(--border);}
+.lang-panel-hdr{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:14px;color:var(--accent);}
+.color-row{display:flex;gap:10px;align-items:center;}
+.font-preview{font-size:16px;padding:6px 10px;background:var(--surface);border-radius:6px;border:1px solid var(--border);color:var(--text);margin-top:6px;}
+.logo-upload-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.logo-ph{width:64px;height:64px;border-radius:12px;background:var(--surface2);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.logo-big{width:64px;height:64px;border-radius:12px;object-fit:contain;border:2px solid var(--border);display:none;flex-shrink:0;}
+.logo-big.visible{display:block;}
+.preset-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.preset-btn{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:11px;font-weight:700;font-family:var(--font-display);cursor:pointer;color:var(--text2);transition:all .15s;}
+.preset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* LANG SWITCHER */
+.lang-switcher-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s;}
+.lang-switcher-overlay.hidden{display:none;}
+.lang-picker-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;min-width:270px;}
+.lang-picker-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--accent);margin-bottom:14px;text-align:center;}
+.lang-option{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:8px;border:1.5px solid var(--border);background:var(--surface);transition:all .15s;}
+.lang-option:hover,.lang-option.active{border-color:var(--accent);background:var(--surface2);}
+.lang-option-icon{font-size:24px;}
+.lang-option-name{font-family:var(--font-display);font-size:16px;font-weight:700;}
+.lang-option-sub{font-size:12px;color:var(--text2);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:flex-end;padding-bottom:var(--safe-bottom);animation:fadeIn .2s;}
+.modal-overlay.hidden{display:none;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-sheet{background:var(--bg2);border-top:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;padding:20px 16px 24px;animation:slideUp .25s ease;max-height:92vh;overflow-y:auto;}
+@keyframes slideUp{from{transform:translateY(40px)}to{transform:none}}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:-10px auto 16px;}
+.modal-title{font-family:var(--font-display);font-size:21px;font-weight:700;margin-bottom:14px;color:var(--accent);}
+
+/* MISC */
+.empty{text-align:center;padding:40px 20px;color:var(--text3);}
+.empty .ei{font-size:48px;margin-bottom:12px;}
+.empty p{font-size:14px;line-height:1.7;}
+hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
+input[type=file]{display:none;}
+.toast{position:fixed;bottom:calc(var(--safe-bottom) + 80px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#111;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;font-family:var(--font-display);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- LANG SWITCHER -->
+<div class="lang-switcher-overlay hidden" id="langSwitcher">
+  <div class="lang-picker-box">
+    <div class="lang-picker-title">Sprache wählen</div>
+    <div class="lang-option" id="lopt-en" onclick="setActiveLang('en')">
+      <div class="lang-option-icon">🇬🇧</div>
+      <div><div class="lang-option-name" id="lname-en">Englisch</div><div class="lang-option-sub">English</div></div>
+    </div>
+    <div class="lang-option" id="lopt-la" onclick="setActiveLang('la')">
+      <div class="lang-option-icon">🏛</div>
+      <div><div class="lang-option-name" id="lname-la">Latein</div><div class="lang-option-sub">Lingua Latina</div></div>
+    </div>
+    <div class="lang-option" id="lopt-fr" onclick="setActiveLang('fr')">
+      <div class="lang-option-icon">🇫🇷</div>
+      <div><div class="lang-option-name" id="lname-fr">Französisch</div><div class="lang-option-sub">Français</div></div>
+    </div>
+    <button class="big-btn secondary" style="margin-top:8px" onclick="document.getElementById('langSwitcher').classList.add('hidden')">Abbrechen</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="school-bar">
+    <img class="school-logo-hdr" id="schoolLogoHdr" alt="Logo">
+    <div class="school-name-hdr" id="schoolNameHdr">Vokabeltrainer</div>
+    <div class="lang-badge" onclick="openLangSwitcher()" id="langBadge">🇬🇧 Englisch</div>
+  </div>
+  <div class="app-title" id="appTitle">English Vocab</div>
+  <div class="tabs">
+    <button class="burger-btn" id="burgerBtn" onclick="openDrawer()" title="Einstellungen">
+      <span></span><span></span><span></span>
+    </button>
+    <button class="tab active" onclick="switchTab('kapitel',this)">Kapitel</button>
+    <button class="tab" onclick="switchTab('abfragen',this)">Abfragen</button>
+    <button class="tab" onclick="switchTab('scannen',this)">Scannen</button>
+    <button class="tab" onclick="switchTab('statistik',this)">Statistik</button>
+  </div>
+</div>
+
+<main>
+
+<!-- KAPITEL -->
+<div id="tab-kapitel" class="screen active">
+  <p class="sec-label">Meine Kapitel</p>
+  <div id="kapitelListe"></div>
+  <button class="big-btn secondary" onclick="openKapitelModal()">＋ Neues Kapitel anlegen</button>
+</div>
+
+<!-- ABFRAGEN -->
+<div id="tab-abfragen" class="screen">
+  <div id="abfragen-setup">
+    <p class="sec-label">Kapitel wählen</p>
+    <div id="kapitelAuswahl"></div>
+    <p class="sec-label" style="margin-top:18px">Abfragerichtung</p>
+    <div class="dir-row">
+      <button class="dir-btn active" id="dirDE" onclick="setDir('de')">DE → Fremdsprache</button>
+      <button class="dir-btn" id="dirFS" onclick="setDir('fs')">Fremdsprache → DE</button>
+    </div>
+    <p class="sec-label">Reihenfolge</p>
+    <div class="dir-row">
+      <button class="dir-btn active" id="orderSeq" onclick="setOrder('seq')">📋 Reihenfolge</button>
+      <button class="dir-btn" id="orderRnd" onclick="setOrder('rnd')">🔀 Zufällig</button>
+    </div>
+    <p class="sec-label">Schwerpunkt</p>
+    <div class="dir-row">
+      <button class="dir-btn active" id="focusAll" onclick="setFocus('all')">Alle</button>
+      <button class="dir-btn" id="focusWeak" onclick="setFocus('weak')">⚠ Schwache zuerst</button>
+    </div>
+    <div id="abfragenInfo" style="margin-top:6px;font-size:13px;color:var(--text3);text-align:center;margin-bottom:16px;font-style:italic"></div>
+    <button class="big-btn primary" onclick="startAbfragen()">▶ Abfragen starten</button>
+  </div>
+  <div id="abfragen-quiz" style="display:none">
+    <div class="quiz-counter" id="quizCounter"></div>
+    <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar"></div></div>
+    <div class="quiz-card">
+      <div class="quiz-lang" id="quizLang"></div>
+      <div class="quiz-word" id="quizWord"></div>
+      <div class="quiz-hint" id="quizHint"></div>
+    </div>
+    <div class="quiz-answer" id="quizAnswer"></div>
+    <div class="quiz-btn-row" id="quizShowRow">
+      <button class="quiz-btn show" onclick="showAnswer()">👁 Antwort zeigen</button>
+    </div>
+    <div class="quiz-btn-row" id="quizRateRow" style="display:none">
+      <button class="quiz-btn wrong" onclick="rateCard(false)">✗ Nochmal</button>
+      <button class="quiz-btn correct" onclick="rateCard(true)">✓ Gewusst</button>
+    </div>
+    <button class="big-btn secondary" style="margin-top:6px" onclick="stopQuiz()">✕ Abbrechen</button>
+  </div>
+  <div id="abfragen-result" style="display:none">
+    <div class="quiz-result-card">
+      <div style="font-size:52px;margin-bottom:12px" id="resultIcon"></div>
+      <div class="quiz-result-title" id="resultTitle"></div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num green" id="resultCorrect"></div><div class="stat-label">Gewusst</div></div>
+        <div class="stat-box"><div class="stat-num red" id="resultWrong"></div><div class="stat-label">Nochmal</div></div>
+        <div class="stat-box"><div class="stat-num" id="resultTotal"></div><div class="stat-label">Gesamt</div></div>
+      </div>
+      <div class="quiz-result-sub" id="resultSub"></div>
+    </div>
+    <button class="big-btn primary" onclick="startAbfragen()">🔄 Nochmal</button>
+    <button class="big-btn secondary" onclick="showSetup()">← Einstellungen</button>
+  </div>
+</div>
+
+<!-- SCANNEN -->
+<div id="tab-scannen" class="screen">
+
+  <!-- SCHRITT 1: Sprache & Kapitel -->
+  <p class="sec-label">1 · Sprache &amp; Kapitel</p>
+  <div class="card"><div class="card-body">
+    <div class="field" style="margin-bottom:10px">
+      <label>Sprache der Vokabeln</label>
+      <div class="seg-ctrl" id="scanLangCtrl">
+        <button class="seg-btn active" onclick="setScanLang('en',this)">🇬🇧 Englisch</button>
+        <button class="seg-btn" onclick="setScanLang('la',this)">🏛 Latein</button>
+        <button class="seg-btn" onclick="setScanLang('fr',this)">🇫🇷 Französisch</button>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:6px">
+      <label>Kapitel zuweisen</label>
+      <select id="scanKapitel"><option value="">— Kapitel wählen —</option><option value="__neu__">+ Neues Kapitel erstellen</option></select>
+    </div>
+    <div class="field" id="scanNeuesKapitelField" style="display:none">
+      <label>Neuer Kapitelname</label>
+      <input type="text" id="scanNeuesKapitelName" placeholder="z. B. Kapitel 5 – Schule">
+    </div>
+  </div></div>
+
+  <!-- SCHRITT 2: Prompt für externe KI -->
+  <p class="sec-label">2 · Prompt für externe KI-App</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.6">Foto in ChatGPT, Claude.ai o.ä. hochladen und diesen Prompt verwenden. Die KI-Ausgabe dann als <strong>.txt</strong> speichern und unten importieren.</p>
+    <div id="promptBox" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:12px;font-family:monospace;line-height:1.7;color:var(--text);white-space:pre-wrap;margin-bottom:10px;user-select:all"></div>
+    <button class="big-btn secondary" onclick="copyPrompt()">📋 Prompt kopieren</button>
+  </div></div>
+
+  <!-- SCHRITT 3: TXT-Import -->
+  <p class="sec-label">3 · KI-Ausgabe als .txt importieren</p>
+  <div class="card"><div class="card-body">
+    <div class="foto-drop" onclick="document.getElementById('txtInput').click()" style="padding:20px">
+      <div style="font-size:32px;margin-bottom:6px">📄</div>
+      <p style="font-size:13px;color:var(--text2)">Textdatei auswählen (.txt)</p>
+    </div>
+    <input type="file" id="txtInput" accept=".txt,text/plain" onchange="importTxt(this)">
+    <p style="font-size:11px;color:var(--text3);margin-top:4px">Format: <code style="background:var(--surface2);padding:1px 4px;border-radius:3px">Wort = Übersetzung</code> — eine Zeile pro Vokabel</p>
+  </div></div>
+
+  <!-- SCHRITT 4: Direkt fotografieren (mit API-Key) -->
+  <p class="sec-label">4 · Direkt scannen (API-Key erforderlich)</p>
+  <div class="card"><div class="card-body">
+    <div class="foto-drop" onclick="document.getElementById('fotoInput').click()">
+      <div style="font-size:32px;margin-bottom:6px">📸</div>
+      <p style="font-size:14px;color:var(--text2)">Foto aufnehmen oder aus Bibliothek wählen</p>
+    </div>
+    <img id="fotoPreview" class="foto-preview" alt="Vorschau">
+    <input type="file" id="fotoInput" accept="image/*" capture="environment" onchange="handleFoto(this)">
+    <div class="analyse-spinner" id="analyseSpinner">
+      <div class="dot-loader"><span></span><span></span><span></span></div>
+      <p style="margin-top:10px">KI analysiert Vokabeln…</p>
+    </div>
+    <button class="big-btn primary" id="analyseBtn" onclick="analysiereVokabeln()" style="display:none">🔍 Vokabeln analysieren</button>
+    <p id="apiKeyHint" style="font-size:11px;color:var(--text3);margin-top:6px;display:none">⚠ Kein API-Key hinterlegt – bitte in den Einstellungen eintragen.</p>
+  </div></div>
+
+  <!-- SCHRITT 5: Manuell -->
+  <p class="sec-label">5 · Manuell eingeben</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Eine Vokabel pro Zeile, Wort und Übersetzung mit <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">=</code> trennen:</p>
+    <textarea id="manualInput" placeholder="house = das Haus&#10;school = die Schule&#10;to run = laufen" style="min-height:100px;font-family:monospace;font-size:13px"></textarea>
+    <button class="big-btn secondary" style="margin-top:8px" onclick="importManual()">↑ Vokabeln übernehmen</button>
+  </div></div>
+
+  <!-- Ergebnis -->
+  <div id="analyseResultCard" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">✏ Vokabeln prüfen &amp; speichern</span>
+        <button class="icon-btn" onclick="addAnalyseVok()">+ Zeile</button>
+      </div>
+      <div class="card-body"><div id="analyseVokListe"></div></div>
+    </div>
+    <button class="big-btn success" onclick="speichereAnalyse()">💾 Vokabeln speichern</button>
+  </div>
+</div>
+
+<!-- STATISTIK -->
+<div id="tab-statistik" class="screen">
+  <p class="sec-label">Überblick</p>
+  <div id="statistikContent"></div>
+</div>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<!-- EINSTELLUNGEN DRAWER -->
+<div class="drawer-overlay hidden" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer hidden" id="settingsDrawer" onclick="event.stopPropagation()">
+  <div class="drawer-header">
+    <div class="drawer-title">⚙ Einstellungen</div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+
+  <p class="sec-label">Schule</p>
+  <div class="card"><div class="card-body">
+    <div class="field">
+      <label>Anthropic API-Key (für Foto-Scan)</label>
+      <input type="password" id="sApiKey" placeholder="sk-ant-..." oninput="saveSettings()" autocomplete="off">
+      <p style="font-size:11px;color:var(--text2);margin-top:4px">Wird nur lokal gespeichert. Nötig für die KI-Analyse von Fotos.</p>
+    </div>
+    <div class="field">
+      <label>Schulname</label>
+      <input type="text" id="sSchulName" placeholder="z. B. Gymnasium am Marktplatz" oninput="saveSettings()">
+    </div>
+    <div class="field">
+      <label>Schriftart Schulname</label>
+      <select id="sSchulFont" onchange="saveSettings();prevSchulFont()">
+        <option value="'Playfair Display',serif">Playfair Display</option>
+        <option value="'Cinzel',serif">Cinzel</option>
+        <option value="'Lora',serif">Lora</option>
+        <option value="'Oswald',sans-serif">Oswald</option>
+        <option value="'Raleway',sans-serif">Raleway</option>
+        <option value="'Montserrat',sans-serif">Montserrat</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'Dancing Script',cursive">Dancing Script</option>
+        <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+      </select>
+      <div class="font-preview" id="prevSchul">Gymnasium am Marktplatz</div>
+    </div>
+    <div class="field">
+      <label>Farbe Schulname</label>
+      <div class="color-row"><input type="color" id="sSchulColor" value="#1a1a1a" oninput="saveSettings()"><span style="font-size:12px;color:var(--text2)">Textfarbe in der Kopfzeile</span></div>
+    </div>
+    <div class="field">
+      <label>Schullogo</label>
+      <div class="logo-upload-row">
+        <div class="logo-ph" id="logoPh">🏫</div>
+        <img class="logo-big" id="logoBig" alt="Logo">
+        <div style="flex:1">
+          <button class="big-btn secondary" style="margin-bottom:6px;font-size:13px" onclick="document.getElementById('logoInput').click()">📁 Logo hochladen</button>
+          <button class="big-btn secondary" style="color:#f87171;margin-bottom:0;font-size:13px" onclick="removeLogo()">× Logo entfernen</button>
+        </div>
+      </div>
+      <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(this)">
+    </div>
+  </div></div>
+
+  <p class="sec-label">🇬🇧 Englisch – Design</p>
+  <div class="lang-panel">
+    <div class="field"><label>App-Name</label><input type="text" id="sEnName" placeholder="English Vocab" oninput="saveSettings()"></div>
+    <div class="field">
+      <label>Schriftart</label>
+      <select id="sEnFont" onchange="saveSettings();prevFont('en')">
+        <option value="'Playfair Display',serif">Playfair Display</option>
+        <option value="'Cinzel',serif">Cinzel</option>
+        <option value="'Lora',serif">Lora</option>
+        <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+        <option value="'Oswald',sans-serif">Oswald</option>
+        <option value="'Raleway',sans-serif">Raleway</option>
+        <option value="'Montserrat',sans-serif">Montserrat</option>
+        <option value="'Abril Fatface',cursive">Abril Fatface</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+      </select>
+      <div class="font-preview" id="prevEn">English Vocabulary · Unit 3</div>
+    </div>
+    <div class="field">
+      <label>Akzentfarbe (Titel, Buttons)</label>
+      <div class="color-row"><input type="color" id="sEnAccent" value="#a80000" oninput="saveSettings()"><span style="font-size:12px;color:var(--text2)">Titelfarbe &amp; Badges</span></div>
+    </div>
+    <div class="field">
+      <label>Hintergrund (Haupt / Kopfzeile)</label>
+      <div class="color-row"><input type="color" id="sEnBg" value="#f5f3ef" oninput="saveSettings()"><input type="color" id="sEnBg2" value="#ffffff" oninput="saveSettings()"></div>
+    </div>
+    <div class="field">
+      <label>Textfarbe</label>
+      <div class="color-row"><input type="color" id="sEnText" value="#1a1a1a" oninput="saveSettings()"></div>
+    </div>
+    <label style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:8px">Schnell-Designs</label>
+    <div class="preset-row">
+      <button class="preset-btn" onclick="applyPreset('en','navy')">Navy</button>
+      <button class="preset-btn" onclick="applyPreset('en','royal')">Royal Blue</button>
+      <button class="preset-btn" onclick="applyPreset('en','forest')">Forest</button>
+      <button class="preset-btn" onclick="applyPreset('en','slate')">Slate</button>
+    </div>
+  </div>
+
+  <p class="sec-label">🏛 Latein – Design</p>
+  <div class="lang-panel">
+    <div class="field"><label>App-Name</label><input type="text" id="sLaName" placeholder="Lingua Latina" oninput="saveSettings()"></div>
+    <div class="field">
+      <label>Schriftart</label>
+      <select id="sLaFont" onchange="saveSettings();prevFont('la')">
+        <option value="'Cinzel',serif">Cinzel</option>
+        <option value="'IM Fell English',serif">IM Fell English</option>
+        <option value="'Uncial Antiqua',cursive">Uncial Antiqua</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'Playfair Display',serif">Playfair Display</option>
+        <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+        <option value="'Lora',serif">Lora</option>
+      </select>
+      <div class="font-preview" id="prevLa">Lingua Latina · Caput III</div>
+    </div>
+    <div class="field">
+      <label>Akzentfarbe</label>
+      <div class="color-row"><input type="color" id="sLaAccent" value="#7a5c00" oninput="saveSettings()"></div>
+    </div>
+    <div class="field">
+      <label>Hintergrund (Haupt / Kopfzeile)</label>
+      <div class="color-row"><input type="color" id="sLaBg" value="#f8f4ec" oninput="saveSettings()"><input type="color" id="sLaBg2" value="#ffffff" oninput="saveSettings()"></div>
+    </div>
+    <div class="field">
+      <label>Textfarbe</label>
+      <div class="color-row"><input type="color" id="sLaText" value="#1a1a1a" oninput="saveSettings()"></div>
+    </div>
+    <label style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:8px">Schnell-Designs</label>
+    <div class="preset-row">
+      <button class="preset-btn" onclick="applyPreset('la','parchment')">Pergament</button>
+      <button class="preset-btn" onclick="applyPreset('la','marble')">Marmor</button>
+      <button class="preset-btn" onclick="applyPreset('la','imperial')">Imperial</button>
+      <button class="preset-btn" onclick="applyPreset('la','bronze')">Bronze</button>
+    </div>
+  </div>
+
+  <p class="sec-label">🇫🇷 Französisch – Design</p>
+  <div class="lang-panel">
+    <div class="field"><label>App-Name</label><input type="text" id="sFrName" placeholder="Vocabulaire Français" oninput="saveSettings()"></div>
+    <div class="field">
+      <label>Schriftart</label>
+      <select id="sFrFont" onchange="saveSettings();prevFont('fr')">
+        <option value="'Petit Formal Script',cursive">Petit Formal Script</option>
+        <option value="'Parisienne',cursive">Parisienne</option>
+        <option value="'Dancing Script',cursive">Dancing Script</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'Martel',serif">Martel</option>
+        <option value="'Playfair Display',serif">Playfair Display</option>
+        <option value="'Lora',serif">Lora</option>
+        <option value="'Noto Serif',serif">Noto Serif</option>
+      </select>
+      <div class="font-preview" id="prevFr">Vocabulaire Français · Leçon 4</div>
+    </div>
+    <div class="field">
+      <label>Akzentfarbe</label>
+      <div class="color-row"><input type="color" id="sFrAccent" value="#8b1a4a" oninput="saveSettings()"></div>
+    </div>
+    <div class="field">
+      <label>Hintergrund (Haupt / Kopfzeile)</label>
+      <div class="color-row"><input type="color" id="sFrBg" value="#fdf0f5" oninput="saveSettings()"><input type="color" id="sFrBg2" value="#ffffff" oninput="saveSettings()"></div>
+    </div>
+    <div class="field">
+      <label>Textfarbe</label>
+      <div class="color-row"><input type="color" id="sFrText" value="#1a1a1a" oninput="saveSettings()"></div>
+    </div>
+    <label style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:8px">Schnell-Designs</label>
+    <div class="preset-row">
+      <button class="preset-btn" onclick="applyPreset('fr','paris')">Paris Rose</button>
+      <button class="preset-btn" onclick="applyPreset('fr','provence')">Provence</button>
+      <button class="preset-btn" onclick="applyPreset('fr','burgundy')">Burgund</button>
+      <button class="preset-btn" onclick="applyPreset('fr','ciel')">Ciel Bleu</button>
+    </div>
+  </div>
+
+  <div style="padding:8px 0 4px">
+    <button class="big-btn primary" onclick="closeDrawer()">✓ Speichern &amp; Schließen</button>
+  </div>
+
+  </div><!-- /drawer-body -->
+</div><!-- /drawer -->
+
+<!-- MODAL: Kapitel -->
+<div class="modal-overlay hidden" id="modalKapitel">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalKapitelTitle">Neues Kapitel</div>
+    <div class="field"><label>Kapitelname</label><input type="text" id="mKapName" placeholder="z. B. Kapitel 3 – Familie"></div>
+    <div class="field"><label>Sprache</label>
+      <select id="mKapLang">
+        <option value="en">🇬🇧 Englisch</option>
+        <option value="la">🏛 Latein</option>
+        <option value="fr">🇫🇷 Französisch</option>
+      </select>
+    </div>
+    <div class="field"><label>Buch / Quelle</label><input type="text" id="mKapBuch" placeholder="z. B. English G21 A2"></div>
+    <input type="hidden" id="mKapEditId" value="">
+    <hr>
+    <p class="sec-label">Vokabeln eingeben</p>
+    <div id="mVokListe"></div>
+    <button class="add-btn" onclick="addVokRow()">+ Vokabel hinzufügen</button>
+    <button class="big-btn primary" onclick="saveKapitel()">Kapitel speichern</button>
+    <button class="big-btn danger" id="delKapBtn" onclick="deleteKapitel()" style="display:none">🗑 Kapitel löschen</button>
+    <button class="big-btn secondary" onclick="closeModal('modalKapitel')">Abbrechen</button>
+  </div>
+</div>
+
+<!-- MODAL: Detail -->
+<div class="modal-overlay hidden" id="modalDetail">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="detailTitle"></div>
+    <div id="detailContent"></div>
+    <button class="big-btn secondary" onclick="closeModal('modalDetail')">Schließen</button>
+  </div>
+</div>
+
+<script>
+const PRESETS = {
+  en:{
+    navy:     {accent:'#1a3a6b',bg:'#eef2f8',bg2:'#ffffff',text:'#1a1a1a'},
+    royal:    {accent:'#1565c0',bg:'#e8f0fe',bg2:'#ffffff',text:'#1a1a1a'},
+    forest:   {accent:'#2e7d32',bg:'#e8f5e9',bg2:'#ffffff',text:'#1a1a1a'},
+    slate:    {accent:'#37474f',bg:'#eceff1',bg2:'#ffffff',text:'#1a1a1a'}
+  },
+  la:{
+    parchment:{accent:'#7a5c00',bg:'#fdf8ec',bg2:'#ffffff',text:'#1a1a1a'},
+    marble:   {accent:'#555555',bg:'#f5f5f5',bg2:'#ffffff',text:'#1a1a1a'},
+    imperial: {accent:'#b71c1c',bg:'#fdf0ef',bg2:'#ffffff',text:'#1a1a1a'},
+    bronze:   {accent:'#8b5e00',bg:'#fdf4e7',bg2:'#ffffff',text:'#1a1a1a'}
+  },
+  fr:{
+    paris:    {accent:'#8b1a4a',bg:'#fdf0f5',bg2:'#ffffff',text:'#1a1a1a'},
+    provence: {accent:'#6a4c93',bg:'#f3eefe',bg2:'#ffffff',text:'#1a1a1a'},
+    burgundy: {accent:'#880e2f',bg:'#fdeef2',bg2:'#ffffff',text:'#1a1a1a'},
+    ciel:     {accent:'#0277bd',bg:'#e1f5fe',bg2:'#ffffff',text:'#1a1a1a'}
+  }
+};
+const LANG_ICONS={en:'🇬🇧',la:'🏛',fr:'🇫🇷'};
+const LANG_LABELS={en:'Englisch',la:'Latein',fr:'Französisch'};
+
+let state={kapitel:[],stats:{sessions:0,totalCorrect:0,totalWrong:0},activeLang:'en'};
+let settings={
+  schulName:'',schulLogo:'',schulFont:"'Playfair Display',serif",schulColor:'#1a1a1a',apiKey:'',
+  en:{name:'English Vocab',font:"'Playfair Display',serif",accent:'#a80000',bg:'#f5f3ef',bg2:'#ffffff',text:'#1a1a1a'},
+  la:{name:'Lingua Latina',font:"'Cinzel',serif",accent:'#7a5c00',bg:'#f8f4ec',bg2:'#ffffff',text:'#1a1a1a'},
+  fr:{name:'Vocabulaire Français',font:"'Petit Formal Script',cursive",accent:'#8b1a4a',bg:'#fdf0f5',bg2:'#ffffff',text:'#1a1a1a'}
+};
+let scanLang='en',analyseVoks=[],quizState=null,tempVoks=[],selectedKapitel=new Set();
+let abfrageSettings={dir:'de',order:'seq',focus:'all'};
+
+function save(){try{localStorage.setItem('vt2s',JSON.stringify(state));}catch(e){}}
+function load(){
+  try{const d=localStorage.getItem('vt2s');if(d)state={...state,...JSON.parse(d)};}catch(e){}
+  try{const d=localStorage.getItem('vt2cfg');if(d)settings={...settings,...JSON.parse(d)};}catch(e){}
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  load();applyTheme();updateHeader();populateUI();
+  renderKapitel();renderKapitelAuswahl();renderScanKapitelSelect();renderStatistik();updateAbfrageInfo();
+  ['en','la','fr'].forEach(l=>prevFont(l));updateLogoUI();
+  setTimeout(updatePrompt, 50);
+});
+
+// ── THEME ──
+function hexA(hex,a){
+  if(!hex||hex.length<7)return`rgba(26,26,26,${a})`;
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  if(isNaN(r)||isNaN(g)||isNaN(b))return`rgba(26,26,26,${a})`;
+  return`rgba(${r},${g},${b},${a})`;
+}
+function applyTheme(){
+  const l=state.activeLang,s=settings[l],r=document.documentElement.style;
+  r.setProperty('--bg',s.bg);r.setProperty('--bg2',s.bg2);r.setProperty('--accent',s.accent);r.setProperty('--text',s.text);
+  r.setProperty('--font-display',s.font);
+  r.setProperty('--text2',hexA(s.text,.65));r.setProperty('--text3',hexA(s.text,.38));
+  r.setProperty('--surface',hexA(s.text,.06));r.setProperty('--surface2',hexA(s.text,.11));
+  r.setProperty('--border',hexA(s.text,.13));
+}
+function updateHeader(){
+  const l=state.activeLang,s=settings[l];
+  document.getElementById('appTitle').textContent=s.name||'Vokabeltrainer';
+  document.getElementById('appTitle').style.fontFamily=s.font;
+  document.getElementById('langBadge').textContent=LANG_ICONS[l]+' '+(s.name||LANG_LABELS[l]);
+  const schoolEl = document.getElementById('schoolNameHdr');
+  schoolEl.textContent=settings.schulName||'Vokabeltrainer';
+  schoolEl.style.fontFamily=settings.schulFont||'inherit';
+  schoolEl.style.color=settings.schulColor||'var(--text2)';
+  const img=document.getElementById('schoolLogoHdr');
+  if(settings.schulLogo){img.src=settings.schulLogo;img.classList.add('visible');}else img.classList.remove('visible');
+  ['en','la','fr'].forEach(lang=>{const el=document.getElementById('lname-'+lang);if(el)el.textContent=settings[lang].name||LANG_LABELS[lang];});
+}
+
+function saveSettings(){readUI();try{localStorage.setItem('vt2cfg',JSON.stringify(settings));}catch(e){}applyTheme();updateHeader();}
+function readUI(){
+  const n=gv('sSchulName');if(n!==null)settings.schulName=n;
+  const sf=gv('sSchulFont');if(sf)settings.schulFont=sf;
+  const sc=gv('sSchulColor');if(sc)settings.schulColor=sc;
+  const ak=gv('sApiKey');if(ak!==null)settings.apiKey=ak;
+  [['en','En'],['la','La'],['fr','Fr']].forEach(([l,P])=>{
+    const n=gv('s'+P+'Name'),f=gv('s'+P+'Font'),a=gv('s'+P+'Accent'),bg=gv('s'+P+'Bg'),bg2=gv('s'+P+'Bg2'),t=gv('s'+P+'Text');
+    if(n)settings[l].name=n;if(f)settings[l].font=f;if(a)settings[l].accent=a;
+    if(bg)settings[l].bg=bg;if(bg2)settings[l].bg2=bg2;if(t)settings[l].text=t;
+  });
+}
+function populateUI(){
+  sv('sSchulName',settings.schulName);
+  sv('sSchulFont',settings.schulFont);
+  sv('sSchulColor',settings.schulColor);
+  sv('sApiKey',settings.apiKey);
+  [['en','En'],['la','La'],['fr','Fr']].forEach(([l,P])=>{
+    sv('s'+P+'Name',settings[l].name);sv('s'+P+'Font',settings[l].font);
+    sv('s'+P+'Accent',settings[l].accent);sv('s'+P+'Bg',settings[l].bg);
+    sv('s'+P+'Bg2',settings[l].bg2);sv('s'+P+'Text',settings[l].text);
+  });
+}
+function gv(id){const e=document.getElementById(id);return e?e.value:null;}function sv(id,val){const e=document.getElementById(id);if(e&&val!=null)e.value=val;}
+function prevFont(l){
+  const P=l==='en'?'En':l==='la'?'La':'Fr';
+  const f=gv('s'+P+'Font'),pr=document.getElementById('prev'+P);
+  if(pr&&f)pr.style.fontFamily=f;
+}
+function prevSchulFont(){
+  const f=gv('sSchulFont'),pr=document.getElementById('prevSchul');
+  if(pr&&f)pr.style.fontFamily=f;
+}
+function applyPreset(lang,name){
+  const p=PRESETS[lang]?.[name];if(!p)return;
+  const P=lang==='en'?'En':lang==='la'?'La':'Fr';
+  sv('s'+P+'Accent',p.accent);sv('s'+P+'Bg',p.bg);sv('s'+P+'Bg2',p.bg2);sv('s'+P+'Text',p.text);
+  settings[lang]={...settings[lang],...p};saveSettings();toast('Design angewendet');
+}
+
+// ── LOGO ──
+function handleLogo(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=e=>{settings.schulLogo=e.target.result;updateLogoUI();saveSettings();toast('Logo gespeichert');};r.readAsDataURL(f);
+}
+function removeLogo(){settings.schulLogo='';updateLogoUI();saveSettings();}
+function updateLogoUI(){
+  const big=document.getElementById('logoBig'),ph=document.getElementById('logoPh');
+  if(settings.schulLogo){big.src=settings.schulLogo;big.classList.add('visible');ph.style.display='none';}
+  else{big.classList.remove('visible');ph.style.display='flex';}
+  updateHeader();
+}
+
+// ── LANG ──
+function openLangSwitcher(){
+  ['en','la','fr'].forEach(l=>document.getElementById('lopt-'+l).classList.toggle('active',l===state.activeLang));
+  document.getElementById('langSwitcher').classList.remove('hidden');
+}
+function setActiveLang(l){
+  state.activeLang=l;save();applyTheme();updateHeader();
+  document.getElementById('langSwitcher').classList.add('hidden');
+  renderKapitel();renderKapitelAuswahl();toast(LANG_ICONS[l]+' '+(settings[l].name||LANG_LABELS[l]));
+}
+
+// ── DRAWER ──
+function openDrawer(){
+  populateUI();['en','la','fr'].forEach(l=>prevFont(l));prevSchulFont();
+  document.getElementById('drawerOverlay').classList.remove('hidden');
+  document.getElementById('settingsDrawer').classList.remove('hidden');
+  document.getElementById('burgerBtn').classList.add('menu-open');
+}
+function closeDrawer(){
+  saveSettings();
+  document.getElementById('drawerOverlay').classList.add('hidden');
+  document.getElementById('settingsDrawer').classList.add('hidden');
+  document.getElementById('burgerBtn').classList.remove('menu-open');
+}
+
+// ── TABS ──
+function switchTab(id,btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn?.classList)btn.classList.add('active');
+  if(id==='abfragen'){renderKapitelAuswahl();updateAbfrageInfo();}
+  if(id==='statistik')renderStatistik();
+  if(id==='scannen'){renderScanKapitelSelect();updatePrompt();}
+}
+
+// ── KAPITEL ──
+function renderKapitel(){
+  const el=document.getElementById('kapitelListe'),lang=state.activeLang;
+  const kaps=state.kapitel.filter(k=>k.lang===lang);
+  if(!kaps.length){el.innerHTML=`<div class="empty"><div class="ei">📚</div><p>Keine Kapitel für ${LANG_ICONS[lang]} ${LANG_LABELS[lang]}.<br>Scanne eine Seite oder lege manuell an.</p></div>`;return;}
+  el.innerHTML=kaps.map(k=>{
+    const total=(k.vokabeln||[]).length,weak=(k.vokabeln||[]).filter(v=>(v.difficulty||0)>=1).length;
+    return`<div class="kapitel-item" onclick="showKapitelDetail('${k.id}')">
+      <div class="kapitel-icon">${LANG_ICONS[k.lang]}</div>
+      <div class="kapitel-info"><div class="kapitel-name">${k.name}</div>
+      <div class="kapitel-meta">${total} Vokabeln${weak?' · ⚠ '+weak+' schwach':''}${k.buch?' · '+k.buch:''}</div></div>
+      <button class="edit-btn" onclick="event.stopPropagation();openEditKapitel('${k.id}')">✏</button>
+    </div>`;}).join('');
+}
+
+function showKapitelDetail(id){
+  const k=state.kapitel.find(k=>k.id===id);if(!k)return;
+  document.getElementById('detailTitle').textContent=k.name;
+  const voks=k.vokabeln||[];
+  let html=`<p style="font-size:13px;color:var(--text2);margin-bottom:12px">${voks.length} Vokabeln</p>`;
+  voks.forEach(v=>{const dc=['diff-0','diff-1','diff-2'][Math.min(v.difficulty||0,2)];html+=`<div class="vok-row"><div class="vok-difficulty ${dc}"></div><div class="vok-left">${esc(v.fremd)}</div><div class="vok-right">${esc(v.deutsch)}</div></div>`;});
+  document.getElementById('detailContent').innerHTML=html;openModal('modalDetail');
+}
+
+function openKapitelModal(){
+  document.getElementById('modalKapitelTitle').textContent='Neues Kapitel';
+  document.getElementById('mKapName').value='';document.getElementById('mKapLang').value=state.activeLang;
+  document.getElementById('mKapBuch').value='';document.getElementById('mKapEditId').value='';
+  document.getElementById('delKapBtn').style.display='none';tempVoks=[];renderModalVoks();openModal('modalKapitel');
+}
+function openEditKapitel(id){
+  const k=state.kapitel.find(k=>k.id===id);if(!k)return;
+  document.getElementById('modalKapitelTitle').textContent='Kapitel bearbeiten';
+  document.getElementById('mKapName').value=k.name;document.getElementById('mKapLang').value=k.lang;
+  document.getElementById('mKapBuch').value=k.buch||'';document.getElementById('mKapEditId').value=id;
+  document.getElementById('delKapBtn').style.display='flex';tempVoks=(k.vokabeln||[]).map(v=>({...v}));renderModalVoks();openModal('modalKapitel');
+}
+function renderModalVoks(){
+  const el=document.getElementById('mVokListe');
+  if(!tempVoks.length){el.innerHTML='<p style="color:var(--text3);font-size:12px;margin-bottom:8px">Noch keine Vokabeln.</p>';return;}
+  el.innerHTML=tempVoks.map((v,i)=>`<div class="vok-edit-row">
+    <input type="text" value="${esc(v.fremd||'')}" placeholder="Fremdsprache" oninput="tempVoks[${i}].fremd=this.value" style="font-weight:700">
+    <input type="text" value="${esc(v.deutsch||'')}" placeholder="Deutsch" oninput="tempVoks[${i}].deutsch=this.value">
+    <button class="vok-del" onclick="removeTempVok(${i})">×</button>
+  </div>`).join('');
+}
+function addVokRow(){tempVoks.push({fremd:'',deutsch:'',difficulty:0,correct:0,wrong:0});renderModalVoks();}
+function removeTempVok(i){tempVoks.splice(i,1);renderModalVoks();}
+function saveKapitel(){
+  const name=document.getElementById('mKapName').value.trim();if(!name){toast('Bitte Kapitelname eingeben');return;}
+  const editId=document.getElementById('mKapEditId').value,valid=tempVoks.filter(v=>v.fremd&&v.deutsch);
+  if(editId){const k=state.kapitel.find(k=>k.id===editId);if(k){k.name=name;k.lang=gv('mKapLang');k.buch=gv('mKapBuch');k.vokabeln=valid;toast('Gespeichert!');}}
+  else{state.kapitel.push({id:'k'+Date.now(),name,lang:gv('mKapLang'),buch:gv('mKapBuch'),vokabeln:valid.map(v=>({...v,difficulty:0,correct:0,wrong:0})),erstellt:new Date().toISOString()});toast('Kapitel angelegt!');}
+  save();renderKapitel();renderKapitelAuswahl();renderScanKapitelSelect();closeModal('modalKapitel');
+}
+function deleteKapitel(){
+  const id=gv('mKapEditId'),k=state.kapitel.find(k=>k.id===id);
+  if(!k||!confirm(`"${k.name}" löschen?`))return;
+  state.kapitel=state.kapitel.filter(k=>k.id!==id);
+  save();renderKapitel();renderKapitelAuswahl();renderScanKapitelSelect();closeModal('modalKapitel');toast('Gelöscht');
+}
+
+// ── SCAN ──
+function setScanLang(l,btn){
+  scanLang=l;
+  document.querySelectorAll('#scanLangCtrl .seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updatePrompt();
+}
+function renderScanKapitelSelect(){
+  const sel=document.getElementById('scanKapitel');
+  sel.innerHTML='<option value="">— Kapitel wählen —</option>'+
+    state.kapitel.map(k=>`<option value="${k.id}">${LANG_ICONS[k.lang]} ${k.name}</option>`).join('')+
+    '<option value="__neu__">+ Neues Kapitel erstellen</option>';
+  sel.onchange=function(){
+    document.getElementById('scanNeuesKapitelField').style.display=this.value==='__neu__'?'block':'none';
+    updatePrompt();
+  };
+  updatePrompt();
+  // API key hint
+  const hint=document.getElementById('apiKeyHint');
+  if(hint)hint.style.display=settings.apiKey?'none':'block';
+}
+function updatePrompt(){
+  try{
+    const box=document.getElementById('promptBox');
+    if(!box)return;
+    const NAMES={en:'Englisch',la:'Latein',fr:'Französisch'};
+    const langName=NAMES[scanLang]||'Englisch';
+    const selEl=document.getElementById('scanKapitel');
+    const selVal=selEl?selEl.value:'';
+    const neuEl=document.getElementById('scanNeuesKapitelName');
+    const neuerName=neuEl?neuEl.value:'';
+    let kapInfo='';
+    if(selVal==='__neu__'&&neuerName){
+      kapInfo='Das Kapitel heisst: "'+neuerName+'". ';
+    } else if(selVal&&selVal!=='__neu__'){
+      const kap=state.kapitel.find(k=>k.id===selVal);
+      if(kap)kapInfo='Das Kapitel heisst: "'+kap.name+'". ';
+    }
+    const existingVoks=getExistingVoksForKapitel(selVal);
+    let existingInfo='';
+    if(existingVoks.length){
+      const liste=existingVoks.slice(0,20).map(v=>'- '+v.fremd).join('\n');
+      const mehr=existingVoks.length>20?('\n... und '+(existingVoks.length-20)+' weitere'):'';
+      existingInfo='\nBereits vorhandene Vokabeln in diesem Kapitel (NICHT nochmals ausgeben):\n'+liste+mehr+'\n';
+    }
+    const beispiele={
+      'Englisch':'house = das Haus\nto run = laufen',
+      'Latein':'puer = der Knabe\namare = lieben',
+      'Französisch':'maison = das Haus\ncourir = laufen'
+    };
+    const bsp=beispiele[langName]||beispiele['Englisch'];
+    const prompt=[
+      'Analysiere das beigefuegte Foto einer Vokabelseite aus einem Schulbuch.',
+      'Sprache: '+langName+' nach Deutsch',
+      kapInfo,
+      existingInfo,
+      'Extrahiere ALLE Vokabelpaare die du siehst.',
+      'Gib NUR die Vokabeln aus - eine pro Zeile - im exakten Format:',
+      '',
+      bsp,
+      '',
+      'Trennzeichen: =',
+      'Kein anderer Text, keine Nummerierung, keine Ueberschriften, keine Erklaerungen.',
+      'Nur die Vokabelliste im Format: Fremdwort = Deutsche Uebersetzung'
+    ].join('\n');
+    box.textContent=prompt;
+  }catch(e){console.error('updatePrompt:',e);}
+}
+function getExistingVoksForKapitel(kapId){
+  if(!kapId||kapId==='__neu__')return[];
+  const kap=state.kapitel.find(k=>k.id===kapId);
+  return kap?(kap.vokabeln||[]):[];
+}
+function copyPrompt(){
+  const text=document.getElementById('promptBox').textContent;
+  navigator.clipboard.writeText(text).then(()=>toast('Prompt kopiert!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Prompt kopiert!');
+  });
+}
+function importTxt(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const text=e.target.result;
+    parseAndShowVoks(text,'txt');
+  };
+  reader.readAsText(file,'UTF-8');
+  input.value='';
+}
+async function analysiereVokabeln(){
+  const img=document.getElementById('fotoPreview');
+  if(!img.src||img.style.display==='none'){toast('Bitte zuerst Foto aufnehmen');return;}
+  document.getElementById('analyseBtn').style.display='none';
+  document.getElementById('analyseSpinner').style.display='block';
+  document.getElementById('analyseResultCard').style.display='none';
+  const NAMES={en:'Englisch',la:'Latein',fr:'Französisch'};
+  const base64=img.src.split(',')[1];
+  const mime=img.src.split(';')[0].split(':')[1]||'image/jpeg';
+  const apiKey=settings.apiKey||'';
+  if(!apiKey){
+    document.getElementById('analyseSpinner').style.display='none';
+    document.getElementById('analyseBtn').style.display='flex';
+    toast('Bitte API-Key in den Einstellungen eintragen');
+    return;
+  }
+  let res,rawText;
+  try{
+    res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-opus-4-5',
+        max_tokens:2000,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mime,data:base64}},
+          {type:'text',text:`Analysiere diese Vokabelseite (Sprache: ${NAMES[scanLang]}). Extrahiere alle Vokabelpaare (${NAMES[scanLang]} → Deutsch). Antworte NUR mit einem JSON-Array, kein anderer Text, keine Backticks, kein Markdown:\n[{"fremd":"Wort","deutsch":"Übersetzung"}]\nBei keinen Vokabeln antworte mit: []`}
+        ]}]
+      })
+    });
+  }catch(networkErr){
+    document.getElementById('analyseSpinner').style.display='none';
+    document.getElementById('analyseBtn').style.display='flex';
+    console.error('Netzwerkfehler:',networkErr);
+    toast('Netzwerkfehler – CORS? Siehe Konsole.');
+    return;
+  }
+  try{rawText=await res.text();}catch(e){rawText='';}
+  console.log('API Status:',res.status,'Antwort:',rawText);
+  if(!res.ok){
+    document.getElementById('analyseSpinner').style.display='none';
+    document.getElementById('analyseBtn').style.display='flex';
+    toast('API-Fehler '+res.status+' – Konsole prüfen');
+    return;
+  }
+  try{
+    const data=JSON.parse(rawText);
+    if(!data.content||!Array.isArray(data.content)){
+      throw new Error('Kein content-Array in Antwort: '+rawText.slice(0,200));
+    }
+    const text=data.content.filter(c=>c.type==='text').map(c=>c.text).join('').trim();
+    let parsed=[];
+    const clean=text.replace(/^```[a-z]*\n?/,'').replace(/```$/,'').trim();
+    try{parsed=JSON.parse(clean);}
+    catch(e){const m=clean.match(/\[[\s\S]*\]/);if(m)try{parsed=JSON.parse(m[0]);}catch(e2){parsed=[];}}
+    if(!Array.isArray(parsed))parsed=[];
+    analyseVoks=parsed
+      .filter(v=>v&&typeof v==='object')
+      .map(v=>({fremd:String(v.fremd||'').trim(),deutsch:String(v.deutsch||'').trim(),difficulty:0,correct:0,wrong:0}))
+      .filter(v=>v.fremd&&v.deutsch);
+    document.getElementById('analyseSpinner').style.display='none';
+    if(!analyseVoks.length){
+      toast('Keine Vokabeln erkannt – klareres Foto versuchen');
+      document.getElementById('analyseBtn').style.display='flex';
+      return;
+    }
+    renderAnalyseResult();
+    document.getElementById('analyseResultCard').style.display='block';
+    toast(analyseVoks.length+' Vokabeln erkannt!');
+  }catch(e){
+    document.getElementById('analyseSpinner').style.display='none';
+    document.getElementById('analyseBtn').style.display='flex';
+    console.error('Parse-Fehler:',e,'Rohantwort:',rawText);
+    toast('Parse-Fehler – Details in der Konsole');
+  }
+}
+function handleFoto(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=e=>{
+    const img=document.getElementById('fotoPreview');img.src=e.target.result;img.style.display='block';
+    document.getElementById('analyseBtn').style.display='flex';
+    document.getElementById('analyseResultCard').style.display='none';
+  };r.readAsDataURL(f);
+}
+function parseAndShowVoks(text,source){
+  const lines=text.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('#')&&!l.startsWith('//'));
+  const voks=[];
+  for(const line of lines){
+    // Support = and tab as separators
+    const eqIdx=line.indexOf('=');
+    const tabIdx=line.indexOf('\t');
+    let sep=-1;
+    if(eqIdx>0&&(tabIdx<0||eqIdx<tabIdx))sep=eqIdx;
+    else if(tabIdx>0)sep=tabIdx;
+    if(sep<1)continue;
+    const fremd=line.slice(0,sep).trim();
+    const deutsch=line.slice(sep+1).trim();
+    if(fremd&&deutsch)voks.push({fremd,deutsch,difficulty:0,correct:0,wrong:0});
+  }
+  if(!voks.length){
+    toast('Keine Vokabeln gefunden – Format: Wort = Übersetzung');
+    return;
+  }
+  analyseVoks=voks;
+  renderAnalyseResult();
+  document.getElementById('analyseResultCard').style.display='block';
+  document.getElementById('analyseResultCard').scrollIntoView({behavior:'smooth'});
+  toast(voks.length+' Vokabeln '+(source==='txt'?'importiert':'übernommen')+'!');
+}
+function importManual(){
+  const raw=document.getElementById('manualInput').value.trim();
+  if(!raw){toast('Bitte Vokabeln eingeben');return;}
+  parseAndShowVoks(raw,'manual');
+  document.getElementById('manualInput').value='';
+}
+function renderAnalyseResult(){
+  document.getElementById('analyseVokListe').innerHTML=analyseVoks.map((v,i)=>`<div class='vok-edit-row'>
+    <input type='text' value='${esc(v.fremd)}' placeholder='Fremdsprache' oninput='analyseVoks[${i}].fremd=this.value' style='font-weight:700'>
+    <input type='text' value='${esc(v.deutsch)}' placeholder='Deutsch' oninput='analyseVoks[${i}].deutsch=this.value'>
+    <button class='vok-del' onclick='removeAnalyseVok(${i})'>x</button>
+  </div>`).join('');
+}
+function addAnalyseVok(){analyseVoks.push({fremd:'',deutsch:'',difficulty:0,correct:0,wrong:0});renderAnalyseResult();}
+function removeAnalyseVok(i){analyseVoks.splice(i,1);renderAnalyseResult();}
+function speichereAnalyse(){
+  const valid=analyseVoks.filter(v=>v.fremd&&v.deutsch);if(!valid.length){toast('Keine gültigen Vokabeln');return;}
+  const selVal=gv('scanKapitel');if(!selVal){toast('Bitte Kapitel wählen');return;}
+  let kapId=selVal;
+  if(selVal==='__neu__'){const name=gv('scanNeuesKapitelName').trim();if(!name){toast('Kapitelnamen eingeben');return;}const nk={id:'k'+Date.now(),name,lang:scanLang,vokabeln:[],erstellt:new Date().toISOString()};state.kapitel.push(nk);kapId=nk.id;}
+  const kap=state.kapitel.find(k=>k.id===kapId);if(!kap)return;
+  const ex=new Set((kap.vokabeln||[]).map(v=>v.fremd.toLowerCase()));
+  const toAdd=valid.filter(v=>!ex.has(v.fremd.toLowerCase()));
+  kap.vokabeln=[...(kap.vokabeln||[]),...toAdd];kap.lang=kap.lang||scanLang;
+  save();renderKapitel();renderScanKapitelSelect();
+  toast(toAdd.length+' Vokabeln gespeichert!');
+  document.getElementById('analyseResultCard').style.display='none';document.getElementById('fotoPreview').style.display='none';
+  document.getElementById('analyseBtn').style.display='none';analyseVoks=[];document.getElementById('fotoInput').value='';
+}
+
+// ── ABFRAGEN ──
+function renderKapitelAuswahl(){
+  const el=document.getElementById('kapitelAuswahl');
+  const kaps=state.kapitel.filter(k=>k.lang===state.activeLang);
+  if(!kaps.length){el.innerHTML='<p style="color:var(--text3);font-size:13px;margin-bottom:12px">Keine Kapitel vorhanden.</p>';return;}
+  el.innerHTML=kaps.map(k=>{const sel=selectedKapitel.has(k.id);return`<div class="kapitel-check-row${sel?' selected':''}" onclick="toggleKapitelSelect('${k.id}',this)">
+    <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation()">
+    <div><div class="kapitel-check-name">${k.name}</div><div class="kapitel-check-meta">${(k.vokabeln||[]).length} Vokabeln</div></div>
+  </div>`;}).join('');updateAbfrageInfo();
+}
+function toggleKapitelSelect(id,row){
+  if(selectedKapitel.has(id)){selectedKapitel.delete(id);row.classList.remove('selected');row.querySelector('input').checked=false;}
+  else{selectedKapitel.add(id);row.classList.add('selected');row.querySelector('input').checked=true;}
+  updateAbfrageInfo();
+}
+function setDir(v){abfrageSettings.dir=v;document.getElementById('dirDE').classList.toggle('active',v==='de');document.getElementById('dirFS').classList.toggle('active',v==='fs');}
+function setOrder(v){abfrageSettings.order=v;document.getElementById('orderSeq').classList.toggle('active',v==='seq');document.getElementById('orderRnd').classList.toggle('active',v==='rnd');}
+function setFocus(v){abfrageSettings.focus=v;document.getElementById('focusAll').classList.toggle('active',v==='all');document.getElementById('focusWeak').classList.toggle('active',v==='weak');}
+function getQuizVoks(){let voks=[];state.kapitel.filter(k=>selectedKapitel.has(k.id)).forEach(k=>{(k.vokabeln||[]).forEach(v=>voks.push({...v,kapId:k.id,lang:k.lang}));});return voks;}
+function updateAbfrageInfo(){
+  const voks=getQuizVoks(),el=document.getElementById('abfragenInfo');
+  if(!voks.length){el.textContent=selectedKapitel.size?'Keine Vokabeln in den gewählten Kapiteln.':'Bitte mindestens ein Kapitel wählen.';}
+  else{const w=voks.filter(v=>(v.difficulty||0)>=1).length;el.textContent=voks.length+' Vokabeln'+(w?' · ⚠ '+w+' schwache':'');}
+}
+function startAbfragen(){
+  let voks=getQuizVoks();if(!voks.length){toast('Bitte Kapitel wählen');return;}
+  if(abfrageSettings.focus==='weak'){voks.sort((a,b)=>(b.difficulty||0)-(a.difficulty||0));voks=[...voks,...voks.filter(v=>(v.difficulty||0)>=2)];}
+  if(abfrageSettings.order==='rnd')voks=voks.sort(()=>Math.random()-.5);
+  quizState={voks,idx:0,correct:0,wrong:0};
+  document.getElementById('abfragen-setup').style.display='none';document.getElementById('abfragen-quiz').style.display='block';document.getElementById('abfragen-result').style.display='none';
+  renderQuizCard();
+}
+function renderQuizCard(){
+  const q=quizState,v=q.voks[q.idx],total=q.voks.length;
+  document.getElementById('quizBar').style.width=(q.idx/total*100)+'%';
+  document.getElementById('quizCounter').textContent=(q.idx+1)+' / '+total;
+  const ll={en:'🇬🇧 Englisch',la:'🏛 Latein',fr:'🇫🇷 Französisch'}[v.lang]||'';
+  if(abfrageSettings.dir==='de'){document.getElementById('quizLang').textContent='Deutsch → '+ll;document.getElementById('quizWord').textContent=v.deutsch;document.getElementById('quizAnswer').textContent=v.fremd;}
+  else{document.getElementById('quizLang').textContent=ll+' → Deutsch';document.getElementById('quizWord').textContent=v.fremd;document.getElementById('quizAnswer').textContent=v.deutsch;}
+  document.getElementById('quizHint').textContent=(v.difficulty>=2)?'⚠ Schwierige Vokabel':(v.difficulty===1?'⚡ Noch unsicher':'');
+  document.getElementById('quizAnswer').classList.remove('visible');
+  document.getElementById('quizShowRow').style.display='flex';document.getElementById('quizRateRow').style.display='none';
+}
+function showAnswer(){document.getElementById('quizAnswer').classList.add('visible');document.getElementById('quizShowRow').style.display='none';document.getElementById('quizRateRow').style.display='flex';}
+function rateCard(correct){
+  const v=quizState.voks[quizState.idx],kap=state.kapitel.find(k=>k.id===v.kapId);
+  if(kap){const ov=kap.vokabeln.find(vv=>vv.fremd===v.fremd);if(ov){ov.correct=(ov.correct||0)+(correct?1:0);ov.wrong=(ov.wrong||0)+(correct?0:1);ov.difficulty=correct?Math.max(0,(ov.difficulty||0)-1):Math.min(2,(ov.difficulty||0)+1);}}
+  if(correct)quizState.correct++;else quizState.wrong++;
+  quizState.idx++;
+  if(quizState.idx>=quizState.voks.length){save();showResult();}else renderQuizCard();
+}
+function showResult(){
+  const q=quizState;state.stats.sessions=(state.stats.sessions||0)+1;state.stats.totalCorrect=(state.stats.totalCorrect||0)+q.correct;state.stats.totalWrong=(state.stats.totalWrong||0)+q.wrong;save();
+  document.getElementById('abfragen-quiz').style.display='none';document.getElementById('abfragen-result').style.display='block';
+  const pct=Math.round(q.correct/q.voks.length*100);
+  document.getElementById('resultIcon').textContent=pct>=90?'🏆':pct>=70?'👍':pct>=50?'📖':'💪';
+  document.getElementById('resultTitle').textContent=pct>=90?'Ausgezeichnet!':pct>=70?'Gut gemacht!':pct>=50?'Weiter üben!':'Nicht aufgeben!';
+  document.getElementById('resultCorrect').textContent=q.correct;document.getElementById('resultWrong').textContent=q.wrong;document.getElementById('resultTotal').textContent=q.voks.length;
+  document.getElementById('resultSub').textContent=pct+'% richtig · '+(q.wrong>0?q.wrong+' Vokabeln als schwierig markiert – werden öfter wiederholt.':'Alle Vokabeln gewusst!');
+}
+function stopQuiz(){save();showSetup();}
+function showSetup(){document.getElementById('abfragen-setup').style.display='block';document.getElementById('abfragen-quiz').style.display='none';document.getElementById('abfragen-result').style.display='none';renderKapitelAuswahl();}
+
+// ── STATISTIK ──
+function renderStatistik(){
+  const el=document.getElementById('statistikContent');
+  const all=state.kapitel.flatMap(k=>k.vokabeln||[]);
+  const total=all.length,hard=all.filter(v=>(v.difficulty||0)>=2).length;const s=state.stats;
+  let byLang='';['en','la','fr'].forEach(lang=>{const kaps=state.kapitel.filter(k=>k.lang===lang);if(!kaps.length)return;const cnt=kaps.reduce((s,k)=>s+(k.vokabeln||[]).length,0);byLang+=`<div class="kapitel-item" style="cursor:default"><div class="kapitel-icon">${LANG_ICONS[lang]}</div><div class="kapitel-info"><div class="kapitel-name">${settings[lang].name||LANG_LABELS[lang]}</div><div class="kapitel-meta">${kaps.length} Kapitel · ${cnt} Vokabeln</div></div></div>`;});
+  const wl=state.kapitel.flatMap(k=>(k.vokabeln||[]).filter(v=>(v.difficulty||0)>=2).map(v=>({...v,kn:k.name,kl:k.lang})));
+  el.innerHTML=`<div class="card" style="margin-bottom:14px"><div class="card-body">
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num">${total}</div><div class="stat-label">Vokabeln</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:var(--accent)">${s.sessions||0}</div><div class="stat-label">Sessions</div></div>
+      <div class="stat-box"><div class="stat-num red">${hard}</div><div class="stat-label">Schwach</div></div>
+    </div><hr>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num green">${s.totalCorrect||0}</div><div class="stat-label">Richtig</div></div>
+      <div class="stat-box"><div class="stat-num red">${s.totalWrong||0}</div><div class="stat-label">Falsch</div></div>
+    </div>
+  </div></div>
+  <p class="sec-label">Nach Sprache</p>${byLang||'<p style="color:var(--text3);font-size:13px">Keine Kapitel.</p>'}
+  ${wl.length?`<p class="sec-label" style="margin-top:20px">⚠ Schwache Vokabeln</p>`+wl.map(v=>`<div class="vok-row" style="background:var(--surface);padding:10px 12px;border-radius:8px;margin-bottom:6px"><div class="vok-difficulty diff-2"></div><div class="vok-left">${esc(v.fremd)}</div><div class="vok-right">${esc(v.deutsch)}</div><span style="font-size:11px;color:var(--text3)">${LANG_ICONS[v.kl]}</span></div>`).join(''):''}`;
+}
+
+// ── UTILS ──
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function openModal(id){document.getElementById(id).classList.remove('hidden');}
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.add('hidden');}));
+let tt=null;
+function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.classList.add('show');if(tt)clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2500);}
+function clearAllData(){if(!confirm('Alle Daten löschen?'))return;localStorage.clear();location.reload();}
+</script>
+</body>
+</html>
