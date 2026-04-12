@@ -15,36 +15,38 @@
   --text2:rgba(26,26,26,0.65); --text3:rgba(26,26,26,0.38);
   --border:rgba(0,0,0,0.12);
   --radius:16px; --radius-sm:10px;
-  --font-display:'Playfair Display',serif; --font-body:'Lora',serif;
+  --font-display:'Playfair Display',serif;
+  --font-foreign:'Lora',Georgia,serif;
+  --font-ui:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
   --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .5s,color .3s;}
+body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .5s,color .3s;}
 
 /* HEADER */
 .app-header{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);padding:calc(var(--safe-top) + 10px) 18px 0;transition:background .5s;}
 .school-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .school-logo-hdr{width:34px;height:34px;border-radius:7px;object-fit:contain;display:none;flex-shrink:0;}
 .school-logo-hdr.visible{display:block;}
-.school-name-hdr{font-size:12px;letter-spacing:.4px;color:var(--text2);flex:1;font-family:var(--font-display);}
-.lang-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--accent);color:#111;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:var(--font-display);}
+.school-name-hdr{font-size:12px;letter-spacing:.4px;color:var(--text2);flex:1;font-family:var(--font-ui);}
+.lang-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:var(--font-ui);}
 .lang-badge:active{transform:scale(.95);}
-.app-title{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--accent);letter-spacing:-.3px;margin-bottom:6px;transition:all .4s;}
+.app-title{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.3px;margin-bottom:6px;transition:all .4s;}
 
 /* TABS */
 .tabs{display:flex;overflow:hidden;}
 .burger-btn{flex-shrink:0;width:44px;padding:9px 0 10px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
 .burger-btn span{display:block;width:18px;height:2px;background:var(--text3);border-radius:2px;transition:background .15s;}
-.burger-btn:hover span,.burger-btn.menu-open span{background:var(--accent);}
-.tab{flex:1;padding:9px 4px 10px;font-size:12px;font-weight:600;color:var(--text3);border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-display);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-align:center;}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.burger-btn:hover span,.burger-btn.menu-open span{background:var(--text);}
+.tab{flex:1;padding:9px 4px 10px;font-size:12px;font-weight:600;color:var(--text3);border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-ui);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-align:center;}
+.tab.active{color:var(--text);border-bottom-color:var(--accent);}
 /* SETTINGS DRAWER */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;}
 .drawer-overlay.hidden{display:none;}
 .drawer{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:340px;background:var(--bg2);z-index:251;overflow-y:auto;box-shadow:4px 0 24px rgba(0,0,0,.18);padding:calc(var(--safe-top) + 16px) 0 calc(var(--safe-bottom) + 20px);}
 .drawer.hidden{display:none;}
 .drawer-header{padding:10px 20px 16px;border-bottom:1px solid var(--border);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
-.drawer-title{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent);}
+.drawer-title{font-family:var(--font-ui);font-size:18px;font-weight:700;color:var(--text);}
 .drawer-close{background:var(--surface2);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);flex-shrink:0;line-height:1;}
 .drawer-body{padding:0 16px;}
 
@@ -57,45 +59,45 @@ main{padding:18px 16px calc(var(--safe-bottom) + 80px);max-width:680px;margin:0 
 /* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;}
 .card-header{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.card-title{font-family:var(--font-display);font-size:16px;color:var(--text);font-weight:700;}
+.card-title{font-family:var(--font-ui);font-size:15px;color:var(--text);font-weight:700;}
 .card-body{padding:14px 16px;}
-.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);margin:20px 0 9px;font-family:var(--font-display);}
+.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text2);margin:20px 0 9px;font-family:var(--font-ui);}
 .sec-label:first-child{margin-top:0;}
 
 /* FORMS */
 .field{margin-bottom:12px;}
-.field label{font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.7px;}
-input[type=text],input[type=email],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:var(--font-body);background:var(--surface2);color:var(--text);outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
+.field label{font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.7px;font-family:var(--font-ui);}
+input[type=text],input[type=email],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:var(--font-ui);background:var(--surface2);color:var(--text);outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);}
 textarea{min-height:70px;resize:vertical;}
-select option{background:#222;color:#fff;}
+select option{background:#fff;color:#111;}
 input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface2);cursor:pointer;}
 
 /* BUTTONS */
-.big-btn{width:100%;padding:14px;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:var(--font-display);border:none;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;}
+.big-btn{width:100%;padding:14px;border-radius:var(--radius);font-size:15px;font-weight:600;font-family:var(--font-ui);border:none;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;}
 .big-btn:active{transform:scale(.98);}
-.big-btn.primary{background:var(--accent);color:#111;}
+.big-btn.primary{background:var(--accent);color:#fff;}
 .big-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
 .big-btn.success{background:#2d6a4f;color:#fff;}
 .big-btn.danger{background:#7f1d1d;color:#fca5a5;}
-.icon-btn{padding:7px 13px;border-radius:20px;font-size:12px;font-weight:700;font-family:var(--font-display);border:none;cursor:pointer;background:var(--accent);color:#111;}
-.add-btn{width:100%;padding:10px;border:2px dashed var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text3);font-size:13px;font-family:var(--font-body);cursor:pointer;margin-bottom:10px;}
+.icon-btn{padding:7px 13px;border-radius:20px;font-size:12px;font-weight:600;font-family:var(--font-ui);border:none;cursor:pointer;background:var(--accent);color:#fff;}
+.add-btn{width:100%;padding:10px;border:2px dashed var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text3);font-size:13px;font-family:var(--font-ui);cursor:pointer;margin-bottom:10px;}
 
 /* KAPITEL */
 .kapitel-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .15s;}
 .kapitel-item:hover{background:var(--surface2);}
 .kapitel-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--surface2);}
 .kapitel-info{flex:1;min-width:0;}
-.kapitel-name{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--text);}
-.kapitel-meta{font-size:12px;color:var(--text2);margin-top:2px;}
+.kapitel-name{font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text);}
+.kapitel-meta{font-size:12px;color:var(--text2);margin-top:2px;font-family:var(--font-ui);}
 .edit-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 9px;font-size:14px;cursor:pointer;flex-shrink:0;color:var(--text);}
 
 /* VOK ROWS */
 .vok-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);}
 .vok-row:last-child{border-bottom:none;}
-.vok-left{flex:1;font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-display);}
-.vok-right{flex:1;font-size:14px;color:var(--text2);}
-.vok-del{color:#f87171;background:none;border:none;font-size:18px;cursor:pointer;padding:0 4px;}
+.vok-left{flex:1;font-size:15px;font-weight:600;color:var(--text);font-family:var(--font-foreign);}
+.vok-right{flex:1;font-size:14px;color:var(--text2);font-family:var(--font-ui);}
+.vok-del{color:#b91c1c;background:none;border:none;font-size:18px;cursor:pointer;padding:0 4px;}
 .vok-difficulty{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .diff-0{background:#4ade80;} .diff-1{background:#fbbf24;} .diff-2{background:#f87171;}
 .vok-edit-row{display:flex;gap:6px;align-items:center;margin-bottom:7px;}
@@ -103,11 +105,11 @@ input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--bo
 
 /* FOTO */
 .foto-drop{border:2px dashed var(--border);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:12px;background:var(--surface);}
-.foto-drop:hover{border-color:var(--accent);}
+.foto-drop:hover{border-color:var(--text2);}
 .foto-preview{width:100%;border-radius:var(--radius-sm);margin-bottom:12px;max-height:200px;object-fit:contain;display:none;}
 .analyse-spinner{text-align:center;padding:20px;font-size:14px;color:var(--text2);display:none;}
 .dot-loader{display:inline-flex;gap:5px;vertical-align:middle;}
-.dot-loader span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:dotB 1.2s infinite;}
+.dot-loader span{width:7px;height:7px;border-radius:50%;background:var(--text2);animation:dotB 1.2s infinite;}
 .dot-loader span:nth-child(2){animation-delay:.2s;} .dot-loader span:nth-child(3){animation-delay:.4s;}
 @keyframes dotB{0%,80%,100%{transform:scale(.8);opacity:.5}40%{transform:scale(1.2);opacity:1}}
 
@@ -115,45 +117,47 @@ input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--bo
 .kapitel-check-row{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;cursor:pointer;transition:all .15s;}
 .kapitel-check-row.selected{border-color:var(--accent);background:var(--surface2);}
 .kapitel-check-row input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent);flex-shrink:0;}
-.kapitel-check-name{font-weight:700;font-size:14px;font-family:var(--font-display);}
-.kapitel-check-meta{font-size:12px;color:var(--text2);}
+.kapitel-check-name{font-weight:600;font-size:14px;font-family:var(--font-ui);color:var(--text);}
+.kapitel-check-meta{font-size:12px;color:var(--text2);font-family:var(--font-ui);}
 
 /* CONTROLS */
 .seg-ctrl{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px;margin-bottom:13px;}
-.seg-btn{flex:1;padding:8px 4px;border:none;background:transparent;border-radius:7px;font-size:11px;font-weight:700;font-family:var(--font-display);cursor:pointer;color:var(--text2);transition:all .15s;text-align:center;}
-.seg-btn.active{background:var(--accent);color:#111;}
+.seg-btn{flex:1;padding:8px 4px;border:none;background:transparent;border-radius:7px;font-size:11px;font-weight:700;font-family:var(--font-ui);cursor:pointer;color:var(--text2);transition:all .15s;text-align:center;}
+.seg-btn.active{background:var(--accent);color:#fff;}
 .dir-row{display:flex;gap:8px;margin-bottom:13px;}
-.dir-btn{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:12px;font-family:var(--font-display);font-weight:700;cursor:pointer;text-align:center;color:var(--text2);transition:all .15s;}
-.dir-btn.active{border-color:var(--accent);color:var(--accent);background:var(--surface2);}
+.dir-btn{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:12px;font-family:var(--font-ui);font-weight:600;cursor:pointer;text-align:center;color:var(--text2);transition:all .15s;}
+.dir-btn.active{border-color:var(--accent);color:var(--text);background:var(--surface2);}
 
 /* QUIZ */
 .quiz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 20px;text-align:center;margin-bottom:16px;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.quiz-lang{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;}
-.quiz-word{font-family:var(--font-display);font-size:34px;font-weight:700;color:var(--accent);margin-bottom:8px;line-height:1.2;}
-.quiz-hint{font-size:13px;color:var(--text3);font-style:italic;}
-.quiz-answer{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-family:var(--font-display);font-size:22px;font-weight:700;text-align:center;margin-bottom:12px;display:none;color:var(--text);}
+.quiz-lang{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;font-family:var(--font-ui);}
+.quiz-word{font-family:var(--font-foreign);font-size:36px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.2;}
+.quiz-word.de{font-family:var(--font-ui);font-size:32px;font-weight:600;}
+.quiz-hint{font-size:13px;color:var(--text3);font-style:italic;font-family:var(--font-ui);}
+.quiz-answer{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-family:var(--font-ui);font-size:20px;font-weight:600;text-align:center;margin-bottom:12px;display:none;color:var(--text);}
+.quiz-answer.foreign{font-family:var(--font-foreign);font-size:22px;}
 .quiz-answer.visible{display:block;}
 .quiz-btn-row{display:flex;gap:10px;margin-bottom:8px;}
-.quiz-btn{flex:1;padding:14px;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:var(--font-display);border:none;cursor:pointer;transition:all .15s;}
+.quiz-btn{flex:1;padding:14px;border-radius:var(--radius);font-size:15px;font-weight:600;font-family:var(--font-ui);border:none;cursor:pointer;transition:all .15s;}
 .quiz-btn:active{transform:scale(.97);}
-.quiz-btn.correct{background:rgba(74,222,128,.2);color:#4ade80;border:1.5px solid rgba(74,222,128,.4);}
-.quiz-btn.wrong{background:rgba(248,113,113,.2);color:#f87171;border:1.5px solid rgba(248,113,113,.4);}
-.quiz-btn.show{background:var(--accent);color:#111;}
+.quiz-btn.correct{background:rgba(34,197,94,.15);color:#15803d;border:1.5px solid rgba(34,197,94,.4);}
+.quiz-btn.wrong{background:rgba(239,68,68,.15);color:#b91c1c;border:1.5px solid rgba(239,68,68,.4);}
+.quiz-btn.show{background:var(--accent);color:#fff;}
 .quiz-progress{background:var(--surface2);border-radius:4px;height:5px;margin-bottom:16px;overflow:hidden;}
 .quiz-progress-bar{height:100%;background:var(--accent);border-radius:4px;transition:width .4s ease;}
-.quiz-counter{font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px;letter-spacing:.5px;}
+.quiz-counter{font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px;letter-spacing:.5px;font-family:var(--font-ui);}
 .quiz-result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;margin-bottom:16px;}
-.quiz-result-title{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:8px;color:var(--accent);}
-.quiz-result-sub{font-size:14px;color:var(--text2);line-height:1.7;}
+.quiz-result-title{font-family:var(--font-ui);font-size:24px;font-weight:700;margin-bottom:8px;color:var(--text);}
+.quiz-result-sub{font-size:14px;color:var(--text2);line-height:1.7;font-family:var(--font-ui);}
 .stat-row{display:flex;justify-content:space-around;margin:16px 0;}
 .stat-box{text-align:center;}
-.stat-num{font-family:var(--font-display);font-size:30px;font-weight:700;}
-.stat-num.green{color:#4ade80;} .stat-num.red{color:#f87171;}
-.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-top:2px;}
+.stat-num{font-family:var(--font-ui);font-size:30px;font-weight:700;color:var(--text);}
+.stat-num.green{color:#15803d;} .stat-num.red{color:#b91c1c;}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-top:2px;font-family:var(--font-ui);}
 
 /* SETTINGS */
 .lang-panel{background:var(--surface2);border-radius:var(--radius-sm);padding:16px;margin-bottom:14px;border:1px solid var(--border);}
-.lang-panel-hdr{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:14px;color:var(--accent);}
+.lang-panel-hdr{font-family:var(--font-ui);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);}
 .color-row{display:flex;gap:10px;align-items:center;}
 .font-preview{font-size:16px;padding:6px 10px;background:var(--surface);border-radius:6px;border:1px solid var(--border);color:var(--text);margin-top:6px;}
 .logo-upload-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
@@ -161,19 +165,19 @@ input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--bo
 .logo-big{width:64px;height:64px;border-radius:12px;object-fit:contain;border:2px solid var(--border);display:none;flex-shrink:0;}
 .logo-big.visible{display:block;}
 .preset-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
-.preset-btn{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:11px;font-weight:700;font-family:var(--font-display);cursor:pointer;color:var(--text2);transition:all .15s;}
-.preset-btn:hover{border-color:var(--accent);color:var(--accent);}
+.preset-btn{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:11px;font-weight:600;font-family:var(--font-ui);cursor:pointer;color:var(--text2);transition:all .15s;}
+.preset-btn:hover{border-color:var(--text2);color:var(--text);}
 
 /* LANG SWITCHER */
 .lang-switcher-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s;}
 .lang-switcher-overlay.hidden{display:none;}
 .lang-picker-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;min-width:270px;}
-.lang-picker-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--accent);margin-bottom:14px;text-align:center;}
+.lang-picker-title{font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;text-align:center;}
 .lang-option{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:8px;border:1.5px solid var(--border);background:var(--surface);transition:all .15s;}
 .lang-option:hover,.lang-option.active{border-color:var(--accent);background:var(--surface2);}
 .lang-option-icon{font-size:24px;}
-.lang-option-name{font-family:var(--font-display);font-size:16px;font-weight:700;}
-.lang-option-sub{font-size:12px;color:var(--text2);}
+.lang-option-name{font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text);}
+.lang-option-sub{font-size:12px;color:var(--text2);font-family:var(--font-ui);}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:flex-end;padding-bottom:var(--safe-bottom);animation:fadeIn .2s;}
@@ -182,27 +186,27 @@ input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--bo
 .modal-sheet{background:var(--bg2);border-top:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;padding:20px 16px 24px;animation:slideUp .25s ease;max-height:92vh;overflow-y:auto;}
 @keyframes slideUp{from{transform:translateY(40px)}to{transform:none}}
 .modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:-10px auto 16px;}
-.modal-title{font-family:var(--font-display);font-size:21px;font-weight:700;margin-bottom:14px;color:var(--accent);}
+.modal-title{font-family:var(--font-ui);font-size:19px;font-weight:700;margin-bottom:14px;color:var(--text);}
 
 /* MISC */
 .empty{text-align:center;padding:40px 20px;color:var(--text3);}
 .empty .ei{font-size:48px;margin-bottom:12px;}
-.empty p{font-size:14px;line-height:1.7;}
+.empty p{font-size:14px;line-height:1.7;font-family:var(--font-ui);}
 hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 input[type=file]{display:none;}
-.toast{position:fixed;bottom:calc(var(--safe-bottom) + 80px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#111;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;font-family:var(--font-display);}
+.toast{position:fixed;bottom:calc(var(--safe-bottom) + 80px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;font-family:var(--font-ui);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 /* MEANING CHIPS */
 .meaning-chip{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);margin-bottom:8px;gap:10px;}
-.meaning-chip-text{font-family:var(--font-display);font-size:16px;flex:1;}
+.meaning-chip-text{font-family:var(--font-ui);font-size:15px;flex:1;color:var(--text);}
 .meaning-chip-btns{display:flex;gap:6px;flex-shrink:0;}
-.chip-btn{padding:6px 13px;border-radius:20px;font-size:13px;font-weight:700;font-family:var(--font-display);border:1.5px solid transparent;cursor:pointer;transition:all .15s;}
-.chip-btn.c{background:rgba(74,222,128,.15);color:#16a34a;border-color:rgba(74,222,128,.3);}
-.chip-btn.w{background:rgba(248,113,113,.15);color:#dc2626;border-color:rgba(248,113,113,.3);}
-.chip-btn.c.sel{background:#16a34a;color:#fff;border-color:#16a34a;}
-.chip-btn.w.sel{background:#dc2626;color:#fff;border-color:#dc2626;}
-.meaning-chip.rc{border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.06);}
-.meaning-chip.rw{border-color:rgba(248,113,113,.4);background:rgba(248,113,113,.06);}
+.chip-btn{padding:6px 13px;border-radius:20px;font-size:13px;font-weight:600;font-family:var(--font-ui);border:1.5px solid transparent;cursor:pointer;transition:all .15s;}
+.chip-btn.c{background:rgba(34,197,94,.15);color:#15803d;border-color:rgba(34,197,94,.3);}
+.chip-btn.w{background:rgba(239,68,68,.15);color:#b91c1c;border-color:rgba(239,68,68,.3);}
+.chip-btn.c.sel{background:#15803d;color:#fff;border-color:#15803d;}
+.chip-btn.w.sel{background:#b91c1c;color:#fff;border-color:#b91c1c;}
+.meaning-chip.rc{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.06);}
+.meaning-chip.rw{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.06);}
 </style>
 </head>
 <body>
@@ -243,6 +247,7 @@ input[type=file]{display:none;}
     <button class="tab" onclick="switchTab('abfragen',this)">Abfragen</button>
     <button class="tab" onclick="switchTab('scannen',this)">Scannen</button>
     <button class="tab" onclick="switchTab('statistik',this)">Statistik</button>
+    <button class="tab" onclick="switchTab('transfer',this)">↕ Transfer</button>
   </div>
 </div>
 
@@ -258,7 +263,20 @@ input[type=file]{display:none;}
 <!-- ABFRAGEN -->
 <div id="tab-abfragen" class="screen">
   <div id="abfragen-setup">
-    <p class="sec-label">Kapitel wählen</p>
+    <p class="sec-label">Modus</p>
+    <div class="dir-row" style="margin-bottom:6px">
+      <button class="dir-btn active" id="modeSelf" onclick="setMode('self')" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px">
+        <span style="font-size:20px">🧑‍🎓</span>
+        <span>Selbstprüfung</span>
+        <span style="font-size:10px;opacity:.7;font-weight:400">Antwort erst nach Tippen</span>
+      </button>
+      <button class="dir-btn" id="modePartner" onclick="setMode('partner')" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px">
+        <span style="font-size:20px">👥</span>
+        <span>Abfrage zu zweit</span>
+        <span style="font-size:10px;opacity:.7;font-weight:400">Antwort sofort sichtbar</span>
+      </button>
+    </div>
+    <p class="sec-label" style="margin-top:18px">Kapitel wählen</p>
     <div id="kapitelAuswahl"></div>
     <p class="sec-label" style="margin-top:18px">Abfragerichtung</p>
     <div class="dir-row">
@@ -279,6 +297,7 @@ input[type=file]{display:none;}
     <button class="big-btn primary" onclick="startAbfragen()">▶ Abfragen starten</button>
   </div>
   <div id="abfragen-quiz" style="display:none">
+    <div id="quizModeBar" style="text-align:center;font-size:12px;font-weight:700;letter-spacing:.5px;padding:6px 12px;border-radius:20px;margin-bottom:12px;display:inline-block;width:100%"></div>
     <div class="quiz-counter" id="quizCounter"></div>
     <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar"></div></div>
     <div class="quiz-card">
@@ -404,6 +423,73 @@ input[type=file]{display:none;}
 <div id="tab-statistik" class="screen">
   <p class="sec-label">Überblick</p>
   <div id="statistikContent"></div>
+</div>
+
+<!-- TRANSFER -->
+<div id="tab-transfer" class="screen">
+
+  <!-- EXPORT -->
+  <p class="sec-label">Export</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Alle Vokabeln als <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">.txt</code> exportieren. Format: <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">Wort = Übersetzung</code>, Kapitel als Überschriften.</p>
+
+    <p class="sec-label" style="margin-top:0">Gesamtexport</p>
+    <button class="big-btn secondary" onclick="exportAll()">↓ Alle Sprachen (eine Datei)</button>
+
+    <p class="sec-label">Nach Sprache</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('en')">🇬🇧 Englisch</button>
+      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('la')">🏛 Latein</button>
+      <button class="big-btn secondary" style="flex:1;margin-bottom:0" onclick="exportLang('fr')">🇫🇷 Französisch</button>
+    </div>
+
+    <p class="sec-label">Einzelnes Kapitel</p>
+    <div class="field" style="margin-bottom:8px">
+      <select id="exportKapSelect"></select>
+    </div>
+    <button class="big-btn secondary" onclick="exportKapitel()">↓ Kapitel exportieren</button>
+
+    <p class="sec-label">App-Daten (Vollbackup)</p>
+    <button class="big-btn secondary" onclick="exportBackup()">↓ Backup als JSON</button>
+  </div></div>
+
+  <!-- IMPORT -->
+  <p class="sec-label">Import</p>
+  <div class="card"><div class="card-body">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Importiere eine zuvor exportierte <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">.txt</code>-Datei oder ein <code style="background:var(--surface2);padding:1px 5px;border-radius:3px">.json</code>-Backup.</p>
+
+    <p class="sec-label" style="margin-top:0">TXT-Import (Vokabeln)</p>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">Kapitel-Überschriften werden erkannt (<code style="background:var(--surface2);padding:1px 4px;border-radius:3px"># Kapitelname</code>). Ohne Überschrift wird das gewählte Standardkapitel verwendet.</p>
+
+    <div class="field">
+      <label>Sprache für importierte Vokabeln</label>
+      <div class="seg-ctrl" id="importLangCtrl">
+        <button class="seg-btn active" onclick="setImportLang('en',this)">🇬🇧 Englisch</button>
+        <button class="seg-btn" onclick="setImportLang('la',this)">🏛 Latein</button>
+        <button class="seg-btn" onclick="setImportLang('fr',this)">🇫🇷 Französisch</button>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:10px">
+      <label>Standardkapitel (falls keine Überschrift)</label>
+      <select id="importKapSelect">
+        <option value="__neu__">+ Neues Kapitel anlegen</option>
+      </select>
+    </div>
+    <div class="foto-drop" onclick="document.getElementById('importTxtFile').click()" style="padding:18px;margin-bottom:8px">
+      <div style="font-size:28px;margin-bottom:4px">📄</div>
+      <p style="font-size:13px;color:var(--text2)">.txt-Datei wählen</p>
+    </div>
+    <input type="file" id="importTxtFile" accept=".txt,text/plain" onchange="importTxtFull(this)">
+
+    <p class="sec-label">JSON-Backup wiederherstellen</p>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">Stellt alle Kapitel und Vokabeln aus einem Backup wieder her. Bestehende Daten werden <strong>zusammengeführt</strong>, nicht überschrieben.</p>
+    <div class="foto-drop" onclick="document.getElementById('importJsonFile').click()" style="padding:18px">
+      <div style="font-size:28px;margin-bottom:4px">🗂</div>
+      <p style="font-size:13px;color:var(--text2)">.json-Backup wählen</p>
+    </div>
+    <input type="file" id="importJsonFile" accept=".json,application/json" onchange="importBackup(this)">
+  </div></div>
+
 </div>
 
 </main>
@@ -650,7 +736,7 @@ let settings={
   fr:{name:'Vocabulaire Français',font:"'Petit Formal Script',cursive",accent:'#8b1a4a',bg:'#fdf0f5',bg2:'#ffffff',text:'#1a1a1a'}
 };
 let scanLang='en',analyseVoks=[],quizState=null,tempVoks=[],selectedKapitel=new Set();
-let abfrageSettings={dir:'de',order:'seq',focus:'all'};
+let abfrageSettings={dir:'de',order:'seq',focus:'all',mode:'self'};
 
 function save(){try{localStorage.setItem('vt2s',JSON.stringify(state));}catch(e){}}
 function load(){
@@ -781,6 +867,7 @@ function switchTab(id,btn){
   if(id==='abfragen'){renderKapitelAuswahl();updateAbfrageInfo();}
   if(id==='statistik')renderStatistik();
   if(id==='scannen'){renderScanKapitelSelect();updatePrompt();}
+  if(id==='transfer')renderTransferSelects();
 }
 
 // ── KAPITEL ──
@@ -806,7 +893,7 @@ function showKapitelDetail(id){
   voks.forEach(v=>{
     const dc=['diff-0','diff-1','diff-2'][Math.min(v.difficulty||0,2)];
     const meanings=getMeanings(v.deutsch);
-    const badge=(k.lang==='la'&&meanings.length>1)?' <span style="font-size:11px;color:var(--accent);font-weight:700">('+meanings.length+')</span>':'';
+    const badge=(k.lang==='la'&&meanings.length>1)?' <span style="font-size:11px;color:var(--text2);font-weight:700">('+meanings.length+')</span>':'';
     html+=`<div class="vok-row"><div class="vok-difficulty ${dc}"></div><div class="vok-left">${esc(v.fremd)}${badge}</div><div class="vok-right">${esc(v.deutsch)}</div></div>`;
   });
   document.getElementById('detailContent').innerHTML=html;openModal('modalDetail');
@@ -1101,6 +1188,11 @@ function toggleKapitelSelect(id,row){
 function setDir(v){abfrageSettings.dir=v;document.getElementById('dirDE').classList.toggle('active',v==='de');document.getElementById('dirFS').classList.toggle('active',v==='fs');}
 function setOrder(v){abfrageSettings.order=v;document.getElementById('orderSeq').classList.toggle('active',v==='seq');document.getElementById('orderRnd').classList.toggle('active',v==='rnd');}
 function setFocus(v){abfrageSettings.focus=v;document.getElementById('focusAll').classList.toggle('active',v==='all');document.getElementById('focusWeak').classList.toggle('active',v==='weak');}
+function setMode(v){
+  abfrageSettings.mode=v;
+  document.getElementById('modeSelf').classList.toggle('active',v==='self');
+  document.getElementById('modePartner').classList.toggle('active',v==='partner');
+}
 function getQuizVoks(){let voks=[];state.kapitel.filter(k=>selectedKapitel.has(k.id)).forEach(k=>{(k.vokabeln||[]).forEach(v=>voks.push({...v,kapId:k.id,lang:k.lang}));});return voks;}
 function updateAbfrageInfo(){
   const voks=getQuizVoks(),el=document.getElementById('abfragenInfo');
@@ -1122,6 +1214,14 @@ function startAbfragen(){
 }
 function renderQuizCard(){
   const q=quizState,v=q.voks[q.idx],total=q.voks.length;
+  const isPartner=abfrageSettings.mode==='partner';
+  // Mode bar
+  const bar=document.getElementById('quizModeBar');
+  if(bar){
+    bar.textContent=isPartner?'👥 Abfrage zu zweit':'🧑‍🎓 Selbstprüfung';
+    bar.style.background=isPartner?'rgba(74,222,128,.15)':'var(--surface2)';
+    bar.style.color=isPartner?'#16a34a':'var(--text2)';
+  }
   document.getElementById('quizBar').style.width=(q.idx/total*100)+'%';
   document.getElementById('quizCounter').textContent=(q.idx+1)+' / '+total;
   const ll={en:'Englisch',la:'Latein',fr:'Französisch'}[v.lang]||'';
@@ -1131,7 +1231,9 @@ function renderQuizCard(){
   const answerEl=document.getElementById('quizAnswer');
   const meaningArea=document.getElementById('quizMeaningRateArea');
   const rateRow=document.getElementById('quizRateRow');
+  const showRow=document.getElementById('quizShowRow');
   const btn=document.getElementById('meaningNextBtn');
+  const quizWordEl=document.getElementById('quizWord');
   if(btn)btn.remove();
   answerEl.style.display='block';
   answerEl.classList.remove('visible');
@@ -1141,32 +1243,41 @@ function renderQuizCard(){
   if(abfrageSettings.dir==='de'){
     document.getElementById('quizLang').textContent='Deutsch → '+ll;
     const mIdx=isLatin&&meanings.length>1?Math.floor(Math.random()*meanings.length):0;
-    document.getElementById('quizWord').textContent=meanings[mIdx];
+    quizWordEl.textContent=meanings[mIdx];
+    quizWordEl.className='quiz-word de';
     answerEl.textContent=v.fremd;
+    answerEl.className='quiz-answer foreign';
     badge.style.display='none';
   } else {
     document.getElementById('quizLang').textContent=ll+' → Deutsch';
-    document.getElementById('quizWord').textContent=v.fremd;
+    quizWordEl.textContent=v.fremd;
+    quizWordEl.className='quiz-word';
     if(isLatin&&meanings.length>1){
       badge.style.display='block';
       document.getElementById('quizMeaningCounter').textContent='('+meanings.length+')';
       answerEl.textContent=v.deutsch;
+      answerEl.className='quiz-answer';
     } else {
       badge.style.display='none';
       answerEl.textContent=v.deutsch;
+      answerEl.className='quiz-answer';
     }
   }
   document.getElementById('quizHint').textContent=(v.difficulty>=2)?'⚠ Schwierige Vokabel':(v.difficulty===1?'⚡ Noch unsicher':'');
-  document.getElementById('quizShowRow').style.display='flex';
+  if(isPartner){
+    // Partner mode: show answer immediately
+    showRow.style.display='none';
+    _revealAnswer(v,isLatin,meanings);
+  } else {
+    // Self mode: hide answer
+    showRow.style.display='flex';
+  }
 }
-function showAnswer(){
-  const q=quizState,v=q.voks[q.idx];
-  const isLatin=v.lang==='la';
-  const meanings=getMeanings(v.deutsch);
+function _revealAnswer(v,isLatin,meanings){
+  const isPartner=abfrageSettings.mode==='partner';
   const answerEl=document.getElementById('quizAnswer');
   const meaningArea=document.getElementById('quizMeaningRateArea');
   const rateRow=document.getElementById('quizRateRow');
-  document.getElementById('quizShowRow').style.display='none';
   if(isLatin&&meanings.length>1&&abfrageSettings.dir==='fs'){
     answerEl.style.display='none';
     meaningArea.style.display='block';
@@ -1185,6 +1296,13 @@ function showAnswer(){
     meaningArea.style.display='none';
     rateRow.style.display='flex';
   }
+}
+function showAnswer(){
+  const q=quizState,v=q.voks[q.idx];
+  const isLatin=v.lang==='la';
+  const meanings=getMeanings(v.deutsch);
+  document.getElementById('quizShowRow').style.display='none';
+  _revealAnswer(v,isLatin,meanings);
 }
 function rateMeaning(idx,correct){
   const q=quizState;
@@ -1259,6 +1377,181 @@ function renderStatistik(){
   </div></div>
   <p class="sec-label">Nach Sprache</p>${byLang||'<p style="color:var(--text3);font-size:13px">Keine Kapitel.</p>'}
   ${wl.length?`<p class="sec-label" style="margin-top:20px">⚠ Schwache Vokabeln</p>`+wl.map(v=>`<div class="vok-row" style="background:var(--surface);padding:10px 12px;border-radius:8px;margin-bottom:6px"><div class="vok-difficulty diff-2"></div><div class="vok-left">${esc(v.fremd)}</div><div class="vok-right">${esc(v.deutsch)}</div><span style="font-size:11px;color:var(--text3)">${LANG_ICONS[v.kl]}</span></div>`).join(''):''}`;
+}
+
+// ── IMPORT / EXPORT ──
+let importLang='en';
+
+function setImportLang(l,btn){
+  importLang=l;
+  document.querySelectorAll('#importLangCtrl .seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderTransferSelects(){
+  // Export kapitel select
+  const exp=document.getElementById('exportKapSelect');
+  if(exp){
+    exp.innerHTML=state.kapitel.map(k=>`<option value="${k.id}">${LANG_ICONS[k.lang]} ${k.name}</option>`).join('');
+    if(!state.kapitel.length)exp.innerHTML='<option value="">Keine Kapitel vorhanden</option>';
+  }
+  // Import kapitel select
+  const imp=document.getElementById('importKapSelect');
+  if(imp){
+    imp.innerHTML='<option value="__neu__">+ Neues Kapitel anlegen</option>'+
+      state.kapitel.map(k=>`<option value="${k.id}">${LANG_ICONS[k.lang]} ${k.name}</option>`).join('');
+  }
+}
+
+function buildTxtContent(kapitel){
+  // Returns txt string with # headers per kapitel
+  return kapitel.map(k=>{
+    const lines=['# '+k.name+' ['+k.lang+']'];
+    (k.vokabeln||[]).forEach(v=>lines.push(v.fremd+' = '+v.deutsch));
+    return lines.join('\n');
+  }).join('\n\n');
+}
+
+function downloadTxt(content,filename){
+  const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);document.body.removeChild(a);},1000);
+}
+
+function downloadJson(obj,filename){
+  const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);document.body.removeChild(a);},1000);
+}
+
+function exportAll(){
+  if(!state.kapitel.length){toast('Keine Kapitel vorhanden');return;}
+  const content=buildTxtContent(state.kapitel);
+  downloadTxt(content,'vokabeln_alle.txt');
+  toast('Exportiert: vokabeln_alle.txt');
+}
+
+function exportLang(lang){
+  const kaps=state.kapitel.filter(k=>k.lang===lang);
+  if(!kaps.length){toast('Keine Kapitel für diese Sprache');return;}
+  const names={en:'englisch',la:'latein',fr:'franzoesisch'};
+  const content=buildTxtContent(kaps);
+  downloadTxt(content,'vokabeln_'+names[lang]+'.txt');
+  toast('Exportiert: vokabeln_'+names[lang]+'.txt');
+}
+
+function exportKapitel(){
+  const sel=document.getElementById('exportKapSelect');
+  if(!sel||!sel.value){toast('Kein Kapitel gewählt');return;}
+  const kap=state.kapitel.find(k=>k.id===sel.value);
+  if(!kap){toast('Kapitel nicht gefunden');return;}
+  const content=buildTxtContent([kap]);
+  const safeName=kap.name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g,'_').slice(0,40);
+  downloadTxt(content,'vokabeln_'+safeName+'.txt');
+  toast('Exportiert!');
+}
+
+function exportBackup(){
+  const backup={kapitel:state.kapitel,stats:state.stats,exportiert:new Date().toISOString()};
+  downloadJson(backup,'vokabeltrainer_backup.json');
+  toast('Backup exportiert!');
+}
+
+function importTxtFull(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const text=e.target.result;
+    const lines=text.split('\n').map(l=>l.trim()).filter(l=>l);
+    let currentKapName=null;
+    let currentKapId=null;
+    let addedTotal=0;
+    const selVal=document.getElementById('importKapSelect').value;
+
+    lines.forEach(line=>{
+      // Detect header: # Name [lang] or # Name
+      if(line.startsWith('#')){
+        const headerText=line.replace(/^#+\s*/,'');
+        // Extract optional [lang] tag
+        const langMatch=headerText.match(/\[([a-z]{2})\]\s*$/i);
+        const parsedLang=langMatch?langMatch[1].toLowerCase():importLang;
+        const kapName=headerText.replace(/\[[a-z]{2}\]\s*$/i,'').trim();
+        // Find or create kapitel
+        let kap=state.kapitel.find(k=>k.name.toLowerCase()===kapName.toLowerCase()&&k.lang===parsedLang);
+        if(!kap){
+          kap={id:'k'+Date.now()+Math.random().toString(36).slice(2),name:kapName,lang:parsedLang,vokabeln:[],erstellt:new Date().toISOString()};
+          state.kapitel.push(kap);
+        }
+        currentKapId=kap.id;
+        currentKapName=kapName;
+        return;
+      }
+      // Detect vokabel line
+      const eqIdx=line.indexOf('=');
+      if(eqIdx<1)return;
+      const fremd=line.slice(0,eqIdx).trim();
+      const deutsch=line.slice(eqIdx+1).trim();
+      if(!fremd||!deutsch)return;
+      // Determine target kapitel
+      let kapId=currentKapId;
+      if(!kapId){
+        if(selVal==='__neu__'){
+          // Create default kapitel named after file
+          const defName='Import '+new Date().toLocaleDateString('de-DE');
+          let kap=state.kapitel.find(k=>k.name===defName&&k.lang===importLang);
+          if(!kap){kap={id:'k'+Date.now()+Math.random().toString(36).slice(2),name:defName,lang:importLang,vokabeln:[],erstellt:new Date().toISOString()};state.kapitel.push(kap);}
+          kapId=kap.id;currentKapId=kapId;
+        } else {
+          kapId=selVal;
+        }
+      }
+      const kap=state.kapitel.find(k=>k.id===kapId);
+      if(!kap)return;
+      const exists=(kap.vokabeln||[]).some(v=>v.fremd.toLowerCase()===fremd.toLowerCase());
+      if(!exists){
+        kap.vokabeln=kap.vokabeln||[];
+        kap.vokabeln.push({fremd,deutsch,difficulty:0,correct:0,wrong:0});
+        addedTotal++;
+      }
+    });
+    save();renderKapitel();renderTransferSelects();
+    toast(addedTotal+' Vokabeln importiert!');
+  };
+  reader.readAsText(file,'UTF-8');
+  input.value='';
+}
+
+function importBackup(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.kapitel||!Array.isArray(data.kapitel)){toast('Ungültiges Backup-Format');return;}
+      let added=0,merged=0;
+      data.kapitel.forEach(importedKap=>{
+        let existing=state.kapitel.find(k=>k.name===importedKap.name&&k.lang===importedKap.lang);
+        if(!existing){
+          state.kapitel.push({...importedKap,id:'k'+Date.now()+Math.random().toString(36).slice(2)});
+          added++;
+        } else {
+          // Merge vokabeln
+          const exFremd=new Set((existing.vokabeln||[]).map(v=>v.fremd.toLowerCase()));
+          (importedKap.vokabeln||[]).forEach(v=>{
+            if(!exFremd.has(v.fremd.toLowerCase())){existing.vokabeln=existing.vokabeln||[];existing.vokabeln.push(v);merged++;}
+          });
+        }
+      });
+      save();renderKapitel();renderTransferSelects();
+      toast(added+' Kapitel neu, '+merged+' Vokabeln zusammengeführt');
+    }catch(err){toast('Fehler beim Lesen der Datei');}
+  };
+  reader.readAsText(file,'UTF-8');
+  input.value='';
 }
 
 // ── UTILS ──
