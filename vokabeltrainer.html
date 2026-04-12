@@ -192,6 +192,17 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 input[type=file]{display:none;}
 .toast{position:fixed;bottom:calc(var(--safe-bottom) + 80px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#111;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;font-family:var(--font-display);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* MEANING CHIPS */
+.meaning-chip{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);margin-bottom:8px;gap:10px;}
+.meaning-chip-text{font-family:var(--font-display);font-size:16px;flex:1;}
+.meaning-chip-btns{display:flex;gap:6px;flex-shrink:0;}
+.chip-btn{padding:6px 13px;border-radius:20px;font-size:13px;font-weight:700;font-family:var(--font-display);border:1.5px solid transparent;cursor:pointer;transition:all .15s;}
+.chip-btn.c{background:rgba(74,222,128,.15);color:#16a34a;border-color:rgba(74,222,128,.3);}
+.chip-btn.w{background:rgba(248,113,113,.15);color:#dc2626;border-color:rgba(248,113,113,.3);}
+.chip-btn.c.sel{background:#16a34a;color:#fff;border-color:#16a34a;}
+.chip-btn.w.sel{background:#dc2626;color:#fff;border-color:#dc2626;}
+.meaning-chip.rc{border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.06);}
+.meaning-chip.rw{border-color:rgba(248,113,113,.4);background:rgba(248,113,113,.06);}
 </style>
 </head>
 <body>
@@ -273,9 +284,16 @@ input[type=file]{display:none;}
     <div class="quiz-card">
       <div class="quiz-lang" id="quizLang"></div>
       <div class="quiz-word" id="quizWord"></div>
+      <div id="quizMeaningBadge" style="display:none;margin-top:6px">
+        <span id="quizMeaningCounter" style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--surface2);color:var(--text2);letter-spacing:.5px"></span>
+      </div>
       <div class="quiz-hint" id="quizHint"></div>
     </div>
     <div class="quiz-answer" id="quizAnswer"></div>
+    <!-- Multi-meaning rating (Latin) -->
+    <div id="quizMeaningRateArea" style="display:none">
+      <div id="quizMeaningList" style="margin-bottom:12px"></div>
+    </div>
     <div class="quiz-btn-row" id="quizShowRow">
       <button class="quiz-btn show" onclick="showAnswer()">👁 Antwort zeigen</button>
     </div>
@@ -785,7 +803,12 @@ function showKapitelDetail(id){
   document.getElementById('detailTitle').textContent=k.name;
   const voks=k.vokabeln||[];
   let html=`<p style="font-size:13px;color:var(--text2);margin-bottom:12px">${voks.length} Vokabeln</p>`;
-  voks.forEach(v=>{const dc=['diff-0','diff-1','diff-2'][Math.min(v.difficulty||0,2)];html+=`<div class="vok-row"><div class="vok-difficulty ${dc}"></div><div class="vok-left">${esc(v.fremd)}</div><div class="vok-right">${esc(v.deutsch)}</div></div>`;});
+  voks.forEach(v=>{
+    const dc=['diff-0','diff-1','diff-2'][Math.min(v.difficulty||0,2)];
+    const meanings=getMeanings(v.deutsch);
+    const badge=(k.lang==='la'&&meanings.length>1)?' <span style="font-size:11px;color:var(--accent);font-weight:700">('+meanings.length+')</span>':'';
+    html+=`<div class="vok-row"><div class="vok-difficulty ${dc}"></div><div class="vok-left">${esc(v.fremd)}${badge}</div><div class="vok-right">${esc(v.deutsch)}</div></div>`;
+  });
   document.getElementById('detailContent').innerHTML=html;openModal('modalDetail');
 }
 
@@ -1084,32 +1107,125 @@ function updateAbfrageInfo(){
   if(!voks.length){el.textContent=selectedKapitel.size?'Keine Vokabeln in den gewählten Kapiteln.':'Bitte mindestens ein Kapitel wählen.';}
   else{const w=voks.filter(v=>(v.difficulty||0)>=1).length;el.textContent=voks.length+' Vokabeln'+(w?' · ⚠ '+w+' schwache':'');}
 }
+function getMeanings(deutsch){
+  return deutsch.split(/[,;]/).map(m=>m.trim()).filter(m=>m.length>0);
+}
 function startAbfragen(){
   let voks=getQuizVoks();if(!voks.length){toast('Bitte Kapitel wählen');return;}
   if(abfrageSettings.focus==='weak'){voks.sort((a,b)=>(b.difficulty||0)-(a.difficulty||0));voks=[...voks,...voks.filter(v=>(v.difficulty||0)>=2)];}
   if(abfrageSettings.order==='rnd')voks=voks.sort(()=>Math.random()-.5);
-  quizState={voks,idx:0,correct:0,wrong:0};
-  document.getElementById('abfragen-setup').style.display='none';document.getElementById('abfragen-quiz').style.display='block';document.getElementById('abfragen-result').style.display='none';
+  quizState={voks,idx:0,correct:0,wrong:0,meaningRatings:[]};
+  document.getElementById('abfragen-setup').style.display='none';
+  document.getElementById('abfragen-quiz').style.display='block';
+  document.getElementById('abfragen-result').style.display='none';
   renderQuizCard();
 }
 function renderQuizCard(){
   const q=quizState,v=q.voks[q.idx],total=q.voks.length;
   document.getElementById('quizBar').style.width=(q.idx/total*100)+'%';
   document.getElementById('quizCounter').textContent=(q.idx+1)+' / '+total;
-  const ll={en:'🇬🇧 Englisch',la:'🏛 Latein',fr:'🇫🇷 Französisch'}[v.lang]||'';
-  if(abfrageSettings.dir==='de'){document.getElementById('quizLang').textContent='Deutsch → '+ll;document.getElementById('quizWord').textContent=v.deutsch;document.getElementById('quizAnswer').textContent=v.fremd;}
-  else{document.getElementById('quizLang').textContent=ll+' → Deutsch';document.getElementById('quizWord').textContent=v.fremd;document.getElementById('quizAnswer').textContent=v.deutsch;}
+  const ll={en:'Englisch',la:'Latein',fr:'Französisch'}[v.lang]||'';
+  const isLatin=v.lang==='la';
+  const meanings=getMeanings(v.deutsch);
+  const badge=document.getElementById('quizMeaningBadge');
+  const answerEl=document.getElementById('quizAnswer');
+  const meaningArea=document.getElementById('quizMeaningRateArea');
+  const rateRow=document.getElementById('quizRateRow');
+  const btn=document.getElementById('meaningNextBtn');
+  if(btn)btn.remove();
+  answerEl.style.display='block';
+  answerEl.classList.remove('visible');
+  meaningArea.style.display='none';
+  rateRow.style.display='none';
+  q.meaningRatings=meanings.map(()=>null);
+  if(abfrageSettings.dir==='de'){
+    document.getElementById('quizLang').textContent='Deutsch → '+ll;
+    const mIdx=isLatin&&meanings.length>1?Math.floor(Math.random()*meanings.length):0;
+    document.getElementById('quizWord').textContent=meanings[mIdx];
+    answerEl.textContent=v.fremd;
+    badge.style.display='none';
+  } else {
+    document.getElementById('quizLang').textContent=ll+' → Deutsch';
+    document.getElementById('quizWord').textContent=v.fremd;
+    if(isLatin&&meanings.length>1){
+      badge.style.display='block';
+      document.getElementById('quizMeaningCounter').textContent='('+meanings.length+')';
+      answerEl.textContent=v.deutsch;
+    } else {
+      badge.style.display='none';
+      answerEl.textContent=v.deutsch;
+    }
+  }
   document.getElementById('quizHint').textContent=(v.difficulty>=2)?'⚠ Schwierige Vokabel':(v.difficulty===1?'⚡ Noch unsicher':'');
-  document.getElementById('quizAnswer').classList.remove('visible');
-  document.getElementById('quizShowRow').style.display='flex';document.getElementById('quizRateRow').style.display='none';
+  document.getElementById('quizShowRow').style.display='flex';
 }
-function showAnswer(){document.getElementById('quizAnswer').classList.add('visible');document.getElementById('quizShowRow').style.display='none';document.getElementById('quizRateRow').style.display='flex';}
+function showAnswer(){
+  const q=quizState,v=q.voks[q.idx];
+  const isLatin=v.lang==='la';
+  const meanings=getMeanings(v.deutsch);
+  const answerEl=document.getElementById('quizAnswer');
+  const meaningArea=document.getElementById('quizMeaningRateArea');
+  const rateRow=document.getElementById('quizRateRow');
+  document.getElementById('quizShowRow').style.display='none';
+  if(isLatin&&meanings.length>1&&abfrageSettings.dir==='fs'){
+    answerEl.style.display='none';
+    meaningArea.style.display='block';
+    document.getElementById('quizMeaningList').innerHTML=meanings.map((m,i)=>
+      '<div class="meaning-chip" id="mc'+i+'">' +
+        '<span class="meaning-chip-text">'+m+'</span>' +
+        '<div class="meaning-chip-btns">' +
+          '<button class="chip-btn w" id="mcw'+i+'" onclick="rateMeaning('+i+',false)">✗</button>' +
+          '<button class="chip-btn c" id="mcc'+i+'" onclick="rateMeaning('+i+',true)">✓</button>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+  } else {
+    answerEl.style.display='block';
+    answerEl.classList.add('visible');
+    meaningArea.style.display='none';
+    rateRow.style.display='flex';
+  }
+}
+function rateMeaning(idx,correct){
+  const q=quizState;
+  q.meaningRatings[idx]=correct;
+  const chip=document.getElementById('mc'+idx);
+  const btnW=document.getElementById('mcw'+idx);
+  const btnC=document.getElementById('mcc'+idx);
+  if(chip)chip.className='meaning-chip '+(correct?'rc':'rw');
+  if(btnW)btnW.className='chip-btn w'+(correct?'':' sel');
+  if(btnC)btnC.className='chip-btn c'+(correct?' sel':'');
+  if(q.meaningRatings.every(r=>r!==null)){
+    let btn=document.getElementById('meaningNextBtn');
+    if(!btn){
+      btn=document.createElement('button');
+      btn.id='meaningNextBtn';
+      btn.className='big-btn primary';
+      btn.style.marginTop='8px';
+      btn.textContent='Weiter →';
+      btn.onclick=finishMeaningCard;
+      document.getElementById('quizMeaningRateArea').appendChild(btn);
+    }
+    btn.style.display='flex';
+  }
+}
+function finishMeaningCard(){
+  const q=quizState,v=q.voks[q.idx];
+  const kap=state.kapitel.find(k=>k.id===v.kapId);
+  const allCorrect=q.meaningRatings.every(r=>r===true);
+  const anyWrong=q.meaningRatings.some(r=>r===false);
+  if(kap){const ov=kap.vokabeln.find(vv=>vv.fremd===v.fremd);if(ov){ov.correct=(ov.correct||0)+(allCorrect?1:0);ov.wrong=(ov.wrong||0)+(anyWrong?1:0);ov.difficulty=allCorrect?Math.max(0,(ov.difficulty||0)-1):Math.min(2,(ov.difficulty||0)+1);}}
+  if(allCorrect)q.correct++;else q.wrong++;
+  q.idx++;
+  if(q.idx>=q.voks.length){save();showResult();}else renderQuizCard();
+}
 function rateCard(correct){
-  const v=quizState.voks[quizState.idx],kap=state.kapitel.find(k=>k.id===v.kapId);
+  const q=quizState,v=q.voks[q.idx];
+  const kap=state.kapitel.find(k=>k.id===v.kapId);
   if(kap){const ov=kap.vokabeln.find(vv=>vv.fremd===v.fremd);if(ov){ov.correct=(ov.correct||0)+(correct?1:0);ov.wrong=(ov.wrong||0)+(correct?0:1);ov.difficulty=correct?Math.max(0,(ov.difficulty||0)-1):Math.min(2,(ov.difficulty||0)+1);}}
-  if(correct)quizState.correct++;else quizState.wrong++;
-  quizState.idx++;
-  if(quizState.idx>=quizState.voks.length){save();showResult();}else renderQuizCard();
+  if(correct)q.correct++;else q.wrong++;
+  q.idx++;
+  if(q.idx>=q.voks.length){save();showResult();}else renderQuizCard();
 }
 function showResult(){
   const q=quizState;state.stats.sessions=(state.stats.sessions||0)+1;state.stats.totalCorrect=(state.stats.totalCorrect||0)+q.correct;state.stats.totalWrong=(state.stats.totalWrong||0)+q.wrong;save();
