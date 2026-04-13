@@ -228,6 +228,17 @@ input[type=file]{display:none;}
 .quiz-btn.mark{background:rgba(251,191,36,.15);color:#92400e;border:1.5px solid rgba(251,191,36,.4);font-size:18px;flex:0 0 52px;}
 .quiz-btn.mark.active{background:rgba(251,191,36,.9);color:#1a1a1a;border-color:#f59e0b;}
 .quiz-repeat-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(251,191,36,.15);border:1.5px solid rgba(251,191,36,.4);font-size:13px;font-weight:600;color:#92400e;margin-bottom:12px;font-family:var(--font-ui);}
+.group-header{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--surface2);border:1px solid var(--border);cursor:pointer;user-select:none;margin-bottom:6px;transition:background .15s;}
+.group-header:active{background:var(--border);}
+.group-header-label{flex:1;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);}
+.group-header-count{font-size:11px;color:var(--text3);font-weight:400;}
+.group-chevron{font-size:11px;color:var(--text3);transition:transform .2s;flex-shrink:0;}
+.group-chevron.open{transform:rotate(90deg);}
+.group-body{overflow:hidden;}
+.group-body.collapsed{display:none;}
+.klasse-header{background:var(--surface2);border-left:3px solid var(--border);}
+.gruppe-header{background:transparent;border:none;border-left:2px solid var(--border);border-radius:0;padding:7px 12px;margin-bottom:4px;}
+.gruppe-header .group-header-label{font-size:11px;letter-spacing:.5px;color:var(--text3);}
 </style>
 </head>
 <body>
@@ -983,7 +994,23 @@ function switchTab(id,btn){
   if(id==='statistik')renderStatistik();
 }
 
-// ── KAPITEL ──
+// Collapsed state for group headers — persists across renders within session
+const collapsedGroups=new Set();
+function toggleGroup(key){
+  if(collapsedGroups.has(key))collapsedGroups.delete(key);
+  else collapsedGroups.add(key);
+  if(document.getElementById('tab-abfragen').classList.contains('active'))renderKapitelAuswahl();
+  else renderKapitel();
+}
+function groupHeaderHtml(key,label,count,indent){
+  const open=!collapsedGroups.has(key);
+  const cls=indent?'group-header gruppe-header':'group-header klasse-header';
+  return`<div class="${cls}" onclick="toggleGroup('${key.replace(/'/g,'\\\'')}')">`+
+    `<span class="group-chevron${open?' open':''}">▶</span>`+
+    `<span class="group-header-label">${label}</span>`+
+    `<span class="group-header-count">${count}</span>`+
+  `</div>`;
+}
 function renderKlassenFilter(){
   const sel=document.getElementById('kapitelKlasseFilter');
   if(!sel)return;
@@ -1080,18 +1107,26 @@ function renderKapitel(){
   klassenSorted.forEach(kl=>{
     const kapsInKlasse=kaps.filter(k=>(k.klasse||'')===kl);
     if(!kapsInKlasse.length)return;
-    if(kl)html+=`<p class="sec-label" style="margin-top:20px;font-size:12px;letter-spacing:1px">📚 Klasse ${esc(kl)}</p>`;
-
-    // Group by gruppe within this klasse
+    const klKey='kl:'+kl;
+    const klOpen=kl?!collapsedGroups.has(klKey):true;
+    if(kl){
+      const total=kapsInKlasse.reduce((s,k)=>s+(k.vokabeln||[]).length,0);
+      html+=groupHeaderHtml(klKey,'Klasse '+esc(kl),kapsInKlasse.length+' Kap. · '+total+' Vok.',false);
+    }
+    html+=`<div class="group-body${klOpen?'':' collapsed'}">`;
     const gruppenSet=new Set(kapsInKlasse.map(k=>k.gruppe||''));
     const gruppenSorted=[...(state.gruppen||[]).filter(g=>g.lang===lang&&gruppenSet.has(g.name)).map(g=>g.name),...(gruppenSet.has('')?['']:[])];
-    // Add any gruppe in data but not in state.gruppen
     kapsInKlasse.forEach(k=>{if(k.gruppe&&!gruppenSorted.includes(k.gruppe))gruppenSorted.unshift(k.gruppe);});
-
     gruppenSorted.forEach(gr=>{
       const kapsInGruppe=kapsInKlasse.filter(k=>(k.gruppe||'')===gr).sort(sortFn);
       if(!kapsInGruppe.length)return;
-      if(gr)html+=`<p class="sec-label" style="margin-top:12px;font-size:11px;color:var(--text2);padding-left:4px;border-left:3px solid var(--border)">  ${esc(gr)}</p>`;
+      const grKey='gr:'+kl+':'+gr;
+      const grOpen=gr?!collapsedGroups.has(grKey):true;
+      if(gr){
+        const total=kapsInGruppe.reduce((s,k)=>s+(k.vokabeln||[]).length,0);
+        html+=groupHeaderHtml(grKey,esc(gr),kapsInGruppe.length+' Kap. · '+total+' Vok.',true);
+      }
+      html+=`<div class="group-body${grOpen?'':' collapsed'}">`;
       kapsInGruppe.forEach(k=>{
         const total=(k.vokabeln||[]).length,weak=(k.vokabeln||[]).filter(v=>(v.difficulty||0)>=1).length;
         const meanings=k.lang==='la'?(k.vokabeln||[]).reduce((s,v)=>s+getMeanings(v.deutsch).length,0):total;
@@ -1104,7 +1139,9 @@ function renderKapitel(){
           <button class="edit-btn" onclick="event.stopPropagation();openEditKapitel('${k.id}')">✏</button>
         </div>`;
       });
+      html+='</div>';
     });
+    html+='</div>';
   });
   listEl.innerHTML=html;
 }
@@ -1460,12 +1497,60 @@ function speichereAnalyse(){
 // ── ABFRAGEN ──
 function renderKapitelAuswahl(){
   const el=document.getElementById('kapitelAuswahl');
-  const kaps=state.kapitel.filter(k=>k.lang===state.activeLang).slice().sort((a,b)=>(a.nr||9999)-(b.nr||9999));
-  if(!kaps.length){el.innerHTML='<p style="color:var(--text3);font-size:13px;margin-bottom:12px">Keine Kapitel vorhanden.</p>';return;}
-  el.innerHTML=kaps.map(k=>{const sel=selectedKapitel.has(k.id);return`<div class="kapitel-check-row${sel?' selected':''}" onclick="toggleKapitelSelect('${k.id}',this)">
-    <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation()">
-    <div><div class="kapitel-check-name">${k.name}</div><div class="kapitel-check-meta">${(k.vokabeln||[]).length} Vokabeln</div></div>
-  </div>`;}).join('');updateAbfrageInfo();
+  const lang=state.activeLang;
+  const kaps=state.kapitel.filter(k=>k.lang===lang).slice().sort((a,b)=>(a.nr||9999)-(b.nr||9999));
+  if(!kaps.length){el.innerHTML='<p style="color:var(--text3);font-size:13px;margin-bottom:12px">Keine Kapitel vorhanden.</p>';updateAbfrageInfo();return;}
+
+  // Same 3-level hierarchy as kapitel tab
+  const klassenSet=new Set(kaps.map(k=>k.klasse||''));
+  const klassenSorted=[...(state.klassen||[]).filter(k=>klassenSet.has(k)),...(klassenSet.has('')?['']:[])];
+  kaps.forEach(k=>{if(k.klasse&&!(state.klassen||[]).includes(k.klasse)&&!klassenSorted.includes(k.klasse))klassenSorted.unshift(k.klasse);});
+
+  let html='';
+  klassenSorted.forEach(kl=>{
+    const kapsInKlasse=kaps.filter(k=>(k.klasse||'')===kl);
+    if(!kapsInKlasse.length)return;
+    const klKey='abf-kl:'+kl;
+    const klOpen=kl?!collapsedGroups.has(klKey):true;
+    if(kl){
+      const selCount=kapsInKlasse.filter(k=>selectedKapitel.has(k.id)).length;
+      html+=`<div class="group-header klasse-header" onclick="toggleGroup('${klKey.replace(/'/g,'\\\'')}')">`+
+        `<span class="group-chevron${klOpen?' open':''}">▶</span>`+
+        `<span class="group-header-label">Klasse ${esc(kl)}</span>`+
+        `<span class="group-header-count">${selCount?selCount+' gewählt · ':''} ${kapsInKlasse.length} Kap.</span>`+
+      `</div>`;
+    }
+    html+=`<div class="group-body${klOpen?'':' collapsed'}">`;
+    const gruppenSet=new Set(kapsInKlasse.map(k=>k.gruppe||''));
+    const gruppenSorted=[...(state.gruppen||[]).filter(g=>g.lang===lang&&gruppenSet.has(g.name)).map(g=>g.name),...(gruppenSet.has('')?['']:[])];
+    kapsInKlasse.forEach(k=>{if(k.gruppe&&!gruppenSorted.includes(k.gruppe))gruppenSorted.unshift(k.gruppe);});
+    gruppenSorted.forEach(gr=>{
+      const kapsInGruppe=kapsInKlasse.filter(k=>(k.gruppe||'')===gr);
+      if(!kapsInGruppe.length)return;
+      const grKey='abf-gr:'+kl+':'+gr;
+      const grOpen=gr?!collapsedGroups.has(grKey):true;
+      if(gr){
+        const selCount=kapsInGruppe.filter(k=>selectedKapitel.has(k.id)).length;
+        html+=`<div class="group-header gruppe-header" onclick="toggleGroup('${grKey.replace(/'/g,'\\\'')}')">`+
+          `<span class="group-chevron${grOpen?' open':''}">▶</span>`+
+          `<span class="group-header-label">${esc(gr)}</span>`+
+          `<span class="group-header-count">${selCount?selCount+' gewählt · ':''} ${kapsInGruppe.length} Kap.</span>`+
+        `</div>`;
+      }
+      html+=`<div class="group-body${grOpen?'':' collapsed'}">`;
+      kapsInGruppe.forEach(k=>{
+        const sel=selectedKapitel.has(k.id);
+        html+=`<div class="kapitel-check-row${sel?' selected':''}" onclick="toggleKapitelSelect('${k.id}',this)">
+          <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation()">
+          <div><div class="kapitel-check-name">${esc(k.name)}</div><div class="kapitel-check-meta">${(k.vokabeln||[]).length} Vokabeln</div></div>
+        </div>`;
+      });
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+  updateAbfrageInfo();
 }
 function toggleKapitelSelect(id,row){
   if(selectedKapitel.has(id)){selectedKapitel.delete(id);row.classList.remove('selected');row.querySelector('input').checked=false;}
