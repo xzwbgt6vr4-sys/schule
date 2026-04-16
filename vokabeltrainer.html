@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Vokabeltrainer</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&family=Libre+Baskerville:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Petit+Formal+Script&family=Dancing+Script:wght@400;700&family=Parisienne&family=Martel:wght@400;700&family=Lora:ital@0;1&family=Montserrat:wght@400;600&family=Oswald:wght@400;600&family=Raleway:wght@400;600&family=Abril+Fatface&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&family=Libre+Baskerville:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Petit+Formal+Script&family=Dancing+Script:wght@400;700&family=Parisienne&family=Martel:wght@400;700&family=Lora:ital@0;1&family=Montserrat:wght@400;600&family=Oswald:wght@400;600&family=Raleway:wght@400;600&family=Abril+Fatface&family=Noto+Serif:ital@0;1&family=Vujaday+Script&family=Splash&family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
 <style>
 :root {
   /* Content — always neutral, never changes */
@@ -457,15 +457,26 @@ input[type=file]{display:none;}
     <div class="field">
       <label>Schriftart Schulname</label>
       <select id="sSchulFont" onchange="saveSettings();prevSchulFont()">
+        <option value="Arial,sans-serif">Arial</option>
         <option value="'Playfair Display',serif">Playfair Display</option>
         <option value="'Cinzel',serif">Cinzel</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'IM Fell English',serif">IM Fell English</option>
+        <option value="'Libre Baskerville',serif">Libre Baskerville</option>
         <option value="'Lora',serif">Lora</option>
+        <option value="'Martel',serif">Martel</option>
+        <option value="'Noto Serif',serif">Noto Serif</option>
+        <option value="'Uncial Antiqua',cursive">Uncial Antiqua</option>
+        <option value="'Abril Fatface',cursive">Abril Fatface</option>
+        <option value="'Montserrat',sans-serif">Montserrat</option>
         <option value="'Oswald',sans-serif">Oswald</option>
         <option value="'Raleway',sans-serif">Raleway</option>
-        <option value="'Montserrat',sans-serif">Montserrat</option>
-        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
         <option value="'Dancing Script',cursive">Dancing Script</option>
-        <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+        <option value="'Parisienne',cursive">Parisienne</option>
+        <option value="'Petit Formal Script',cursive">Petit Formal Script</option>
+        <option value="'Vujaday Script',cursive">Vujaday Script</option>
+        <option value="'Splash',cursive">Splash</option>
+        <option value="'Nothing You Could Do',cursive">Nothing You Could Do</option>
       </select>
       <div class="font-preview" id="prevSchul">Gymnasium am Marktplatz</div>
     </div>
@@ -493,20 +504,37 @@ input[type=file]{display:none;}
     <div class="field">
       <label>Schriftart</label>
       <select id="sEnFont" onchange="saveSettings();prevFont('en')">
+        <option value="Arial,sans-serif">Arial</option>
         <option value="'Playfair Display',serif">Playfair Display</option>
         <option value="'Cinzel',serif">Cinzel</option>
-        <option value="'Lora',serif">Lora</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'IM Fell English',serif">IM Fell English</option>
         <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+        <option value="'Lora',serif">Lora</option>
+        <option value="'Martel',serif">Martel</option>
+        <option value="'Noto Serif',serif">Noto Serif</option>
+        <option value="'Uncial Antiqua',cursive">Uncial Antiqua</option>
+        <option value="'Abril Fatface',cursive">Abril Fatface</option>
+        <option value="'Montserrat',sans-serif">Montserrat</option>
         <option value="'Oswald',sans-serif">Oswald</option>
         <option value="'Raleway',sans-serif">Raleway</option>
-        <option value="'Montserrat',sans-serif">Montserrat</option>
-        <option value="'Abril Fatface',cursive">Abril Fatface</option>
-        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'Dancing Script',cursive">Dancing Script</option>
+        <option value="'Parisienne',cursive">Parisienne</option>
+        <option value="'Petit Formal Script',cursive">Petit Formal Script</option>
+        <option value="'Vujaday Script',cursive">Vujaday Script</option>
+        <option value="'Splash',cursive">Splash</option>
+        <option value="'Nothing You Could Do',cursive">Nothing You Could Do</option>
       </select>
       <div class="font-preview" id="prevEn">English Vocabulary · Unit 3</div>
     </div>
     <div class="field">
-      <label>Akzentfarbe (Titel, Buttons)</label>
+      <label>Titelschatten</label>
+      <div class="color-row">
+        <input type="checkbox" id="sEnShadow" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()">
+        <input type="color" id="sEnShadowColor" value="#000000" oninput="saveSettings()" style="width:44px">
+        <span style="font-size:12px;color:var(--text2)">Schatten ein/aus &amp; Farbe</span>
+      </div>
+    </div>
       <div class="color-row"><input type="color" id="sEnAccent" value="#a80000" oninput="saveSettings()"><span style="font-size:12px;color:var(--text2)">Titelfarbe &amp; Badges</span></div>
     </div>
     <div class="field">
@@ -532,15 +560,36 @@ input[type=file]{display:none;}
     <div class="field">
       <label>Schriftart</label>
       <select id="sLaFont" onchange="saveSettings();prevFont('la')">
-        <option value="'Cinzel',serif">Cinzel</option>
-        <option value="'IM Fell English',serif">IM Fell English</option>
-        <option value="'Uncial Antiqua',cursive">Uncial Antiqua</option>
-        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="Arial,sans-serif">Arial</option>
         <option value="'Playfair Display',serif">Playfair Display</option>
+        <option value="'Cinzel',serif">Cinzel</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'IM Fell English',serif">IM Fell English</option>
         <option value="'Libre Baskerville',serif">Libre Baskerville</option>
         <option value="'Lora',serif">Lora</option>
+        <option value="'Martel',serif">Martel</option>
+        <option value="'Noto Serif',serif">Noto Serif</option>
+        <option value="'Uncial Antiqua',cursive">Uncial Antiqua</option>
+        <option value="'Abril Fatface',cursive">Abril Fatface</option>
+        <option value="'Montserrat',sans-serif">Montserrat</option>
+        <option value="'Oswald',sans-serif">Oswald</option>
+        <option value="'Raleway',sans-serif">Raleway</option>
+        <option value="'Dancing Script',cursive">Dancing Script</option>
+        <option value="'Parisienne',cursive">Parisienne</option>
+        <option value="'Petit Formal Script',cursive">Petit Formal Script</option>
+        <option value="'Vujaday Script',cursive">Vujaday Script</option>
+        <option value="'Splash',cursive">Splash</option>
+        <option value="'Nothing You Could Do',cursive">Nothing You Could Do</option>
       </select>
       <div class="font-preview" id="prevLa">Lingua Latina · Caput III</div>
+    </div>
+    <div class="field">
+      <label>Titelschatten</label>
+      <div class="color-row">
+        <input type="checkbox" id="sLaShadow" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()">
+        <input type="color" id="sLaShadowColor" value="#000000" oninput="saveSettings()" style="width:44px">
+        <span style="font-size:12px;color:var(--text2)">Schatten ein/aus &amp; Farbe</span>
+      </div>
     </div>
     <div class="field">
       <label>Akzentfarbe</label>
@@ -569,16 +618,36 @@ input[type=file]{display:none;}
     <div class="field">
       <label>Schriftart</label>
       <select id="sFrFont" onchange="saveSettings();prevFont('fr')">
-        <option value="'Petit Formal Script',cursive">Petit Formal Script</option>
-        <option value="'Parisienne',cursive">Parisienne</option>
-        <option value="'Dancing Script',cursive">Dancing Script</option>
-        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
-        <option value="'Martel',serif">Martel</option>
+        <option value="Arial,sans-serif">Arial</option>
         <option value="'Playfair Display',serif">Playfair Display</option>
+        <option value="'Cinzel',serif">Cinzel</option>
+        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+        <option value="'IM Fell English',serif">IM Fell English</option>
+        <option value="'Libre Baskerville',serif">Libre Baskerville</option>
         <option value="'Lora',serif">Lora</option>
+        <option value="'Martel',serif">Martel</option>
         <option value="'Noto Serif',serif">Noto Serif</option>
+        <option value="'Uncial Antiqua',cursive">Uncial Antiqua</option>
+        <option value="'Abril Fatface',cursive">Abril Fatface</option>
+        <option value="'Montserrat',sans-serif">Montserrat</option>
+        <option value="'Oswald',sans-serif">Oswald</option>
+        <option value="'Raleway',sans-serif">Raleway</option>
+        <option value="'Dancing Script',cursive">Dancing Script</option>
+        <option value="'Parisienne',cursive">Parisienne</option>
+        <option value="'Petit Formal Script',cursive">Petit Formal Script</option>
+        <option value="'Vujaday Script',cursive">Vujaday Script</option>
+        <option value="'Splash',cursive">Splash</option>
+        <option value="'Nothing You Could Do',cursive">Nothing You Could Do</option>
       </select>
       <div class="font-preview" id="prevFr">Vocabulaire Français · Leçon 4</div>
+    </div>
+    <div class="field">
+      <label>Titelschatten</label>
+      <div class="color-row">
+        <input type="checkbox" id="sFrShadow" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()">
+        <input type="color" id="sFrShadowColor" value="#000000" oninput="saveSettings()" style="width:44px">
+        <span style="font-size:12px;color:var(--text2)">Schatten ein/aus &amp; Farbe</span>
+      </div>
     </div>
     <div class="field">
       <label>Akzentfarbe</label>
@@ -841,9 +910,9 @@ const LANG_LABELS={en:'Englisch',la:'Latein',fr:'Französisch'};
 let state={kapitel:[],stats:{sessions:0,totalCorrect:0,totalWrong:0},activeLang:'en',klassen:[],gruppen:[]};
 let settings={
   schulName:'',schulLogo:'',schulFont:"'Playfair Display',serif",schulColor:'#1a1a1a',apiKey:'',
-  en:{name:'English Vocab',font:"'Playfair Display',serif",accent:'#a80000',bg:'#f5f3ef',bg2:'#ffffff',text:'#1a1a1a'},
-  la:{name:'Lingua Latina',font:"'Cinzel',serif",accent:'#7a5c00',bg:'#f8f4ec',bg2:'#ffffff',text:'#1a1a1a'},
-  fr:{name:'Vocabulaire Français',font:"'Petit Formal Script',cursive",accent:'#8b1a4a',bg:'#fdf0f5',bg2:'#ffffff',text:'#1a1a1a'}
+  en:{name:'English Vocab',font:"'Playfair Display',serif",accent:'#a80000',bg:'#f5f3ef',bg2:'#ffffff',text:'#1a1a1a',shadow:false,shadowColor:'#000000'},
+  la:{name:'Lingua Latina',font:"'Cinzel',serif",accent:'#7a5c00',bg:'#f8f4ec',bg2:'#ffffff',text:'#1a1a1a',shadow:false,shadowColor:'#000000'},
+  fr:{name:'Vocabulaire Français',font:"'Petit Formal Script',cursive",accent:'#8b1a4a',bg:'#fdf0f5',bg2:'#ffffff',text:'#1a1a1a',shadow:false,shadowColor:'#000000'}
 };
 let scanLang='en',analyseVoks=[],quizState=null,tempVoks=[],selectedKapitel=new Set();
 let abfrageSettings={dir:'de',order:'seq',focus:'all',mode:'self'};
@@ -890,6 +959,8 @@ function applyTheme(){
   r.setProperty('--hdr-surface2', hexA(s.text||'#1a1a1a',.10));
   r.setProperty('--font-display', s.font||"'Playfair Display',serif");
   r.setProperty('--hdr-text-on-accent', accentTextColor(s.accent||'#a80000'));
+  const sc=s.shadowColor||'#000000';
+  r.setProperty('--hdr-title-shadow', s.shadow?`2px 2px 6px ${sc}, 0 0 12px ${sc}`:'none');
 }
 function updateHeader(){
   const l=state.activeLang,s=settings[l];
@@ -897,6 +968,7 @@ function updateHeader(){
   titleEl.textContent=s.name||'Vokabeltrainer';
   titleEl.style.fontFamily=s.font;
   titleEl.style.color='var(--hdr-text)';
+  titleEl.style.textShadow='var(--hdr-title-shadow)';
   document.getElementById('langBadge').textContent='Sprache wählen';
   const schoolEl=document.getElementById('schoolNameHdr');
   schoolEl.textContent=settings.schulName||'Vokabeltrainer';
@@ -915,8 +987,12 @@ function readUI(){
   const ak=gv('sApiKey');if(ak!==null)settings.apiKey=ak;
   [['en','En'],['la','La'],['fr','Fr']].forEach(([l,P])=>{
     const n=gv('s'+P+'Name'),f=gv('s'+P+'Font'),a=gv('s'+P+'Accent'),bg=gv('s'+P+'Bg'),bg2=gv('s'+P+'Bg2'),t=gv('s'+P+'Text');
+    const shadowEl=document.getElementById('s'+P+'Shadow');
+    const shadowCol=gv('s'+P+'ShadowColor');
     if(n)settings[l].name=n;if(f)settings[l].font=f;if(a)settings[l].accent=a;
     if(bg)settings[l].bg=bg;if(bg2)settings[l].bg2=bg2;if(t)settings[l].text=t;
+    if(shadowEl)settings[l].shadow=shadowEl.checked;
+    if(shadowCol)settings[l].shadowColor=shadowCol;
   });
 }
 function populateUI(){
@@ -928,6 +1004,9 @@ function populateUI(){
     sv('s'+P+'Name',settings[l].name);sv('s'+P+'Font',settings[l].font);
     sv('s'+P+'Accent',settings[l].accent);sv('s'+P+'Bg',settings[l].bg);
     sv('s'+P+'Bg2',settings[l].bg2);sv('s'+P+'Text',settings[l].text);
+    sv('s'+P+'ShadowColor',settings[l].shadowColor||'#000000');
+    const shadowEl=document.getElementById('s'+P+'Shadow');
+    if(shadowEl)shadowEl.checked=!!settings[l].shadow;
   });
 }
 function gv(id){const e=document.getElementById(id);return e?e.value:null;}function sv(id,val){const e=document.getElementById(id);if(e&&val!=null)e.value=val;}
@@ -1693,6 +1772,7 @@ function renderQuizCard(){
     answerEl.textContent=v.fremd;
     answerEl.className='quiz-answer foreign';
     badge.style.display='none';
+    if(speakBtn)speakBtn.style.display='none';
   } else {
     document.getElementById('quizLang').textContent=ll+' → Deutsch';
     quizWordEl.textContent=v.fremd;
@@ -1707,6 +1787,7 @@ function renderQuizCard(){
       answerEl.textContent=v.deutsch;
       answerEl.className='quiz-answer';
     }
+    if(speakBtn)speakBtn.style.display='flex';
   }
   document.getElementById('quizHint').textContent=(v.difficulty>=2)?'⚠ Schwierige Vokabel':(v.difficulty===1?'⚡ Noch unsicher':'');
   if(isPartner){
