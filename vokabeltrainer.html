@@ -11,13 +11,13 @@
 :root {
   /* Content — always neutral, never changes */
   --bg:#f5f3ef; --bg2:#ffffff;
-  --surface:rgba(0,0,0,0.05); --surface2:rgba(0,0,0,0.09);
+  --surface:#ffffff; --surface2:rgba(0,0,0,0.06);
   --accent:#a80000; --text:#1a1a1a;
-  --text2:rgba(26,26,26,0.65); --text3:rgba(26,26,26,0.38);
-  --border:rgba(0,0,0,0.12);
+  --text2:rgba(26,26,26,0.65); --text3:rgba(26,26,26,0.42);
+  --border:rgba(0,0,0,0.14);
   /* Header — set dynamically by applyTheme() */
-  --hdr-bg:#ffffff; --hdr-bg2:#f5f3ef;
-  --hdr-accent:#a80000; --hdr-text:#1a1a1a;
+  --hdr-bg:#ffffff; --hdr-bg2:#ffffff;
+  --hdr-accent:#a80000; --hdr-text:#a80000; --hdr-menu:#1a1a1a;
   --hdr-text2:rgba(26,26,26,0.65); --hdr-text3:rgba(26,26,26,0.38);
   --hdr-border:rgba(0,0,0,0.12);
   --hdr-surface:rgba(0,0,0,0.05); --hdr-surface2:rgba(0,0,0,0.09);
@@ -29,26 +29,36 @@
   --font-ui:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
   --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .5s,color .3s;}
-
+body.dark {
+  --bg:#1a1a1f; --bg2:#25252d;
+  --surface:#2e2e38; --surface2:rgba(255,255,255,0.09);
+  --text:#f0ede8; --accent:#e05050;
+  --text2:rgba(240,237,232,0.65); --text3:rgba(240,237,232,0.4);
+  --border:rgba(255,255,255,0.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:pan-x pan-y;}
+html{height:100%;overscroll-behavior:none;background:#f5f3ef;}
+body{font-family:var(--font-ui);background:var(--bg);color:var(--text);height:100%;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none;transition:background .3s,color .3s;}
+body.dark{background:var(--bg);color:var(--text);}
+main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;width:100%;box-sizing:border-box;padding:16px 12px calc(var(--safe-bottom) + 24px);}
 /* HEADER */
-.app-header{position:sticky;top:0;z-index:100;background:var(--hdr-bg2);border-bottom:1px solid var(--hdr-border);backdrop-filter:blur(12px);padding:calc(var(--safe-top) + 10px) 18px 0;transition:background .5s;}
+.app-header{flex-shrink:0;z-index:100;background:var(--hdr-bg2);border-bottom:1px solid var(--hdr-border);padding:calc(var(--safe-top) + 10px) 18px 0;transition:background .5s;}
 .school-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .school-logo-hdr{width:34px;height:34px;border-radius:7px;object-fit:contain;display:none;flex-shrink:0;}
 .school-logo-hdr.visible{display:block;}
 .school-name-hdr{font-size:12px;letter-spacing:.4px;color:var(--hdr-text2);flex:1;font-family:var(--font-ui);}
 .lang-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--hdr-accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:transform .15s;font-family:var(--font-ui);}
 .lang-badge:active{transform:scale(.95);}
-.app-title{font-family:var(--hdr-font);font-size:24px;font-weight:700;color:var(--hdr-text);letter-spacing:-.3px;margin-bottom:6px;transition:all .4s;}
+.app-title{font-family:var(--hdr-font);font-weight:700;color:var(--hdr-accent);letter-spacing:-.2px;transition:all .4s;display:inline-flex;align-items:center;gap:4px;}
+.app-title::after{content:'▾';font-size:11px;opacity:.45;font-family:var(--font-ui);font-weight:400;}
 
 /* TABS */
 .tabs{display:flex;overflow:hidden;background:var(--hdr-bg2);}
 .burger-btn{flex-shrink:0;width:44px;padding:9px 0 10px;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
-.burger-btn span{display:block;width:18px;height:2px;background:var(--hdr-text3);border-radius:2px;transition:background .15s;}
-.burger-btn:hover span,.burger-btn.menu-open span{background:var(--hdr-text);}
-.tab{flex:1;padding:9px 4px 10px;font-size:12px;font-weight:600;color:var(--hdr-text3);border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-ui);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-align:center;}
-.tab.active{color:var(--hdr-text);border-bottom-color:var(--hdr-accent);}
+.burger-btn span{display:block;width:18px;height:2px;background:var(--hdr-menu);border-radius:2px;transition:background .15s;}
+.burger-btn:hover span,.burger-btn.menu-open span{background:var(--hdr-menu);}
+.tab{flex:1;padding:9px 4px 10px;font-size:12px;font-weight:600;color:var(--hdr-menu);border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-ui);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-align:center;opacity:.55;}
+.tab.active{color:var(--hdr-menu);border-bottom-color:var(--hdr-accent);opacity:1;}
 /* SETTINGS DRAWER */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;}
 .drawer-overlay.hidden{display:none;}
@@ -60,7 +70,7 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-heigh
 .drawer-body{padding:0 16px;}
 
 /* MAIN */
-main{padding:18px 16px calc(var(--safe-bottom) + 24px);max-width:680px;margin:0 auto;}
+
 .screen{display:none;}
 .screen.active{display:block;animation:fadeUp .25s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -76,7 +86,7 @@ main{padding:18px 16px calc(var(--safe-bottom) + 24px);max-width:680px;margin:0 
 /* FORMS */
 .field{margin-bottom:12px;}
 .field label{font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.7px;font-family:var(--font-ui);}
-input[type=text],input[type=email],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:var(--font-ui);background:var(--surface2);color:var(--text);outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
+input[type=text],input[type=email],input[type=password],input[type=number],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:16px;font-family:var(--font-ui);background:var(--surface2);color:var(--text);outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);}
 textarea{min-height:70px;resize:vertical;}
 select option{background:#fff;color:#111;}
@@ -93,11 +103,11 @@ input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--bo
 .add-btn{width:100%;padding:10px;border:2px dashed var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text3);font-size:13px;font-family:var(--font-ui);cursor:pointer;margin-bottom:10px;}
 
 /* KAPITEL */
-.kapitel-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .15s;}
+.kapitel-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .15s;overflow:visible;}
 .kapitel-item:hover{background:var(--surface2);}
 .kapitel-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--surface2);}
-.kapitel-info{flex:1;min-width:0;}
-.kapitel-name{font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text);}
+.kapitel-info{flex:1;min-width:0;overflow:hidden;}
+.kapitel-name{font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .kapitel-meta{font-size:12px;color:var(--text2);margin-top:2px;font-family:var(--font-ui);}
 .edit-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 9px;font-size:14px;cursor:pointer;flex-shrink:0;color:var(--text);}
 
@@ -110,7 +120,7 @@ input[type=color]{width:44px;height:36px;padding:2px;border:1.5px solid var(--bo
 .vok-difficulty{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .diff-0{background:#4ade80;} .diff-1{background:#fbbf24;} .diff-2{background:#f87171;}
 .vok-edit-row{display:flex;gap:6px;align-items:center;margin-bottom:7px;}
-.vok-edit-row input{flex:1;padding:9px 10px;font-size:13px;}
+.vok-edit-row input{flex:1;padding:9px 10px;font-size:16px;}
 
 /* FOTO */
 .foto-drop{border:2px dashed var(--border);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:12px;background:var(--surface);}
@@ -218,16 +228,23 @@ input[type=file]{display:none;}
 .meaning-chip.rw{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.06);}
 .drawer-tab{flex:1;padding:10px 8px;border:none;background:transparent;font-size:12px;font-weight:600;font-family:var(--font-ui);cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
 .drawer-tab.active{color:var(--text);border-bottom-color:var(--accent);}
-.quiz-mnemonic{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:12px 14px;font-size:14px;font-style:italic;color:#78350f;margin-bottom:12px;line-height:1.6;display:none;}
-.quiz-mnemonic.visible{display:block;}
-.quiz-mnemonic::before{content:'💡 ';font-style:normal;}
-.quiz-btn.hint{background:#fffbeb;color:#92400e;border:1.5px solid #fde68a;font-size:13px;}
+.quiz-mnemonic{display:none;}
+.quiz-btn.mark{background:rgba(251,191,36,.15);color:#92400e;border:1.5px solid rgba(251,191,36,.4);font-size:18px;flex:0 0 52px;}
+.quiz-btn.mark.active{background:rgba(251,191,36,.9);color:#1a1a1a;border-color:#f59e0b;}
+.quiz-btn.esel{background:rgba(251,191,36,.1);color:#92400e;border:1.5px solid rgba(251,191,36,.3);flex:0 0 52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0px;padding:6px 4px;line-height:1.1;}
+.quiz-btn.esel .esel-e{font-size:17px;}
+.quiz-btn.esel .esel-b{font-size:13px;}
+.quiz-repeat-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(251,191,36,.15);border:1.5px solid rgba(251,191,36,.4);font-size:13px;font-weight:600;color:#92400e;margin-bottom:12px;font-family:var(--font-ui);}
 .vok-mnemonic-toggle{background:none;border:none;font-size:12px;color:var(--text3);cursor:pointer;padding:2px 0;font-family:var(--font-ui);text-decoration:underline;margin-bottom:4px;}
 .vok-mnemonic-field{display:none;margin-top:4px;}
 .vok-mnemonic-field.open{display:block;}
-.quiz-btn.mark{background:rgba(251,191,36,.15);color:#92400e;border:1.5px solid rgba(251,191,36,.4);font-size:18px;flex:0 0 52px;}
-.quiz-btn.mark.active{background:rgba(251,191,36,.9);color:#1a1a1a;border-color:#f59e0b;}
-.quiz-repeat-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(251,191,36,.15);border:1.5px solid rgba(251,191,36,.4);font-size:13px;font-weight:600;color:#92400e;margin-bottom:12px;font-family:var(--font-ui);}
+/* Esel-Icon in Karte */
+.esel-card-btn{background:none;border:none;font-size:20px;cursor:pointer;padding:4px;line-height:1;opacity:.7;transition:opacity .15s;flex-shrink:0;}
+.esel-card-btn:active{opacity:1;}
+/* Sprechblase */
+.esel-bubble{background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:10px 13px;font-size:13px;font-style:italic;color:#78350f;line-height:1.55;margin-top:8px;margin-bottom:4px;position:relative;display:none;}
+.esel-bubble.visible{display:block;}
+.esel-bubble::before{content:'🫏 ';font-style:normal;}
 .group-header{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--surface2);border:1px solid var(--border);cursor:pointer;user-select:none;margin-bottom:6px;transition:background .15s;}
 .group-header:active{background:var(--border);}
 .group-header-label{flex:1;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);}
@@ -242,6 +259,9 @@ input[type=file]{display:none;}
 .speak-btn{flex-shrink:0;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;}
 .speak-btn:active{transform:scale(.9);}
 .speak-btn.speaking{background:var(--hdr-accent);border-color:var(--hdr-accent);animation:pulse .8s infinite;}
+.kapitel-item.dragging{opacity:.4;border:2px dashed var(--border);}
+.kapitel-item.drag-over{border-top:2px solid var(--accent);}
+.drag-handle{flex-shrink:0;padding:0 6px;cursor:grab;color:var(--text3);font-size:18px;touch-action:none;user-select:none;}
 </style>
 </head>
 <body>
@@ -271,9 +291,8 @@ input[type=file]{display:none;}
   <div class="school-bar">
     <img class="school-logo-hdr" id="schoolLogoHdr" alt="Logo">
     <div class="school-name-hdr" id="schoolNameHdr">Vokabeltrainer</div>
-    <div class="lang-badge" onclick="openLangSwitcher()" id="langBadge">Sprache wählen</div>
+    <div class="app-title" id="appTitle" onclick="openLangSwitcher()" style="cursor:pointer;flex-shrink:0;margin-bottom:0;font-size:16px" title="Sprache wählen">English Vocab</div>
   </div>
-  <div class="app-title" id="appTitle">English Vocab</div>
   <div class="tabs">
     <button class="burger-btn" id="burgerBtn" onclick="openDrawer()" title="Einstellungen">
       <span></span><span></span><span></span>
@@ -288,23 +307,21 @@ input[type=file]{display:none;}
 
 <!-- KAPITEL -->
 <div id="tab-kapitel" class="screen active">
+  <input type="text" id="kapitelSearch" placeholder="🔍 Vokabeln suchen…" oninput="renderKapitel()" style="width:100%;margin-bottom:8px">
   <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
-    <input type="text" id="kapitelSearch" placeholder="🔍 Vokabeln suchen…" oninput="renderKapitel()" style="flex:1;margin-bottom:0">
-    <select id="kapitelKlasseFilter" onchange="renderKapitel()" style="width:auto;flex-shrink:0;margin-bottom:0;padding:11px 10px">
+    <select id="kapitelKlasseFilter" onchange="renderKapitel();renderGruppenFilter()" style="flex:1;margin-bottom:0;padding:10px 8px">
       <option value="">Alle Klassen</option>
     </select>
-    <select id="kapitelGruppeFilter" onchange="renderKapitel()" style="width:auto;flex-shrink:0;margin-bottom:0;padding:11px 10px">
+    <select id="kapitelGruppeFilter" onchange="renderKapitel()" style="flex:1;margin-bottom:0;padding:10px 8px">
       <option value="">Alle Gruppen</option>
     </select>
-    <select id="kapitelSort" onchange="renderKapitel()" style="width:auto;flex-shrink:0;margin-bottom:0;padding:11px 10px">
+    <select id="kapitelSort" onchange="renderKapitel()" style="flex:1;margin-bottom:0;padding:10px 8px">
       <option value="nr">Nr. ↑</option>
       <option value="name">A–Z</option>
       <option value="name-desc">Z–A</option>
-      <option value="count-desc">Meiste Vokabeln</option>
-      <option value="count-asc">Wenigste Vokabeln</option>
-      <option value="date-desc">Neueste zuerst</option>
-      <option value="date-asc">Älteste zuerst</option>
-      <option value="diff">Schwächste zuerst</option>
+      <option value="count-desc">↓ Vokabeln</option>
+      <option value="count-asc">↑ Vokabeln</option>
+      <option value="diff">Schwächste</option>
     </select>
   </div>
   <div id="kapitelListe"></div>
@@ -316,7 +333,7 @@ input[type=file]{display:none;}
 <div id="tab-abfragen" class="screen">
   <div id="abfragen-setup">
     <p class="sec-label">Modus</p>
-    <div class="dir-row" style="margin-bottom:6px">
+    <div class="dir-row" style="margin-bottom:10px">
       <button class="dir-btn active" id="modeSelf" onclick="setMode('self')" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px">
         <span style="font-size:20px">🧑‍🎓</span>
         <span>Selbstprüfung</span>
@@ -328,50 +345,46 @@ input[type=file]{display:none;}
         <span style="font-size:10px;opacity:.7;font-weight:400">Antwort sofort sichtbar</span>
       </button>
     </div>
-    <p class="sec-label" style="margin-top:18px">Kapitel wählen</p>
-    <div id="kapitelAuswahl"></div>
-    <p class="sec-label" style="margin-top:18px">Abfragerichtung</p>
-    <div class="dir-row">
-      <button class="dir-btn active" id="dirDE" onclick="setDir('de')">DE → Fremdsprache</button>
-      <button class="dir-btn" id="dirFS" onclick="setDir('fs')">Fremdsprache → DE</button>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="dir-btn active" id="dirDE" onclick="setDir('de')" style="flex:1">DE → Fremd</button>
+      <button class="dir-btn" id="dirFS" onclick="setDir('fs')" style="flex:1">Fremd → DE</button>
+      <button class="dir-btn active" id="orderSeq" onclick="setOrder('seq')" style="flex:1">📋</button>
+      <button class="dir-btn" id="orderRnd" onclick="setOrder('rnd')" style="flex:1">🔀</button>
+      <button class="dir-btn active" id="focusAll" onclick="setFocus('all')" style="flex:1">Alle</button>
+      <button class="dir-btn" id="focusWeak" onclick="setFocus('weak')" style="flex:1">⚠</button>
     </div>
-    <p class="sec-label">Reihenfolge</p>
-    <div class="dir-row">
-      <button class="dir-btn active" id="orderSeq" onclick="setOrder('seq')">📋 Reihenfolge</button>
-      <button class="dir-btn" id="orderRnd" onclick="setOrder('rnd')">🔀 Zufällig</button>
-    </div>
-    <p class="sec-label">Schwerpunkt</p>
-    <div class="dir-row">
-      <button class="dir-btn active" id="focusAll" onclick="setFocus('all')">Alle</button>
-      <button class="dir-btn" id="focusWeak" onclick="setFocus('weak')">⚠ Schwache zuerst</button>
-    </div>
-    <div id="abfragenInfo" style="margin-top:6px;font-size:13px;color:var(--text3);text-align:center;margin-bottom:16px;font-style:italic"></div>
-    <div id="repeatPoolInfo" style="display:none;margin-bottom:10px">
+    <div id="abfragenInfo" style="font-size:13px;color:var(--text3);text-align:center;margin-bottom:8px;font-style:italic"></div>
+    <div id="repeatPoolInfo" style="display:none;margin-bottom:8px">
       <div class="quiz-repeat-badge" id="repeatPoolBadge"></div>
       <button class="big-btn primary" style="background:#f59e0b;color:#1a1a1a;margin-bottom:0" onclick="startRepeatMarked()">🔖 Wiederholung starten</button>
     </div>
-    <button class="big-btn primary" onclick="startAbfragen()">▶ Abfragen starten</button>
+    <button class="big-btn primary" style="margin-bottom:14px" onclick="startAbfragen()">▶ Abfragen starten</button>
+    <p class="sec-label" style="margin-top:0">Kapitel wählen</p>
+    <div id="kapitelAuswahl"></div>
   </div>
   <div id="abfragen-quiz" style="display:none">
     <div id="quizModeBar" style="text-align:center;font-size:12px;font-weight:700;letter-spacing:.5px;padding:6px 12px;border-radius:20px;margin-bottom:12px;display:inline-block;width:100%"></div>
     <div class="quiz-counter" id="quizCounter"></div>
     <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar"></div></div>
-    <div class="quiz-card">
+    <div class="quiz-card" style="position:relative">
       <div class="quiz-lang" id="quizLang"></div>
       <div style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%">
+        <button class="speak-btn" id="speakBtn" onclick="speakWord()" title="Vorlesen" style="display:none">🔊</button>
         <div class="quiz-word" id="quizWord" style="flex:1;text-align:center"></div>
-        <button class="speak-btn" id="speakBtn" onclick="speakWord()" title="Vorlesen">🔊</button>
       </div>
       <div id="quizMeaningBadge" style="display:none;margin-top:6px">
         <span id="quizMeaningCounter" style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--surface2);color:var(--text2);letter-spacing:.5px"></span>
       </div>
       <div class="quiz-hint" id="quizHint"></div>
+      <!-- Eselsbrücke — inline in der Karte -->
+      <div id="eselInline" style="display:none;margin-top:10px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:13px;font-style:italic;color:#78350f;line-height:1.55;width:100%;text-align:left;"></div>
+      <!-- Esel icon — only shown when mnemonic exists -->
+      <button class="esel-card-btn" id="eselCardBtn" onclick="toggleEselBubble()" style="display:none;margin-top:8px" title="Eselsbrücke anzeigen">🫏</button>
     </div>
     <div class="quiz-answer" id="quizAnswer"></div>
-    <div class="quiz-mnemonic" id="quizMnemonic"></div>
-    <!-- Eselsbrücke hinzufügen/bearbeiten -->
+    <!-- Eselsbrücke bearbeiten -->
     <div id="quizMnemonicEdit" style="display:none;margin-bottom:12px">
-      <textarea id="quizMnemonicInput" placeholder="Eselsbrücke eingeben…" style="min-height:60px;font-size:13px;width:100%;margin-bottom:6px"></textarea>
+      <textarea id="quizMnemonicInput" placeholder="Eselsbrücke eingeben…" style="min-height:60px;font-size:16px;width:100%;margin-bottom:6px"></textarea>
       <div style="display:flex;gap:8px">
         <button class="big-btn primary" style="margin-bottom:0;flex:1;padding:10px" onclick="saveMnemonic()">💾 Speichern</button>
         <button class="big-btn secondary" style="margin-bottom:0;flex:1;padding:10px" onclick="cancelMnemonicEdit()">Abbrechen</button>
@@ -384,16 +397,12 @@ input[type=file]{display:none;}
     <div class="quiz-btn-row" id="quizShowRow">
       <button class="quiz-btn show" onclick="showAnswer()">👁 Antwort zeigen</button>
     </div>
-    <div class="quiz-btn-row" id="quizHintRow" style="display:none">
-      <button class="quiz-btn hint" id="quizHintBtn" onclick="toggleMnemonic()">💡 Eselsbrücke</button>
-      <button class="quiz-btn hint" id="quizEditMnemonicBtn" onclick="startMnemonicEdit()" style="flex:0 0 44px;font-size:16px" title="Bearbeiten">✏</button>
-    </div>
-    <div class="quiz-btn-row" id="quizAddMnemonicRow" style="display:none">
-      <button class="quiz-btn hint" onclick="startMnemonicEdit()" style="width:100%">+ Eselsbrücke hinzufügen</button>
-    </div>
     <div class="quiz-btn-row" id="quizRateRow" style="display:none">
       <button class="quiz-btn wrong" onclick="rateCard(false)">✗ Nochmal</button>
       <button class="quiz-btn mark" id="quizMarkBtn" onclick="toggleMark()" title="Markieren">🔖</button>
+      <button class="quiz-btn esel" id="quizEselBtn" onclick="startMnemonicEdit()" title="Eselsbrücke">
+        <span class="esel-e">🫏</span>
+      </button>
       <button class="quiz-btn correct" onclick="rateCard(true)">✓ Gewusst</button>
     </div>
     <button class="big-btn secondary" style="margin-top:6px" onclick="stopQuiz()">✕ Abbrechen</button>
@@ -501,6 +510,8 @@ input[type=file]{display:none;}
   <p class="sec-label">🇬🇧 Englisch – Design</p>
   <div class="lang-panel">
     <div class="field"><label>App-Name</label><input type="text" id="sEnName" placeholder="English Vocab" oninput="saveSettings()"></div>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:12px 0 8px">Titel</p>
     <div class="field">
       <label>Schriftart</label>
       <select id="sEnFont" onchange="saveSettings();prevFont('en')">
@@ -528,35 +539,30 @@ input[type=file]{display:none;}
       <div class="font-preview" id="prevEn">English Vocabulary · Unit 3</div>
     </div>
     <div class="field">
-      <label>Titelschatten</label>
-      <div class="color-row">
-        <input type="checkbox" id="sEnShadow" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()">
-        <input type="color" id="sEnShadowColor" value="#000000" oninput="saveSettings()" style="width:44px">
-        <span style="font-size:12px;color:var(--text2)">Schatten ein/aus &amp; Farbe</span>
+      <label>Titelfarbe &amp; Schatten</label>
+      <div class="color-row" style="gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px"><input type="color" id="sEnAccent" value="#a80000" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Farbe</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="sEnShadow" style="width:16px;height:16px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()"><input type="color" id="sEnShadowColor" value="#000000" oninput="saveSettings()" style="width:36px"><span style="font-size:11px;color:var(--text2)">Schatten</span></div>
       </div>
     </div>
-      <div class="color-row"><input type="color" id="sEnAccent" value="#a80000" oninput="saveSettings()"><span style="font-size:12px;color:var(--text2)">Titelfarbe &amp; Badges</span></div>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:12px 0 8px">Kopfzeile</p>
+    <div class="field">
+      <label>Hintergrundfarbe</label>
+      <div class="color-row"><input type="color" id="sEnBg2" value="#ffffff" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Kopfzeile</span></div>
     </div>
     <div class="field">
-      <label>Hintergrund (Haupt / Kopfzeile)</label>
-      <div class="color-row"><input type="color" id="sEnBg" value="#f5f3ef" oninput="saveSettings()"><input type="color" id="sEnBg2" value="#ffffff" oninput="saveSettings()"></div>
+      <label>Menüpunkte-Textfarbe</label>
+      <div class="color-row"><input type="color" id="sEnText" value="#1a1a1a" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Tabs &amp; Burger</span></div>
     </div>
-    <div class="field">
-      <label>Textfarbe</label>
-      <div class="color-row"><input type="color" id="sEnText" value="#1a1a1a" oninput="saveSettings()"></div>
-    </div>
-    <label style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:8px">Schnell-Designs</label>
-    <div class="preset-row">
-      <button class="preset-btn" onclick="applyPreset('en','navy')">Navy</button>
-      <button class="preset-btn" onclick="applyPreset('en','royal')">Royal Blue</button>
-      <button class="preset-btn" onclick="applyPreset('en','forest')">Forest</button>
-      <button class="preset-btn" onclick="applyPreset('en','slate')">Slate</button>
-    </div>
+    <input type="hidden" id="sEnBg" value="#f5f3ef">
   </div>
 
   <p class="sec-label">🏛 Latein – Design</p>
   <div class="lang-panel">
     <div class="field"><label>App-Name</label><input type="text" id="sLaName" placeholder="Lingua Latina" oninput="saveSettings()"></div>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:12px 0 8px">Titel</p>
     <div class="field">
       <label>Schriftart</label>
       <select id="sLaFont" onchange="saveSettings();prevFont('la')">
@@ -584,37 +590,30 @@ input[type=file]{display:none;}
       <div class="font-preview" id="prevLa">Lingua Latina · Caput III</div>
     </div>
     <div class="field">
-      <label>Titelschatten</label>
-      <div class="color-row">
-        <input type="checkbox" id="sLaShadow" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()">
-        <input type="color" id="sLaShadowColor" value="#000000" oninput="saveSettings()" style="width:44px">
-        <span style="font-size:12px;color:var(--text2)">Schatten ein/aus &amp; Farbe</span>
+      <label>Titelfarbe &amp; Schatten</label>
+      <div class="color-row" style="gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px"><input type="color" id="sLaAccent" value="#7a5c00" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Farbe</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="sLaShadow" style="width:16px;height:16px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()"><input type="color" id="sLaShadowColor" value="#000000" oninput="saveSettings()" style="width:36px"><span style="font-size:11px;color:var(--text2)">Schatten</span></div>
       </div>
     </div>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:12px 0 8px">Kopfzeile</p>
     <div class="field">
-      <label>Akzentfarbe</label>
-      <div class="color-row"><input type="color" id="sLaAccent" value="#7a5c00" oninput="saveSettings()"></div>
-    </div>
-    <div class="field">
-      <label>Hintergrund (Haupt / Kopfzeile)</label>
-      <div class="color-row"><input type="color" id="sLaBg" value="#f8f4ec" oninput="saveSettings()"><input type="color" id="sLaBg2" value="#ffffff" oninput="saveSettings()"></div>
+      <label>Hintergrundfarbe</label>
+      <div class="color-row"><input type="color" id="sLaBg2" value="#ffffff" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Kopfzeile</span></div>
     </div>
     <div class="field">
-      <label>Textfarbe</label>
-      <div class="color-row"><input type="color" id="sLaText" value="#1a1a1a" oninput="saveSettings()"></div>
+      <label>Menüpunkte-Textfarbe</label>
+      <div class="color-row"><input type="color" id="sLaText" value="#1a1a1a" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Tabs &amp; Burger</span></div>
     </div>
-    <label style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:8px">Schnell-Designs</label>
-    <div class="preset-row">
-      <button class="preset-btn" onclick="applyPreset('la','parchment')">Pergament</button>
-      <button class="preset-btn" onclick="applyPreset('la','marble')">Marmor</button>
-      <button class="preset-btn" onclick="applyPreset('la','imperial')">Imperial</button>
-      <button class="preset-btn" onclick="applyPreset('la','bronze')">Bronze</button>
-    </div>
+    <input type="hidden" id="sLaBg" value="#f8f4ec">
   </div>
 
   <p class="sec-label">🇫🇷 Französisch – Design</p>
   <div class="lang-panel">
     <div class="field"><label>App-Name</label><input type="text" id="sFrName" placeholder="Vocabulaire Français" oninput="saveSettings()"></div>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:12px 0 8px">Titel</p>
     <div class="field">
       <label>Schriftart</label>
       <select id="sFrFont" onchange="saveSettings();prevFont('fr')">
@@ -642,36 +641,38 @@ input[type=file]{display:none;}
       <div class="font-preview" id="prevFr">Vocabulaire Français · Leçon 4</div>
     </div>
     <div class="field">
-      <label>Titelschatten</label>
-      <div class="color-row">
-        <input type="checkbox" id="sFrShadow" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()">
-        <input type="color" id="sFrShadowColor" value="#000000" oninput="saveSettings()" style="width:44px">
-        <span style="font-size:12px;color:var(--text2)">Schatten ein/aus &amp; Farbe</span>
+      <label>Titelfarbe &amp; Schatten</label>
+      <div class="color-row" style="gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px"><input type="color" id="sFrAccent" value="#8b1a4a" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Farbe</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="sFrShadow" style="width:16px;height:16px;accent-color:var(--accent);flex-shrink:0" onchange="saveSettings()"><input type="color" id="sFrShadowColor" value="#000000" oninput="saveSettings()" style="width:36px"><span style="font-size:11px;color:var(--text2)">Schatten</span></div>
       </div>
     </div>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:12px 0 8px">Kopfzeile</p>
     <div class="field">
-      <label>Akzentfarbe</label>
-      <div class="color-row"><input type="color" id="sFrAccent" value="#8b1a4a" oninput="saveSettings()"></div>
-    </div>
-    <div class="field">
-      <label>Hintergrund (Haupt / Kopfzeile)</label>
-      <div class="color-row"><input type="color" id="sFrBg" value="#fdf0f5" oninput="saveSettings()"><input type="color" id="sFrBg2" value="#ffffff" oninput="saveSettings()"></div>
+      <label>Hintergrundfarbe</label>
+      <div class="color-row"><input type="color" id="sFrBg2" value="#ffffff" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Kopfzeile</span></div>
     </div>
     <div class="field">
-      <label>Textfarbe</label>
-      <div class="color-row"><input type="color" id="sFrText" value="#1a1a1a" oninput="saveSettings()"></div>
+      <label>Menüpunkte-Textfarbe</label>
+      <div class="color-row"><input type="color" id="sFrText" value="#1a1a1a" oninput="saveSettings()"><span style="font-size:11px;color:var(--text2)">Tabs &amp; Burger</span></div>
     </div>
-    <label style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:8px">Schnell-Designs</label>
-    <div class="preset-row">
-      <button class="preset-btn" onclick="applyPreset('fr','paris')">Paris Rose</button>
-      <button class="preset-btn" onclick="applyPreset('fr','provence')">Provence</button>
-      <button class="preset-btn" onclick="applyPreset('fr','burgundy')">Burgund</button>
-      <button class="preset-btn" onclick="applyPreset('fr','ciel')">Ciel Bleu</button>
-    </div>
+    <input type="hidden" id="sFrBg" value="#fdf0f5">
   </div>
+
+  <p class="sec-label">Darstellung</p>
+  <div class="card"><div class="card-body">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <span style="font-size:14px;font-weight:600">Dunkelmodus</span>
+      <button id="darkModeToggle" onclick="toggleDarkMode()" style="width:52px;height:28px;border-radius:14px;border:none;cursor:pointer;position:relative;transition:background .2s;background:var(--surface2)">
+        <span id="darkModeThumb" style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:transform .2s;display:flex;align-items:center;justify-content:center;font-size:13px">☀️</span>
+      </button>
+    </div>
+  </div></div>
 
   <div style="padding:8px 0 4px">
     <button class="big-btn primary" onclick="closeDrawer()">✓ Speichern &amp; Schließen</button>
+    <button class="big-btn secondary" style="font-size:13px;color:var(--text3)" onclick="resetDesign()">↺ Design zurücksetzen</button>
   </div>
   </div><!-- /dpanel-einst -->
 
@@ -732,7 +733,7 @@ input[type=file]{display:none;}
   <p class="sec-label">5 · Manuell eingeben</p>
   <div class="card"><div class="card-body">
     <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Eine Vokabel pro Zeile: <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">Wort = Übersetzung</code></p>
-    <textarea id="manualInput" placeholder="house = das Haus&#10;school = die Schule" style="min-height:90px;font-family:monospace;font-size:13px"></textarea>
+    <textarea id="manualInput" placeholder="house = das Haus&#10;school = die Schule" style="min-height:90px;font-family:monospace;font-size:16px"></textarea>
     <button class="big-btn secondary" style="margin-top:8px" onclick="importManual()">↑ Übernehmen</button>
   </div></div>
 
@@ -917,14 +918,149 @@ let settings={
 let scanLang='en',analyseVoks=[],quizState=null,tempVoks=[],selectedKapitel=new Set();
 let abfrageSettings={dir:'de',order:'seq',focus:'all',mode:'self'};
 
+// ── DRAG & DROP (touch) ──
+let dragState=null;
+function startDrag(e,id){
+  e.stopPropagation();
+  e.preventDefault();
+  const touch=e.touches[0];
+  const el=e.currentTarget.closest('.kapitel-item');
+  if(!el)return;
+  el.classList.add('dragging');
+  dragState={id,el,startY:touch.clientY,lastY:touch.clientY};
+  document.addEventListener('touchmove',onDragMove,{passive:false});
+  document.addEventListener('touchend',onDragEnd,{passive:false});
+}
+function onDragMove(e){
+  if(!dragState)return;
+  e.preventDefault();
+  const touch=e.touches[0];
+  dragState.lastY=touch.clientY;
+  // Find element under touch point
+  dragState.el.style.pointerEvents='none';
+  const under=document.elementFromPoint(touch.clientX,touch.clientY);
+  dragState.el.style.pointerEvents='';
+  const target=under?.closest('.kapitel-item');
+  // Remove previous over indicators
+  document.querySelectorAll('.kapitel-item.drag-over').forEach(x=>x.classList.remove('drag-over'));
+  if(target&&target!==dragState.el)target.classList.add('drag-over');
+}
+function onDragEnd(e){
+  if(!dragState)return;
+  document.removeEventListener('touchmove',onDragMove);
+  document.removeEventListener('touchend',onDragEnd);
+  const touch=e.changedTouches[0];
+  dragState.el.classList.remove('dragging');
+  document.querySelectorAll('.kapitel-item.drag-over').forEach(x=>x.classList.remove('drag-over'));
+  // Find drop target
+  dragState.el.style.pointerEvents='none';
+  const under=document.elementFromPoint(touch.clientX,touch.clientY);
+  dragState.el.style.pointerEvents='';
+  const target=under?.closest('.kapitel-item');
+  if(target&&target!==dragState.el){
+    const fromId=dragState.id;
+    const toId=target.dataset.id;
+    reorderKapitel(fromId,toId);
+  }
+  dragState=null;
+}
+function reorderKapitel(fromId,toId){
+  const from=state.kapitel.find(k=>k.id===fromId);
+  const to=state.kapitel.find(k=>k.id===toId);
+  if(!from||!to)return;
+  // Swap nr values
+  const tmp=from.nr||0;
+  from.nr=to.nr||0;
+  to.nr=tmp;
+  // If nrs were the same or 0, assign unique values
+  if(from.nr===to.nr){
+    // Reassign all nrs in current lang preserving order
+    const lang=state.activeLang;
+    const kaps=state.kapitel.filter(k=>k.lang===lang).slice().sort((a,b)=>(a.nr||9999)-(b.nr||9999));
+    const fi=kaps.indexOf(from),ti=kaps.indexOf(to);
+    kaps.splice(fi,1);kaps.splice(ti,0,from);
+    kaps.forEach((k,i)=>k.nr=i+1);
+  }
+  save();renderKapitel();
+}
+
+// Disable pinch-zoom on iOS Safari and other browsers
+document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gestureend',e=>e.preventDefault(),{passive:false});
+document.addEventListener('wheel',e=>{if(e.ctrlKey)e.preventDefault();},{passive:false});
+document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
+document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
+function resetDesign(){
+  if(!confirm('Design-Einstellungen zurücksetzen?'))return;
+  const defaults={
+    en:{name:'English Vocab',font:"'Playfair Display',serif",accent:'#a80000',bg:'#f5f3ef',bg2:'#ffffff',text:'#1a1a1a',shadow:false,shadowColor:'#000000'},
+    la:{name:'Lingua Latina',font:"'Cinzel',serif",accent:'#7a5c00',bg:'#f8f4ec',bg2:'#ffffff',text:'#1a1a1a',shadow:false,shadowColor:'#000000'},
+    fr:{name:'Vocabulaire Français',font:"'Petit Formal Script',cursive",accent:'#8b1a4a',bg:'#fdf0f5',bg2:'#ffffff',text:'#1a1a1a',shadow:false,shadowColor:'#000000'}
+  };
+  ['en','la','fr'].forEach(l=>settings[l]={...defaults[l]});
+  settings.darkMode=false;
+  saveSettings();applyDarkMode();populateUI();['en','la','fr'].forEach(l=>prevFont(l));
+  toast('Design zurückgesetzt');
+}
+function toggleDarkMode(){
+  settings.darkMode=!settings.darkMode;
+  applyDarkMode();
+  try{localStorage.setItem('vt2cfg',JSON.stringify(settings));}catch(e){}
+}
+function applyDarkMode(){
+  const dark=!!settings.darkMode;
+  document.body.classList.toggle('dark',dark);
+  const r=document.documentElement.style;
+  r.colorScheme=dark?'dark':'light';
+  if(dark){
+    r.setProperty('--bg','#1a1a1f');
+    r.setProperty('--bg2','#25252d');
+    r.setProperty('--surface','#2e2e38');
+    r.setProperty('--surface2','rgba(255,255,255,0.09)');
+    r.setProperty('--text','#f0ede8');
+    r.setProperty('--text2','rgba(240,237,232,0.65)');
+    r.setProperty('--text3','rgba(240,237,232,0.4)');
+    r.setProperty('--border','rgba(255,255,255,0.14)');
+    r.setProperty('--accent','#e05050');
+  } else {
+    r.setProperty('--bg','#f5f3ef');
+    r.setProperty('--bg2','#ffffff');
+    r.setProperty('--surface','#ffffff');
+    r.setProperty('--surface2','rgba(0,0,0,0.06)');
+    r.setProperty('--text','#1a1a1a');
+    r.setProperty('--text2','rgba(26,26,26,0.65)');
+    r.setProperty('--text3','rgba(26,26,26,0.42)');
+    r.setProperty('--border','rgba(0,0,0,0.14)');
+    r.setProperty('--accent','#a80000');
+  }
+  document.body.style.background='var(--bg)';
+  document.body.style.color='var(--text)';
+  const btn=document.getElementById('darkModeToggle');
+  const thumb=document.getElementById('darkModeThumb');
+  if(btn)btn.style.background=dark?'#5b6af0':'#e0ddd8';
+  if(thumb){
+    thumb.style.transform=dark?'translateX(24px)':'translateX(0)';
+    thumb.textContent=dark?'🌙':'☀️';
+  }
+}
+
 function save(){try{localStorage.setItem('vt2s',JSON.stringify(state));}catch(e){}}
 function load(){
   try{const d=localStorage.getItem('vt2s');if(d)state={...state,...JSON.parse(d)};}catch(e){}
-  try{const d=localStorage.getItem('vt2cfg');if(d)settings={...settings,...JSON.parse(d)};}catch(e){}
+  try{
+    const d=localStorage.getItem('vt2cfg');
+    if(d){
+      const stored=JSON.parse(d);
+      // Deep-merge language objects so new default fields are preserved
+      ['en','la','fr'].forEach(l=>{if(stored[l])stored[l]={...settings[l],...stored[l]};});
+      settings={...settings,...stored};
+    }
+  }catch(e){}
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
-  load();applyTheme();updateHeader();populateUI();
+  load();applyTheme();applyDarkMode();updateHeader();populateUI();
   renderKapitel();renderKlassenFilter();renderGruppenFilter();renderKapitelAuswahl();renderScanKapitelSelect();renderStatistik();updateAbfrageInfo();
   ['en','la','fr'].forEach(l=>prevFont(l));updateLogoUI();
   setTimeout(updatePrompt, 50);
@@ -947,13 +1083,14 @@ function accentTextColor(hex){
 }
 function applyTheme(){
   const l=state.activeLang,s=settings[l],r=document.documentElement.style;
-  r.setProperty('--hdr-bg', s.bg2||'#ffffff');
-  r.setProperty('--hdr-bg2', s.bg||'#f5f3ef');
-  r.setProperty('--hdr-accent', s.accent||'#a80000');
-  r.setProperty('--hdr-text', s.text||'#1a1a1a');
+  r.setProperty('--hdr-bg', s.bg2||'#ffffff');   // Kopfzeilen-Hintergrund
+  r.setProperty('--hdr-bg2', s.bg2||'#ffffff');  // Tabs-Hintergrund (gleich)
+  r.setProperty('--hdr-accent', s.accent||'#a80000'); // Titel-Farbe & Badge
+  r.setProperty('--hdr-text', s.accent||'#a80000');   // App-Titel = Akzentfarbe
+  r.setProperty('--hdr-menu', s.text||'#1a1a1a');     // Menüpunkte/Tabs
   r.setProperty('--hdr-font', s.font||"'Playfair Display',serif");
   r.setProperty('--hdr-text2', hexA(s.text||'#1a1a1a',.65));
-  r.setProperty('--hdr-text3', hexA(s.text||'#1a1a1a',.38));
+  r.setProperty('--hdr-text3', hexA(s.text||'#1a1a1a',.5));
   r.setProperty('--hdr-border', hexA(s.text||'#1a1a1a',.13));
   r.setProperty('--hdr-surface', hexA(s.text||'#1a1a1a',.05));
   r.setProperty('--hdr-surface2', hexA(s.text||'#1a1a1a',.10));
@@ -967,9 +1104,8 @@ function updateHeader(){
   const titleEl=document.getElementById('appTitle');
   titleEl.textContent=s.name||'Vokabeltrainer';
   titleEl.style.fontFamily=s.font;
-  titleEl.style.color='var(--hdr-text)';
+  titleEl.style.color='var(--hdr-accent)';
   titleEl.style.textShadow='var(--hdr-title-shadow)';
-  document.getElementById('langBadge').textContent='Sprache wählen';
   const schoolEl=document.getElementById('schoolNameHdr');
   schoolEl.textContent=settings.schulName||'Vokabeltrainer';
   schoolEl.style.fontFamily=settings.schulFont||'inherit';
@@ -1046,6 +1182,8 @@ function openLangSwitcher(){
 }
 function setActiveLang(l){
   state.activeLang=l;save();applyTheme();updateHeader();
+  selectedKapitel.clear();
+  quizState=null;
   document.getElementById('langSwitcher').classList.add('hidden');
   renderKapitel();renderGruppenFilter();renderKapitelAuswahl();toast(LANG_ICONS[l]+' '+(settings[l].name||LANG_LABELS[l]));
 }
@@ -1062,7 +1200,7 @@ function switchDrawerTab(id,btn){
   if(id==='transfer')renderTransferSelects();
 }
 function openDrawer(){
-  populateUI();['en','la','fr'].forEach(l=>prevFont(l));prevSchulFont();
+  populateUI();['en','la','fr'].forEach(l=>prevFont(l));prevSchulFont();applyDarkMode();
   switchDrawerTab('einst',document.getElementById('dtab-einst'));
   document.getElementById('drawerOverlay').classList.remove('hidden');
   document.getElementById('settingsDrawer').classList.remove('hidden');
@@ -1115,7 +1253,11 @@ function renderGruppenFilter(){
   if(!sel)return;
   const cur=sel.value;
   const lang=state.activeLang;
-  const gruppen=(state.gruppen||[]).filter(g=>g.lang===lang);
+  const klasseFilter=(document.getElementById('kapitelKlasseFilter')||{}).value||'';
+  // Only show groups that have kapitel in the selected klasse (and lang)
+  const relevantKaps=state.kapitel.filter(k=>k.lang===lang&&(!klasseFilter||(k.klasse||'')===klasseFilter));
+  const relevantGruppen=new Set(relevantKaps.map(k=>k.gruppe||'').filter(Boolean));
+  const gruppen=(state.gruppen||[]).filter(g=>g.lang===lang&&relevantGruppen.has(g.name));
   sel.innerHTML='<option value="">Alle Gruppen</option>'+
     gruppen.map(g=>`<option value="${esc(g.name)}"${cur===g.name?' selected':''}>${esc(g.name)}</option>`).join('');
 }
@@ -1222,7 +1364,8 @@ function renderKapitel(){
       kapsInGruppe.forEach(k=>{
         const total=(k.vokabeln||[]).length,weak=(k.vokabeln||[]).filter(v=>(v.difficulty||0)>=1).length;
         const meanings=k.lang==='la'?(k.vokabeln||[]).reduce((s,v)=>s+getMeanings(v.deutsch).length,0):total;
-        html+=`<div class="kapitel-item" onclick="showKapitelDetail('${k.id}')">
+        html+=`<div class="kapitel-item" data-id="${k.id}" onclick="showKapitelDetail('${k.id}')">
+          <span class="drag-handle" onmousedown="event.stopPropagation()" ontouchstart="startDrag(event,'${k.id}')" title="Verschieben">⠿</span>
           <div class="kapitel-icon">${LANG_ICONS[k.lang]}</div>
           <div class="kapitel-info">
             <div class="kapitel-name">${esc(k.name)}</div>
@@ -1292,7 +1435,7 @@ function renderModalVoks(){
       ${v.esel?'💡 Eselsbrücke bearbeiten':'+ Eselsbrücke hinzufügen'}
     </button>
     <div class='vok-mnemonic-field${v.esel?' open':''}' id='eselField${i}'>
-      <textarea placeholder='Eselsbrücke, Merkhilfe, Beispiel…' oninput='tempVoks[${i}].esel=this.value' style='min-height:50px;font-size:13px'>${esc(v.esel||'')}</textarea>
+      <textarea placeholder='Eselsbrücke, Merkhilfe, Beispiel…' oninput='tempVoks[${i}].esel=this.value' style='min-height:50px;font-size:16px'>${esc(v.esel||'')}</textarea>
     </div>
   </div>`).join('');
 }
@@ -1756,13 +1899,9 @@ function renderQuizCard(){
   if(window.speechSynthesis)window.speechSynthesis.cancel();
   const speakBtn=document.getElementById('speakBtn');
   if(speakBtn)speakBtn.classList.remove('speaking');
-  const mnemonicEl=document.getElementById('quizMnemonic');
-  const hintRow=document.getElementById('quizHintRow');
-  const addRow=document.getElementById('quizAddMnemonicRow');
   const editArea=document.getElementById('quizMnemonicEdit');
-  if(mnemonicEl){mnemonicEl.textContent='';mnemonicEl.classList.remove('visible');}
   if(editArea)editArea.style.display='none';
-  _updateMnemonicButtons(v);
+  _updateEselIcon(v);
   q.meaningRatings=meanings.map(()=>null);
   if(abfrageSettings.dir==='de'){
     document.getElementById('quizLang').textContent='Deutsch → '+ll;
@@ -1772,7 +1911,7 @@ function renderQuizCard(){
     answerEl.textContent=v.fremd;
     answerEl.className='quiz-answer foreign';
     badge.style.display='none';
-    if(speakBtn)speakBtn.style.display='none';
+    if(speakBtn)speakBtn.style.display='flex';
   } else {
     document.getElementById('quizLang').textContent=ll+' → Deutsch';
     quizWordEl.textContent=v.fremd;
@@ -1826,17 +1965,11 @@ function _revealAnswer(v,isLatin,meanings){
 function speakWord(){
   if(!window.speechSynthesis){toast('Sprachausgabe nicht verfügbar');return;}
   const v=quizState?.voks?.[quizState.idx];
-  if(!v)return;
-  // Speak the displayed word (fremd when dir=fs, deutsch word when dir=de)
-  const wordEl=document.getElementById('quizWord');
-  const text=wordEl?.textContent?.trim();
-  if(!text)return;
+  if(!v||!v.fremd)return;
   window.speechSynthesis.cancel();
-  const utter=new SpeechSynthesisUtterance(text);
-  // Set language based on which side is shown
-  const isDE=abfrageSettings.dir==='de';
+  const utter=new SpeechSynthesisUtterance(v.fremd);
   const langMap={en:'en-GB',la:'la',fr:'fr-FR'};
-  utter.lang=isDE?'de-DE':(langMap[v.lang]||'en-GB');
+  utter.lang=langMap[v.lang]||'en-GB';
   utter.rate=.9;
   const btn=document.getElementById('speakBtn');
   if(btn)btn.classList.add('speaking');
@@ -1847,8 +1980,8 @@ function startMnemonicEdit(){
   const v=quizState.voks[quizState.idx];
   const editArea=document.getElementById('quizMnemonicEdit');
   const inp=document.getElementById('quizMnemonicInput');
-  // Hide mnemonic display while editing
-  document.getElementById('quizMnemonic').classList.remove('visible');
+  const el=document.getElementById('eselInline');
+  if(el)el.style.display='none';
   inp.value=v.esel||'';
   editArea.style.display='block';
   inp.focus();
@@ -1866,38 +1999,30 @@ function saveMnemonic(){
   v.esel=text;
   save();
   document.getElementById('quizMnemonicEdit').style.display='none';
-  // Update UI
-  _updateMnemonicButtons(v);
+  _updateEselIcon(v);
   if(text){
-    document.getElementById('quizMnemonic').textContent=text;
-    document.getElementById('quizMnemonic').classList.add('visible');
+    const el=document.getElementById('eselInline');
+    if(el){el.textContent=text;el.style.display='block';}
   }
   toast(text?'Eselsbrücke gespeichert':'Eselsbrücke entfernt');
 }
 function cancelMnemonicEdit(){
   document.getElementById('quizMnemonicEdit').style.display='none';
 }
-function _updateMnemonicButtons(v){
-  const hintRow=document.getElementById('quizHintRow');
-  const addRow=document.getElementById('quizAddMnemonicRow');
-  if(v.esel){
-    if(hintRow)hintRow.style.display='flex';
-    if(addRow)addRow.style.display='none';
-  } else {
-    if(hintRow)hintRow.style.display='none';
-    if(addRow)addRow.style.display='flex';
-  }
+function toggleEselBubble(){
+  const v=quizState?.voks?.[quizState.idx];
+  if(!v?.esel)return;
+  const el=document.getElementById('eselInline');
+  if(!el)return;
+  const visible=el.style.display!=='none';
+  el.style.display=visible?'none':'block';
+  el.textContent=v.esel;
 }
-function toggleMnemonic(){
-  const v=quizState.voks[quizState.idx];
-  const el=document.getElementById('quizMnemonic');
-  if(!el||!v.esel)return;
-  if(el.classList.contains('visible')){
-    el.classList.remove('visible');
-  } else {
-    el.textContent=v.esel;
-    el.classList.add('visible');
-  }
+function _updateEselIcon(v){
+  const btn=document.getElementById('eselCardBtn');
+  const el=document.getElementById('eselInline');
+  if(btn)btn.style.display=v.esel?'block':'none';
+  if(el){el.textContent='';el.style.display='none';}
 }
 function showAnswer(){
   const q=quizState,v=q.voks[q.idx];
